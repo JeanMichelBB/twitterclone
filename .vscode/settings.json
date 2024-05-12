@@ -1,0 +1,10 @@
+{
+    "cSpell.words": [
+        "sqlalchemy",
+        "tailwindcss"
+    ],
+    "search.exclude": {
+        "**/node_modules": false
+    },
+    "sqltools.connections": []
+}
