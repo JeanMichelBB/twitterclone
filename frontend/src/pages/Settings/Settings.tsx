@@ -1,12 +1,22 @@
 // src/pages/Settings/Settings.tsx
 import './Settings.css';
+import TwoColumnLayout from '../../TwoColumnLayout';
 
 const Settings = () => {
     return (
-        <div>
-            <h2>Settings</h2>
-        </div>
-    );
-}
+        <TwoColumnLayout
+          leftContent={
+            <>
+          <h1>Settings</h1>
+          </>
+        }
+          rightContent={
+            <>
+            <h1>Settings</h1>
+            </>
+          }
+        />
+      );
+    };
 
 export default Settings;

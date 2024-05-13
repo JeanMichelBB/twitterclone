@@ -1,3 +1,4 @@
+// src/App.tsx
 import { Route, Routes, BrowserRouter, Navigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import Layout from './Layout';
@@ -8,6 +9,7 @@ import Messages from './pages/Messages/Messages';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
+import Footer from './components/Footer/Footer';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -63,15 +65,32 @@ function App() {
           path="/*"
           element={
             isAuthenticated ? (
-              <Layout username={username}> {/* Pass username to the Layout component */}
-                <Routes>
-                  <Route index element={<Home />} />
-                  <Route path="/messages" element={<Messages />} />
-                  <Route path="/settings" element={<Settings />} />
-                  <Route path="/:username" element={<Profile logUsername={username} />} /> {/* Profile route */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </Layout>
+              <Routes>
+                {/* Layout with children for Home and Profile pages */}
+                <Route
+                  path="/"
+                  element={
+                    <Layout
+                      username={username}
+                      leftChild={<Home />} // Render Home component in the left section
+                      rightChild={<Footer />} // Empty div in the right section
+                    />
+                  }
+                />
+                <Route path="/messages" element={<Messages />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route
+                  path="/:username"
+                  element={
+                    <Layout
+                      username={username}
+                      leftChild={<Profile logUsername={username} />} // Render Profile component in the left section
+                      rightChild={<div />} // Empty div in the right section
+                    />
+                  }
+                />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
             ) : (
               <Navigate to="/login" replace />
             )
