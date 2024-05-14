@@ -1,22 +1,18 @@
 // src/pages/Settings/Settings.tsx
 import './Settings.css';
-import TwoColumnLayout from '../../TwoColumnLayout';
 
 const Settings = () => {
     return (
-        <TwoColumnLayout
-          leftContent={
-            <>
-          <h1>Settings</h1>
-          </>
-        }
-          rightContent={
-            <>
-            <h1>Settings</h1>
-            </>
-          }
-        />
-      );
-    };
+      <div>
+        <h1>Settings</h1>
+        
+        <p>Welcome to the settings page!</p>
+        {/* create a long element on the vertical for testing the vertical of the page */}
+        <div style={{ height: '1000px' }}></div>
+        
 
-export default Settings;
+      </div>
+    );
+  }
+
+  export default Settings;

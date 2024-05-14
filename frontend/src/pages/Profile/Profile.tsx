@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import NotFound from '../NotFound/NotFound';
-import TwoColumnLayout from '../../TwoColumnLayout';
-import Footer from '../../components/Footer/Footer';
 
 interface UserData {
     username: string;
@@ -116,9 +114,6 @@ const Profile = ({ logUsername }: ProfileProps) => {
     }
 
     return (
-        <TwoColumnLayout
-        leftContent={
-            <>
         <div>
             <h2>Profile Page</h2>
             {/* Render profile data */}
@@ -161,14 +156,6 @@ const Profile = ({ logUsername }: ProfileProps) => {
                 </div>
             )}
         </div>
-        </>
-        }
-        rightContent={
-            <>
-            <Footer/>
-            </>
-        }
-        />
     );
 };
 

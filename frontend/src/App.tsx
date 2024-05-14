@@ -10,11 +10,14 @@ import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
 import Footer from './components/Footer/Footer';
+import User from './UserModel';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState('');
+  const [user, setUser] = useState<User>({} as User);
+  
 
   useEffect(() => {
     const checkAuthenticated = async () => {
@@ -36,6 +39,8 @@ function App() {
             });
             const userData = await userDataResponse.json();
             setUsername(userData.username);
+            setUser(userData);
+            console.log('User data:', userData);
           }
         }
       } catch (err) {
@@ -77,15 +82,36 @@ function App() {
                     />
                   }
                 />
-                <Route path="/messages" element={<Messages />} />
-                <Route path="/settings" element={<Settings />} />
+                <Route 
+                path="/messages"
+                 element={ 
+                  <Layout
+                  username={username}
+                  leftChild={<Messages user={user} />} // Render Messages component in the left section
+                  // Empty div in the right section
+                  rightChild={<div></div>}
+                  />
+                }
+                />
+
+                <Route 
+                  path="/settings" 
+                    element={ 
+                      <Layout
+                      username={username}
+                      leftChild={<Settings />} // Render Settings component in the left section
+                      rightChild={<div></div>} // Empty div in the right section
+                      />
+                    }
+                />
+                   
                 <Route
                   path="/:username"
                   element={
                     <Layout
                       username={username}
                       leftChild={<Profile logUsername={username} />} // Render Profile component in the left section
-                      rightChild={<div />} // Empty div in the right section
+                      rightChild={<Footer />} // Empty div in the right section
                     />
                   }
                 />
