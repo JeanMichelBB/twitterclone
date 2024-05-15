@@ -1,0 +1,5 @@
+/* src/components/NewMessage/NewMessage.css */
+.selected {
+    background-color: #f0f0f0; /* Background color for selected item */
+    font-weight: bold; /* Bold font for selected item */
+}

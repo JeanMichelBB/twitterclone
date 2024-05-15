@@ -1,4 +1,3 @@
-# main.py
 from datetime import timedelta
 from fastapi import Depends, FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,12 +7,13 @@ from app.models import User, models, Message
 from sqlalchemy.orm import Session
 from app.auth import ACCESS_TOKEN_EXPIRE_MINUTES, authenticate_user, create_access_token, get_current_user
 from app.user import router as signup
-
-Base.metadata.create_all(bind=engine)
+from app.messages import router as messages
+from app.seed import seed_data
 
 app = FastAPI()
 
 app.include_router(signup)
+app.include_router(messages)
 
 app.add_middleware(
     CORSMiddleware,
@@ -29,6 +29,10 @@ def get_db():
         yield db
     finally:
         db.close()
+
+# Create tables and seed data
+Base.metadata.create_all(bind=engine)
+seed_data()
 
 @app.get("/login")
 async def login(username: str, password: str):
@@ -46,7 +50,7 @@ async def login(username: str, password: str):
 async def protected_route(current_user: str = Depends(get_current_user)):
     return {"message": f"Hello, {current_user}. You are logged in!"}
 
-# /userdata
+# /userdata 
 @app.get("/userdata")
 async def get_user_data(current_user: str = Depends(get_current_user)):
     db = SessionLocal()
@@ -63,6 +67,7 @@ async def get_user_data(current_user: str = Depends(get_current_user)):
         "date_joined": user.date_joined
         }
 
+# for the url search
 @app.get("/profile/{username}")
 async def get_user_profile(username: str):
     db = SessionLocal()
@@ -101,43 +106,3 @@ async def get_all_users():
         }
         user_info_list.append(user_info)
     return user_info_list
-
-
-@app.get("/messages/{user_id}")
-async def get_user_messages(user_id: str):
-    db = SessionLocal()
-    user = db.query(User).filter(User.id == user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="User not found")
-
-    # Fetch messages where the user is either the sender or the recipient
-    messages = db.query(Message).filter(
-        (Message.sender_user_id == user_id) | (Message.recipient_user_id == user_id)
-    ).all()
-
-    return messages
-
-# send message
-@app.post("/messages")
-async def send_message(
-    sender_user_id: str,
-    recipient_user_id: str,
-    content: str,
-    date_sent: str,
-    read: bool = False,
-):
-    db = SessionLocal()
-    user = db.query(User).filter(User.id == recipient_user_id).first()
-    if not user:
-        raise HTTPException(status_code=404, detail="Recipient not found")
-    message = Message(
-        sender_user_id=sender_user_id,
-        recipient_user_id=recipient_user_id,
-        content=content,
-        date_sent=date_sent,
-        read=read
-    )
-    db.add(message)
-    db.commit()
-    return {"message": "Message sent successfully"}
-
