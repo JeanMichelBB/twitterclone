@@ -19,7 +19,6 @@ export interface UserData {
 interface ProfileProps {
     logUsername: string;
     user: User;
-    data: UserData;
 }
 
 interface ErrorData {
@@ -29,7 +28,7 @@ interface ErrorData {
 type ProfileData = UserData | ErrorData | null;
 
 
-const Profile = ({ logUsername, user, data }: ProfileProps) => {
+const Profile = ({ logUsername, user }: ProfileProps) => {
     const { username } = useParams();
     const [userData, setUserData] = useState<ProfileData>(null);
     const [editing, setEditing] = useState(false);
@@ -125,7 +124,7 @@ const Profile = ({ logUsername, user, data }: ProfileProps) => {
         <div>
             <h2>Profile Page</h2>
             {userData && <ConnectionButton currentUser={user} visitedUser={userData} />}
-            <Connection user={user} />
+            <Connection currentUser={user} visitedUser={userData}  />
             {/* Render profile data */}
             {userData && !editing && (
                 <div>

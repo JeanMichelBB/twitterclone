@@ -35,10 +35,16 @@ def follow_user(user_id: str, follow_id: str):
         db.close()
         raise HTTPException(status_code=400, detail="Already following this user")
     
+    # Add following relationship
     db.add(Following(user_id=user_id, following_user_id=follow_id))
+    
+    # Add follower relationship
+    db.add(Follower(user_id=follow_id, follower_user_id=user_id))
+    
     db.commit()
     db.close()
     return {"message": "You are now following this user"}
+
 
 # Unfollow a user
 @router.delete("/unfollow/{user_id}")
@@ -49,10 +55,19 @@ def unfollow_user(user_id: str, unfollow_id: str):
         db.close()
         raise HTTPException(status_code=404, detail="User not found in following list")
     
+    # Delete the following relationship
     db.delete(following)
+    
+    # Delete the corresponding follower relationship
+    follower = db.query(Follower).filter(Follower.user_id == unfollow_id, Follower.follower_user_id == user_id).first()
+    if follower:
+        db.delete(follower)
+    
     db.commit()
     db.close()
     return {"message": "You have unfollowed this user"}
+
+
 
 # check if user is following another user
 @router.get("/isfollowing/{user_id}")

@@ -40,7 +40,7 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
                     }
                 });
                 if (response.ok) {
-                    setIsFollowing(false);
+                    setIsFollowing(false); // Update state after successful unfollow
                 } else {
                     console.error('Error unfollowing user:', response.statusText);
                 }
@@ -53,7 +53,7 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
                     }
                 });
                 if (response.ok) {
-                    setIsFollowing(true);
+                    setIsFollowing(true); // Update state after successful follow
                 } else {
                     console.error('Error following user:', response.statusText);
                 }
@@ -62,6 +62,7 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
             console.error('Error following/unfollowing user:', error);
         }
     };
+    
     
 
     return (

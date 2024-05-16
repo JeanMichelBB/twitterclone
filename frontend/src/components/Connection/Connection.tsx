@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Connection.css';
 import User from '../../UserModel';
+import { UserData } from '../../pages/Profile/Profile';
 
 interface FollowerData {
     id: string;
@@ -21,34 +22,47 @@ interface ErrorData {
 type FollowerList = FollowerData[] | ErrorData | null;
 type FollowingList = FollowingData[] | ErrorData | null;
 
-interface ConnectionProps {
-    user: User;
-}
+type ConnectionProps = {
+    currentUser: User;
+    visitedUser: UserData;
+};
 
-const Connection: React.FC<ConnectionProps> = ({ user }) => {
+const Connection: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) => {
     const [followers, setFollowers] = useState<FollowerList>(null);
     const [following, setFollowing] = useState<FollowingList>(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const followersResponse = await fetch(`http://127.0.0.1:8000/followers/${user.id}`);
-                const followingResponse = await fetch(`http://127.0.0.1:8000/following/${user.id}`);
+    const fetchFollowersAndFollowing = async () => {
+        try {
+            const followersResponse = await fetch(`http://127.0.0.1:8000/followers/${visitedUser.id}`);
+            const followingResponse = await fetch(`http://127.0.0.1:8000/following/${visitedUser.id}`);
 
-                if (followersResponse.ok && followingResponse.ok) {
-                    const followersData = await followersResponse.json();
-                    const followingData = await followingResponse.json();
+            if (followersResponse.ok && followingResponse.ok) {
+                const followersData = await followersResponse.json();
+                const followingData = await followingResponse.json();
 
-                    setFollowers(followersData);
-                    setFollowing(followingData);
-                }
-            } catch (error) {
-                console.error('Error fetching data:', error);
+                setFollowers(followersData);
+                setFollowing(followingData);
             }
-        };
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
-        fetchData();
-    }, [user.id]);
+    useEffect(() => {
+        fetchFollowersAndFollowing();
+    }, [visitedUser.id]);
+
+    // Handle follow/unfollow action
+    const handleFollow = async () => {
+        try {
+            // Perform follow/unfollow action here
+
+            // After follow/unfollow action, refresh followers and following counts
+            fetchFollowersAndFollowing();
+        } catch (error) {
+            console.error('Error following/unfollowing user:', error);
+        }
+    };
 
     return (
         <div className="connection-container">
