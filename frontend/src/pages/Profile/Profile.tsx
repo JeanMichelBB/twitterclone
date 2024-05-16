@@ -5,6 +5,7 @@ import User from '../../UserModel';
 import Connection from '../../components/Connection/Connection';
 import ConnectionButton from '../../components/ConnectionButton/ConnectionButton';
 import { Link } from 'react-router-dom';
+import TweetListUser from '../../components/TweetListUser/TweetListUser';
 
 export interface UserData {
     id: string;
@@ -86,6 +87,7 @@ const Profile = ({ logUsername, user }: ProfileProps) => {
                         // need to edit got to setting
                         <Link to="/settings"> Edit Profile</Link>
                     )}                
+                    <TweetListUser currentUser={user} visitedUser={userData} />
                 </div>
             )}
         </div>

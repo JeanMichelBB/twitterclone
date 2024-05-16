@@ -33,11 +33,15 @@ const Suggestion = ({ user }: ProfileProps) => {
         <div>
             <h2>Suggestions</h2>
             {suggestedUsers.map((userData) => (
-                <div key={userData.id}>
-                    <h3>{userData.username}</h3>
-                    <p>{userData.full_name}</p>
-                    {/* You can add more user details here */}
-                    <ConnectionButton currentUser={user} visitedUser={userData} />
+                <div className="suggestion-container" key={userData.id}>
+                    <div className="suggestion-info">
+                        <h3>{userData.username}</h3>
+                        <p>{userData.full_name}</p>
+                        {/* You can add more user details here */}
+                    </div>
+                    <div className="suggestion-button">
+                        <ConnectionButton currentUser={user} visitedUser={userData} />
+                    </div>
                 </div>
             ))}
         </div>

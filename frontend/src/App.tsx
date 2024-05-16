@@ -77,7 +77,7 @@ function App() {
                   element={
                     <Layout
                       username={username}
-                      leftChild={<Home />} // Render Home component in the left section
+                      leftChild={<Home user={user} />} // Render Home component in the left section
                       rightChild={<Footer user={user} />} // Empty div in the right section
                     />
                   }

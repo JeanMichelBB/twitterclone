@@ -1,1 +1,24 @@
 /* src/pages/Suggestion/Suggestion.css */
+.suggestion-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.suggestion-info {
+    flex-grow: 1;
+}
+
+.suggestion-info h3 {
+    margin: 0;
+}
+
+.suggestion-info p {
+    font-size: 13px;
+    margin: 0;
+}
+
+.suggestion-button {
+    margin-left: 20px;
+}

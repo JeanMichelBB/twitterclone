@@ -9,6 +9,7 @@ from app.user import router as signup
 from app.messages import router as messages
 from app.settings import router as settings
 from app.followers import router as followers
+from app.tweets import router as tweets
 from app.seed import seed_data
 from app.models import User, Tweet, Follower, Like, Retweet, Notification, Message
 
@@ -18,6 +19,7 @@ app.include_router(signup)
 app.include_router(messages)
 app.include_router(settings)
 app.include_router(followers)
+app.include_router(tweets)
 
 app.add_middleware(
     CORSMiddleware,
