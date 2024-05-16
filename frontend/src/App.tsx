@@ -78,7 +78,7 @@ function App() {
                     <Layout
                       username={username}
                       leftChild={<Home />} // Render Home component in the left section
-                      rightChild={<Footer />} // Empty div in the right section
+                      rightChild={<Footer user={user} />} // Empty div in the right section
                     />
                   }
                 />
@@ -111,7 +111,7 @@ function App() {
                     <Layout
                       username={username}
                       leftChild={<Profile logUsername={username} user={user} />} // Render Profile component in the left section
-                      rightChild={<Footer />} // Empty div in the right section
+                      rightChild={<Footer user={user} />} // Empty div in the right section
                     />
                   }
                 />

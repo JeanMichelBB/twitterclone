@@ -1,13 +1,18 @@
 // src components Footer Footer.tsx
 import './Footer.css';
 import Search from '../Search/Search';
-import Trending from '../Trending/Trending';
+import Suggestion from '../Suggestion/Suggestion';
+import User from '../../UserModel';
 
-const Footer = () => {
+interface ProfileProps {
+    user: User;
+}
+
+const Footer = ({ user }: ProfileProps) => {
     return (
         <div className="footer">
             <Search/>
-            <Trending/>
+            <Suggestion user={user}/>
         </div>
     );
 }

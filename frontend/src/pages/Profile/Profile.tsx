@@ -124,7 +124,7 @@ const Profile = ({ logUsername, user }: ProfileProps) => {
         <div>
             <h2>Profile Page</h2>
             {userData && <ConnectionButton currentUser={user} visitedUser={userData} />}
-            <Connection currentUser={user} visitedUser={userData}  />
+            {userData && <Connection currentUser={user} visitedUser={userData}  />}
             {/* Render profile data */}
             {userData && !editing && (
                 <div>
