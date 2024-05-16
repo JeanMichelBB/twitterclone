@@ -48,10 +48,8 @@ uvicorn main:app --host 127.0.0.1 --port 8000 --reload
 mysql -u root -p
 
 
-
+```
 SET FOREIGN_KEY_CHECKS = 0;
-
-
 SET @tables = NULL;
 SELECT GROUP_CONCAT(table_schema, '.', table_name) INTO @tables
   FROM information_schema.tables
@@ -61,5 +59,14 @@ SET @tables = CONCAT('DROP TABLE ', @tables);
 PREPARE stmt FROM @tables;
 EXECUTE stmt;
 DEALLOCATE PREPARE stmt;
-
 SET FOREIGN_KEY_CHECKS = 1;
+```
+```
+SELECT * FROM `mydb`.`followers` LIMIT 1000;
+SELECT * FROM `mydb`.`likes` LIMIT 1000;
+SELECT * FROM `mydb`.`messages` LIMIT 1000;
+SELECT * FROM `mydb`.`notifications` LIMIT 1000;
+SELECT * FROM `mydb`.`retweets` LIMIT 1000;
+SELECT * FROM `mydb`.`tweets` LIMIT 1000;
+SELECT * FROM `mydb`.`users` LIMIT 1000;
+```

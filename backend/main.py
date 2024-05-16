@@ -3,17 +3,21 @@ from fastapi import Depends, FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security import OAuth2PasswordRequestForm
 from app.database import engine, Base, SessionLocal
-from app.models import User, models, Message
 from sqlalchemy.orm import Session
 from app.auth import ACCESS_TOKEN_EXPIRE_MINUTES, authenticate_user, create_access_token, get_current_user
 from app.user import router as signup
 from app.messages import router as messages
+from app.settings import router as settings
+from app.followers import router as followers
 from app.seed import seed_data
+from app.models import User, Tweet, Follower, Like, Retweet, Notification, Message
 
 app = FastAPI()
 
 app.include_router(signup)
 app.include_router(messages)
+app.include_router(settings)
+app.include_router(followers)
 
 app.add_middleware(
     CORSMiddleware,
@@ -22,6 +26,17 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+models = {
+    'User': User,
+    'Tweet': Tweet,
+    'Follower': Follower,
+    'Like': Like,
+    'Retweet': Retweet,
+    'Notification': Notification,
+    'Message': Message
+}
+
 
 def get_db():
     db = SessionLocal()
@@ -106,3 +121,4 @@ async def get_all_users():
         }
         user_info_list.append(user_info)
     return user_info_list
+

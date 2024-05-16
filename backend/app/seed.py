@@ -54,6 +54,14 @@ def seed_data():
                 follower_user_id=follower_user.id
             )
             db.add(follower)
+            
+            # Create following
+            following_user = users[(i % 5) - 1]  # Ensure each user follows the next user in a circular manner
+            following = models.Following(
+                user_id=user.id,
+                following_user_id=following_user.id
+            )
+            db.add(following)
 
             # Create likes
             like_tweet = db.query(models.Tweet).filter_by(user_id=follower_user.id).first()

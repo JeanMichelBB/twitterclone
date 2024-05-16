@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import NotFound from '../NotFound/NotFound';
+import User from '../../UserModel';
+import Connection from '../../components/Connection/Connection';
+import ConnectionButton from '../../components/ConnectionButton/ConnectionButton';
 
-interface UserData {
+export interface UserData {
+    id: string;
     username: string;
     full_name: string;
     bio: string;
@@ -14,6 +18,8 @@ interface UserData {
 
 interface ProfileProps {
     logUsername: string;
+    user: User;
+    data: UserData;
 }
 
 interface ErrorData {
@@ -22,11 +28,13 @@ interface ErrorData {
 
 type ProfileData = UserData | ErrorData | null;
 
-const Profile = ({ logUsername }: ProfileProps) => {
+
+const Profile = ({ logUsername, user, data }: ProfileProps) => {
     const { username } = useParams();
     const [userData, setUserData] = useState<ProfileData>(null);
     const [editing, setEditing] = useState(false);
     const [formData, setFormData] = useState<UserData>({
+        id: '',
         username: '',
         full_name: '',
         bio: '',
@@ -35,7 +43,6 @@ const Profile = ({ logUsername }: ProfileProps) => {
         profile_image: '',
     });
     const [loading, setLoading] = useState(true);
-
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
@@ -43,6 +50,7 @@ const Profile = ({ logUsername }: ProfileProps) => {
                 if (response.ok) {
                     const data = await response.json();
                     setUserData(data);
+                    console.log('Profile data:', data);
                     setFormData(data as UserData);
                 } else {
                     // Redirect to 404 page if user not found
@@ -116,6 +124,8 @@ const Profile = ({ logUsername }: ProfileProps) => {
     return (
         <div>
             <h2>Profile Page</h2>
+            {userData && <ConnectionButton currentUser={user} visitedUser={userData} />}
+            <Connection user={user} />
             {/* Render profile data */}
             {userData && !editing && (
                 <div>

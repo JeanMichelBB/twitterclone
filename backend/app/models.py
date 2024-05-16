@@ -15,7 +15,6 @@ class User(Base):
     bio = Column(String(255))
     location = Column(String(100))
     website = Column(String(255))
-    # i need to put like that: 2024-05-12T10:14:08.476Z
     date_joined = Column(DateTime)
 
 class Tweet(Base):
@@ -32,6 +31,12 @@ class Follower(Base):
     id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
     user_id = Column(String(36), ForeignKey('users.id'))
     follower_user_id = Column(String(36), ForeignKey('users.id'))
+    
+class Following(Base):
+    __tablename__ = "following"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
+    user_id = Column(String(36), ForeignKey('users.id'))
+    following_user_id = Column(String(36), ForeignKey('users.id'))
 
 class Like(Base):
     __tablename__ = "likes"
@@ -70,6 +75,7 @@ class models:
     User = User
     Tweet = Tweet
     Follower = Follower
+    Following = Following
     Like = Like
     Retweet = Retweet
     Notification = Notification

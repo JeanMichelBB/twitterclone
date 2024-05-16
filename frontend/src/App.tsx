@@ -99,7 +99,7 @@ function App() {
                     element={ 
                       <Layout
                       username={username}
-                      leftChild={<Settings />} // Render Settings component in the left section
+                      leftChild={<Settings user={user} />} // Corrected to pass user prop as lowercase
                       rightChild={<div></div>} // Empty div in the right section
                       />
                     }
@@ -110,7 +110,7 @@ function App() {
                   element={
                     <Layout
                       username={username}
-                      leftChild={<Profile logUsername={username} />} // Render Profile component in the left section
+                      leftChild={<Profile logUsername={username} user={user} />} // Render Profile component in the left section
                       rightChild={<Footer />} // Empty div in the right section
                     />
                   }
