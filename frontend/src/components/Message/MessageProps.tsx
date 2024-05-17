@@ -1,17 +1,28 @@
 import React from 'react';
+import User from '../../UserModel';
+import './MessageProps.css'; // Import your CSS file
 
 interface MessageProps {
   message: {
+    recipient_user_id: string;
     sender_user_id: string;
     content: string;
     date_sent: string;
   };
+  user: User;
 }
 
-const Message: React.FC<MessageProps> = ({ message }) => {
+const Message: React.FC<MessageProps> = ({ message, user }) => {
+  const isCurrentUser = message.sender_user_id === user.id;
+
   return (
-    <div>
-      <strong>{message.sender_user_id}</strong>: {message.content} ({message.date_sent})
+    <div className={`message-container ${isCurrentUser ? 'user-right' : 'user-left'}`}>
+      <div className="message-content">
+        <div className={`message ${isCurrentUser ? 'current-user' : ''}`}>
+          <p>{message.content}</p>
+          <p>{message.date_sent}</p>
+        </div>
+      </div>
     </div>
   );
 };

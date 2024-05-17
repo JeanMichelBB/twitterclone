@@ -6,6 +6,7 @@ import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
 import Home from './pages/Home/Home';
 import MessageList from './pages/Messages/MessageList';
+import MessageProps from './components/Message/MessageProps';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
@@ -87,7 +88,7 @@ function App() {
                  element={ 
                   <Layout
                   username={username}
-                  leftChild={<MessageList User={user} />} // Render MessageList component in the left section
+                  leftChild={<MessageList user={user} />} // Render MessageList component in the left section
                   // Empty div in the right section
                   rightChild={<div></div>}
                   />

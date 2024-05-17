@@ -1,1 +1,26 @@
 /* src/pages/Messages/Messages.css */
+.message-list-container {
+  display: flex;
+}
+
+.user-list {
+  flex: 1;
+  padding: 0 20px;
+}
+
+.message-content {
+  flex: 2;
+  padding: 0 20px;
+}
+
+.user-list ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.user-list li {
+  cursor: pointer;
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
