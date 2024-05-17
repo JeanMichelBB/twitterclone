@@ -13,7 +13,7 @@ const Home: React.FC<ProfileProps> = ({ user }) => {
     return (
       <div>
         <CreateTweet user={user} />
-        <TweetList />
+        <TweetList user={user}/>
         
 
       </div>
