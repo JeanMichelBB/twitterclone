@@ -3,6 +3,7 @@ import axios from 'axios';
 import User from '../../UserModel';
 import MessageProps from '../../components/Message/MessageProps';
 import './MessageList.css'; // Import CSS file for styling
+import ComposeMessageForm from '../../components/NewMessage/ComposeMessageForm';
 
 interface Message {
   id: string;
@@ -98,6 +99,7 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
     <div className="message-list-container">
       <div className="user-list">
         <h2>Usernames</h2>
+        <ComposeMessageForm user={user} />
         <ul>
           {filteredUsernames.map(userId => (
             <li key={userId} onClick={() => handleUserClick(userId)} className={selectedUser === userId ? 'selected' : ''}>

@@ -1,11 +1,13 @@
+// src/components/ConnectionButton/ConnectionButton.tsx
+
 import React, { useState, useEffect } from 'react';
 import './ConnectionButton.css';
 import User from '../../UserModel';
 import { UserData } from '../../pages/Profile/Profile';
 
 type ConnectionProps = {
-    currentUser: User;
-    visitedUser: UserData;
+    currentUser: User | null;
+    visitedUser: UserData | null;
 };
 
 const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) => {
@@ -13,6 +15,8 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
 
     useEffect(() => {
         const checkIfFollowing = async () => {
+            if (!currentUser || !visitedUser) return;
+            
             try {
                 const response = await fetch(`http://127.0.0.1:8000/isfollowing/${currentUser.id}?follow_id=${visitedUser.id}`);
                 if (response.ok) {
@@ -27,9 +31,11 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
         };
 
         checkIfFollowing();
-    }, [currentUser.id, visitedUser.id]);
+    }, [currentUser, visitedUser]);
 
     const handleFollow = async () => {
+        if (!currentUser || !visitedUser) return;
+
         try {
             if (isFollowing) {
                 const response = await fetch(`http://127.0.0.1:8000/unfollow/${currentUser.id}?unfollow_id=${visitedUser.id}`, {
@@ -62,8 +68,10 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
             console.error('Error following/unfollowing user:', error);
         }
     };
-    
-    
+
+    if (!currentUser || !visitedUser) {
+        return null; // or return a placeholder or message
+    }
 
     return (
         <div className="connection-button">
