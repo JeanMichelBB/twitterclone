@@ -1,1 +1,104 @@
 /* src/components/Footer/Footer.css */
+
+/* src/components/Header/Header.css */
+
+.header {
+    color: #fff;
+    margin: 0 10px;
+    font-size: 1.5rem;
+    width: 240px;
+}
+
+nav ul li {
+    list-style-type: none;
+    margin-right: 10px;
+    /* Adjust the right margin as needed for spacing */
+}
+
+nav ul li:last-child {
+    margin-right: 0;
+    /* Remove margin from the last li element */
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+nav ul li span {
+    margin-right: 10px;
+    /* Adjust the right margin as needed */
+}
+
+nav ul li button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+nav ul li button:hover {
+    background-color: #0056b3;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+    padding: 10px;
+    background-color: #000000;
+
+}
+.full_name {
+    font-size: 1.2rem;
+}
+.username {
+    font-size: 1rem;
+    color: #919191;
+    margin-right: 10px;
+}
+.profile_picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.none {
+
+    color: #919191;
+}
+
+.post {
+    padding: 10px 20px;
+    width: 100%;
+}
+.logout {
+    padding: 5px 10px;
+    font-size: small;
+}
+.logout-modal {
+    display: flex;
+    position: fixed;
+    font-size: small;
+    bottom: 90px;    
+}
+.logout-modal-content {
+    flex: 1;
+    padding: 0 20px;
+    border-radius: 40px;
+    margin: auto;
+    text-align: center;
+    border-color: #fdfdfd;
+    border: 1px solid;
+    background-color: #000000;
+    
+    ;
+}
+.logoutButton {
+    background-color: #000000;
+
+}

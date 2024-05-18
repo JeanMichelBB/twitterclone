@@ -6,7 +6,6 @@ import Login from './pages/Login/Login';
 import Signup from './pages/Signup/Signup';
 import Home from './pages/Home/Home';
 import MessageList from './pages/Messages/MessageList';
-import MessageProps from './components/Message/MessageProps';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
@@ -78,6 +77,7 @@ function App() {
                   element={
                     <Layout
                       username={username}
+                      user={user}
                       leftChild={<Home user={user} />} // Render Home component in the left section
                       rightChild={<Footer user={user} />} // Empty div in the right section
                     />
@@ -88,6 +88,7 @@ function App() {
                  element={ 
                   <Layout
                   username={username}
+                  user={user}
                   leftChild={<MessageList user={user} />} // Render MessageList component in the left section
                   // Empty div in the right section
                   rightChild={<div></div>}
@@ -100,6 +101,7 @@ function App() {
                     element={ 
                       <Layout
                       username={username}
+                      user={user}
                       leftChild={<Settings user={user} />} // Corrected to pass user prop as lowercase
                       rightChild={<div></div>} // Empty div in the right section
                       />
@@ -111,6 +113,7 @@ function App() {
                   element={
                     <Layout
                       username={username}
+                      user={user}
                       leftChild={<Profile logUsername={username} user={user} />} // Render Profile component in the left section
                       rightChild={<Footer user={user} />} // Empty div in the right section
                     />
