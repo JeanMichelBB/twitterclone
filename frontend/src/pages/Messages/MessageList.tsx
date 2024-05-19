@@ -4,6 +4,7 @@ import User from '../../UserModel';
 import MessageProps from '../../components/Message/MessageProps';
 import './MessageList.css'; // Import CSS file for styling
 import ComposeMessageForm from '../../components/NewMessage/ComposeMessageForm';
+import { UserData } from '../../pages/Profile/Profile';
 
 interface Message {
   id: string;
@@ -13,9 +14,9 @@ interface Message {
   date_sent: string;
 }
 
-interface UserData {
-  id: string;
+interface UserNames {
   username: string;
+  full_name: string;
 }
 
 interface MessageListProps {
@@ -24,7 +25,7 @@ interface MessageListProps {
 
 const MessageList: React.FC<MessageListProps> = ({ user }) => {
   const [userMessages, setUserMessages] = useState<{ [userId: string]: Message[] }>({});
-  const [usernames, setUsernames] = useState<{ [userId: string]: string }>({});
+  const [usernames, setUsernames] = useState<{ [userId: string]: UserNames }>({});
   const [selectedUser, setSelectedUser] = useState<string | null>(null);
   const [newMessage, setNewMessage] = useState('');
 
@@ -34,21 +35,24 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
         // Fetch list of users
         const usersResponse = await axios.get('http://127.0.0.1:8000/users');
         const usersData: UserData[] = usersResponse.data;
-    
-        // Create a map of user IDs to usernames
-        const usersMap: { [userId: string]: string } = {};
+
+        // Create a map of user IDs to usernames and full names
+        const usersMap: { [userId: string]: UserNames } = {};
         usersData.forEach(user => {
-          usersMap[user.id] = user.username;
+          usersMap[user.id] = {
+            username: user.username,
+            full_name: user.full_name,
+          };
         });
         setUsernames(usersMap);
-    
+
         // Fetch messages
         const messagesResponse = await axios.get(`http://127.0.0.1:8000/messages/${user.id}`);
         let messages: Message[] = messagesResponse.data;
-    
+
         // Sort messages by date ascending
         messages = messages.sort((a, b) => new Date(a.date_sent).getTime() - new Date(b.date_sent).getTime());
-    
+
         const groupedMessages = groupMessagesByUsers(messages);
         setUserMessages(groupedMessages);
       } catch (error) {
@@ -83,9 +87,17 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
   const handleSendMessage = async () => {
     if (!newMessage.trim() || !selectedUser) return; // Ignore empty messages or if no user is selected
     try {
-      const url = `http://127.0.0.1:8000/messages?sender_id=${user.id}&recipient_id=${selectedUser}&content=${encodeURIComponent(newMessage)}`;
-      await axios.post(url);
-      // Optionally, update the UI to reflect the new message
+      const url = `http://127.0.0.1:8000/messages`;
+      const response = await axios.post(url, {
+        sender_id: user.id,
+        recipient_id: selectedUser,
+        content: newMessage,
+      });
+      const sentMessage = response.data;
+      setUserMessages(prevState => ({
+        ...prevState,
+        [selectedUser]: [...(prevState[selectedUser] || []), sentMessage],
+      }));
       setNewMessage(''); // Clear the input field after sending the message
     } catch (error) {
       console.error('Error sending message:', error);
@@ -98,40 +110,46 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
   return (
     <div className="message-list-container">
       <div className="user-list">
-        <h2>Usernames</h2>
         <ComposeMessageForm user={user} />
         <ul>
           {filteredUsernames.map(userId => (
-            <li key={userId} onClick={() => handleUserClick(userId)} className={selectedUser === userId ? 'selected' : ''}>
-              {usernames[userId]}
+            <li key={userId} onClick={() => handleUserClick(userId)} className={selectedUser === userId ? 'selected' : 'unselected'}>
+              <div>{usernames[userId].full_name} </div>
+              <div className='username'>@{usernames[userId].username}</div>
             </li>
           ))}
         </ul>
       </div>
-      <div className="message-content">
-        {selectedUser && userMessages[selectedUser] ? (
-          <ul>
-            {userMessages[selectedUser].reverse().map(message => (
-              <li key={message.id}>
-                <MessageProps message={message} user={user}/>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>Select a user to view messages</p>
+      <div className="message-content-container">
+        <div className="message-content">
+          {selectedUser && userMessages[selectedUser] ? (
+            <ul>
+              {userMessages[selectedUser].reverse().map(message => (
+                <li key={message.id}>
+                  <MessageProps message={message} user={user} />
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Select a user to view messages</p>
+          )}
+        </div>
+        {selectedUser && (
+          <div className="message-input-container">
+            <div className="message-input">
+              <input
+                type="text"
+                value={newMessage}
+                onChange={(e) => setNewMessage(e.target.value)}
+                placeholder="Type your message..."
+              />
+            </div>
+            <div className="send-button-container">
+              <button onClick={handleSendMessage}>Send</button>
+            </div>
+          </div>
         )}
       </div>
-      {selectedUser && (
-        <div className="message-input">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type your message..."
-          />
-          <button onClick={handleSendMessage}>Send</button>
-        </div>
-      )}
     </div>
   );
 };

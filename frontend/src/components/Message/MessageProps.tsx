@@ -19,8 +19,7 @@ const Message: React.FC<MessageProps> = ({ message, user }) => {
     <div className={`message-container ${isCurrentUser ? 'user-right' : 'user-left'}`}>
       <div className="message-content">
         <div className={`message ${isCurrentUser ? 'current-user' : ''}`}>
-          <p>{message.content}</p>
-          <p>{message.date_sent}</p>
+          <div>{message.content}</div>
         </div>
       </div>
     </div>

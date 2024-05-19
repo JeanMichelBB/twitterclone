@@ -1,21 +1,24 @@
-/* src/pages/Messages/Messages.css */
+/* src/pages/Messages/MessagesList.css */
+
 .message-list-container {
   display: flex;
+  height: 100vh; /* Full height of the viewport */
 }
 
 .user-list {
-  flex: 1;
+  width: 250px; /* Adjust width as needed */
   padding: 0 20px;
-}
-
-.message-content {
-  flex: 2;
-  padding: 0 20px;
+  border: solid 0.1px #000000;
+  border-right: solid 0.1px #000000;
+  border-color: rgb(47, 51, 54);
+  background-color: #000000;
+  overflow-y: auto; /* Allow scrolling if the user list is long */
 }
 
 .user-list ul {
   list-style-type: none;
-  padding: 0;
+  padding: 10px 0;
+  margin: 0;
 }
 
 .user-list li {
@@ -24,3 +27,105 @@
   padding: 5px;
 }
 
+.user-list ul li.selected {
+  background-color: #212020;
+}
+
+.message-content-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  border: solid 0.1px #000000;
+  border-color: rgb(47, 51, 54);
+  background-color: #000000;
+}
+
+.message-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column-reverse; /* Reverse the order of messages */
+  overflow-y: auto; /* Enable vertical scrolling for the message content */
+  padding: 0 10px;
+}
+
+.message-content ul {
+  padding: 0;
+  list-style-type: none;
+  margin: 0;
+}
+
+.message-content ul li {
+  cursor: pointer;
+}
+
+.message-box,
+.message {
+  color: white;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.message {
+  border: 1px solid #ccc;
+}
+
+.message-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.user-left {
+  text-align: left;
+}
+
+.user-right {
+  text-align: right;
+}
+
+.user-left .message {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  background-color: rgb(81, 81, 81);
+  align-self: flex-start; /* Add this property to align the message to the start of its container */
+
+}
+
+.user-right .message {
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+  background-color: rgba(29, 155, 240);
+  align-self: flex-end; /* Add this property to align the message to the end of its container */
+}
+
+.message-container span {
+  font-size: xx-small;
+}
+
+.username {
+  color: gray;
+}
+
+.message-input-container {
+  border-top: solid 0.1px #000000;
+  border-color: rgb(47, 51, 54);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #000000;
+}
+
+.message-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background-color: #000000;
+  color: white;
+}
+
+.send-button-container {
+  padding: 0 10px;
+  cursor: pointer;
+}

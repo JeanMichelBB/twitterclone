@@ -2,7 +2,6 @@
 
 .compose-message-container {
     position: relative;
-    width: 300px; /* Adjust width as needed */
     margin: 0 auto;
 }
 
@@ -38,13 +37,11 @@
 }
 
 .message-form textarea {
-    width: 100%;
-    height: 100px;
     padding: 10px;
     margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
     resize: none;
+    border: none;
+    background-color: black;
 }
 
 .message-form button {
