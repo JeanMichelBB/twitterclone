@@ -11,6 +11,21 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Hide scrollbar globally */
+  overflow: -moz-scrollbars-none;  /* Firefox */
+  -ms-overflow-style: none;  /* Internet Explorer and Edge */
+
+  /* Hide scrollbar in Firefox */
+  scrollbar-color: transparent transparent;
+
+  /* Hide scrollbar in Chrome */
+  &::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+  }
+
+
 }
 
 a {

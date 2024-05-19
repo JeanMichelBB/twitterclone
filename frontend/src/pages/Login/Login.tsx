@@ -29,9 +29,12 @@ const Login = () => {
   };
 
   return (
-    <div>
-            
-      <h2>Login</h2>
+    <div className="login-container">
+         <div className="login-logo">
+          X
+          </div>  
+          <div className="login-form">
+        <h2>Login</h2>
       <input
         type="text"
         placeholder="Username"
@@ -47,6 +50,7 @@ const Login = () => {
       <button onClick={handleLogin}>Login</button>
       {error && <div>{error}</div>}
       <p>Don't have an account? <Link to="/signup">Signup</Link></p>
+      </div> 
     </div>
   );
 };
