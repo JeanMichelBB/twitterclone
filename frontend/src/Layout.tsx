@@ -1,7 +1,7 @@
-// src/Layout.tsx
 import { ReactNode } from 'react';
 import Header from './components/Header/Header';
 import User from './UserModel';
+import './Layout.css'; // Import the CSS file for layout styling
 
 interface LayoutProps {
   leftChild: ReactNode;
@@ -12,10 +12,12 @@ interface LayoutProps {
 
 const Layout = ({ leftChild, rightChild, username, user }: LayoutProps) => {
   return (
-    <div style={{ display: 'flex', height: '100vh' }}>
-      <Header username={username} user={user}/>
-      <div style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>{leftChild}</div>
-      <div style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>{rightChild}</div>
+    <div className='layout'>
+      <div className="layout-container">
+      <Header username={username} user={user} />
+        <div className="left-panel">{leftChild}</div>
+        <div className="right-panel">{rightChild}</div>
+      </div>
     </div>
   );
 };

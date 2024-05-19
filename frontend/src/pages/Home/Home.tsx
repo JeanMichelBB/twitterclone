@@ -11,7 +11,7 @@ interface ProfileProps {
 const Home: React.FC<ProfileProps> = ({ user }) => {
   
     return (
-      <div>
+      <div className='home'>
         <CreateTweet user={user} />
         <TweetList user={user}/>
         

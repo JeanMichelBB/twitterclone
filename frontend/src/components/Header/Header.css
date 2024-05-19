@@ -12,6 +12,7 @@
 nav ul li {
     list-style-type: none;
     margin-right: 10px;
+    margin-bottom: 12px;
     /* Adjust the right margin as needed for spacing */
 }
 

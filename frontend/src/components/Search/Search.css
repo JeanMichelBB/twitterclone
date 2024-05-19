@@ -1,8 +1,8 @@
 /* src/components/Search/Search.css */
 
 .search-container {
+    padding-top: 10px;
     position: relative;
-    width: 300px; /* Adjust width as needed */
 }
 
 .suggestions-list {
@@ -26,4 +26,13 @@
 
 .suggestions-list li.highlighted {
     background-color: #f0f0f0;
+}
+
+input {
+    width: 100%;
+    font-size: 16px;
+    border: none;
+    border-radius: 30px;
+    padding: 8px;
+    background-color: #272727;
 }

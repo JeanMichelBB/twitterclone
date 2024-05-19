@@ -1,9 +1,19 @@
 /* src/pages/Suggestion/Suggestion.css */
+.suggestions {
+    border: solid 0.1px #000000;
+    border-radius: 20px;
+    padding: 15px;
+    width: 95%;
+    background-color: #000000;
+    border-color: rgb(47, 51, 54);
+    margin-top: 20px;
+}
 .suggestion-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-top: 20px;
+
 }
 
 .suggestion-info {
@@ -12,13 +22,36 @@
 
 .suggestion-info h3 {
     margin: 0;
+    color: white;
 }
 
 .suggestion-info p {
     font-size: 13px;
     margin: 0;
+    color: white;
 }
 
 .suggestion-button {
     margin-left: 20px;
+}
+
+.title {
+    font-size: x-large;
+    font-weight: bold;
+}
+
+.suggestion Link {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
+.profile-image {
+    display: flex;
+    align-items: center;
 }

@@ -55,8 +55,7 @@ const Search = () => {
         setHighlightedIndex(-1);
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+    const handleSubmit = () => {
         if (highlightedIndex >= 0 && filteredSuggestions.length > 0) {
             handleSuggestionClick(filteredSuggestions[highlightedIndex].username);
         } else if (username.trim()) {
@@ -82,9 +81,7 @@ const Search = () => {
             );
         } else if (e.key === 'Enter') {
             e.preventDefault();
-            if (highlightedIndex >= 0 && filteredSuggestions.length > 0) {
-                handleSuggestionClick(filteredSuggestions[highlightedIndex].username);
-            }
+            handleSubmit();
         } else if (e.key === 'Escape') {
             setShowSuggestions(false);
         }
@@ -108,17 +105,15 @@ const Search = () => {
 
     return (
         <div className="search-container">
-            <h2>Search</h2>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={(e) => { e.preventDefault(); handleSubmit(); }}>
                 <input
                     type="text"
-                    placeholder="Enter username"
+                    placeholder="Search"
                     value={username}
                     onChange={handleInputChange}
                     onKeyDown={handleKeyDown}
                     ref={inputRef}
                 />
-                <button type="submit">Search</button>
             </form>
             {showSuggestions && filteredSuggestions.length > 0 && (
                 <ul className="suggestions-list" ref={suggestionsRef}>

@@ -6,6 +6,7 @@ import Connection from '../../components/Connection/Connection';
 import ConnectionButton from '../../components/ConnectionButton/ConnectionButton';
 import { Link } from 'react-router-dom';
 import TweetListUser from '../../components/TweetListUser/TweetListUser';
+import './Profile.css';
 
 export interface UserData {
     id: string;
@@ -14,7 +15,7 @@ export interface UserData {
     bio: string;
     location: string;
     website: string;
-    profile_image: string;
+    profile_picture: string;
     // Add other profile fields as needed
 }
 
@@ -69,27 +70,45 @@ const Profile = ({ logUsername, user }: ProfileProps) => {
     }
 
     return (
-        <div>
-            <h2>Profile Page</h2>
-            {userData && <ConnectionButton currentUser={user} visitedUser={userData} />}
-            {userData && <Connection currentUser={user} visitedUser={userData} />}
+        <div className='profile'>
+
             {/* Render profile data */}
             {userData && (
+
                 <div>
-                    <p>Username: {userData.username}</p>
-                    <p>Full Name: {userData.full_name}</p>
-                    <p>Bio: {userData.bio}</p>
-                    <p>Location: {userData.location}</p>
-                    <p>Website: {userData.website}</p>
-                    <p>Profile Image: {userData.profile_image}</p>
-                    {/* Add other profile fields */}
+                    <div className='profile-header'>
+                        <Link className='back-button' to="/">&#8592;</Link>
+                        <h2>{userData.full_name}</h2>
+                    </div>
+                    <div className='profile-background'>
+                        <img src={userData.profile_picture} alt="Profile" />
+                    </div>
+                    <div className='profile-header-info'>
+                    <img src={userData.profile_picture} alt="Profile" />
                     {isCurrentUser && (
                         // need to edit got to setting
                         <Link to="/settings"> Edit Profile</Link>
-                    )}                
+                    )
+                    }
+                    {!isCurrentUser && (
+                        <ConnectionButton currentUser={user} visitedUser={userData} />
+                    )
+
+                    }
+                    </div>
+                    <div className='profile-info'>
+                    <div>{userData.full_name}</div>
+                    <div>@{userData.username}</div>
+                    <div>{userData.bio}</div>
+                    <div>{userData.location}</div>
+                    <div>{userData.website}</div>
+                    {/* Add other profile fields */}
+                    {userData && <Connection currentUser={user} visitedUser={userData} />}
+                    </div>
                     <TweetListUser currentUser={user} visitedUser={userData} />
                 </div>
             )}
+
         </div>
     );
 };

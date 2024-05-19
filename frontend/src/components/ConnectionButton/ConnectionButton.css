@@ -1,0 +1,9 @@
+.connection-button button {
+  background-color: #ffffff;
+  color: rgb(0, 0, 0);
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 15px;
+  margin-right: 10px;
+}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import User from '../../UserModel';
+import './TweetList.css';
 
 type Tweet = {
     id: string;
@@ -21,42 +22,37 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
 
     const handleLike = async (tweetId: string) => {
         try {
-            // Check if the tweet is already liked by the user
             const alreadyLiked = userLikes[tweetId];
-    
-            // If the tweet is already liked, perform unlike action
+
             if (alreadyLiked) {
-                // Perform unlike action here
-                // Send a POST request to the unlike endpoint with user_id and tweet_id
                 await fetch(`http://127.0.0.1:8000/tweets/unlike?user_id=${user.id}&tweet_id=${tweetId}`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json'
                     }
                 });
-    
-                // Update the UI to reflect the unlike action
+
                 setUserLikes(prevUserLikes => ({
                     ...prevUserLikes,
-                    [tweetId]: false // Mark the tweet as unliked in the local state
+                    [tweetId]: false
                 }));
-            } 
-            // If the tweet is not already liked, perform like action
-            else {
-                // Perform like action here
-                // For example, you might send a like request to your backend API
-                // Update the UI to reflect the like action
+            } else {
+                await fetch(`http://127.0.0.1:8000/tweets/like?user_id=${user.id}&tweet_id=${tweetId}`, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                });
+
                 setUserLikes(prevUserLikes => ({
                     ...prevUserLikes,
-                    [tweetId]: true // Mark the tweet as liked in the local state
+                    [tweetId]: true
                 }));
             }
         } catch (error) {
             console.error('Error handling like:', error);
         }
     };
-    
-    
 
     useEffect(() => {
         const fetchTweets = async () => {
@@ -66,10 +62,8 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
                     throw new Error('Failed to fetch tweets');
                 }
                 const data = await response.json();
-                // Sort tweets by date_posted in descending order (most recent first)
                 const sortedTweets = data.sort((a: Tweet, b: Tweet) => new Date(b.date_posted).getTime() - new Date(a.date_posted).getTime());
                 setTweets(sortedTweets);
-                console.log(sortedTweets);
             } catch (error) {
                 console.error('Error fetching tweets:', error);
             }
@@ -77,7 +71,7 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
 
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/users'); // Update the URL to your users endpoint
+                const response = await fetch('http://127.0.0.1:8000/users');
                 if (!response.ok) {
                     throw new Error('Failed to fetch users');
                 }
@@ -90,7 +84,6 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
             } catch (error) {
                 console.error('Error fetching users:', error);
             }
-
         };
 
         const checkUserLikes = async () => {
@@ -115,37 +108,34 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
         fetchTweets();
     }, []);
 
-    
-
     return (
-        <div>
-            <h1>All Tweets</h1>
+        <div className="tweet-list-container">
             <ul>
                 {tweets.map((tweet) => (
-                    <li key={tweet.id}>
-                        <div>
-                            <strong>Username:</strong> {users[tweet.user_id]?.username || 'Unknown'}
-                        </div>
-                        <div>
-                            <strong>Content:</strong> {tweet.content}
-                        </div>
-                        <div>
-                            <strong>Date Posted:</strong> {new Date(tweet.date_posted).toLocaleString()}
-                        </div>
-                        <div>
-                            <strong>Likes:</strong> {tweet.num_likes}
-                        </div>
-                        <div>
-                            <strong>Retweets:</strong> {tweet.num_retweets}
-                        </div>
-                        <div>
-                            <button onClick={() => handleLike(tweet.id)}>
-                                {userLikes[tweet.id] ? 'Unlike' : 'Like'}
-                            </button>
+                    <li key={tweet.id} className="tweet-item">
+                        <img
+                            src={users[tweet.user_id]?.profile_picture || 'https://via.placeholder.com/150'}
+                            alt={`${users[tweet.user_id]?.username || 'Unknown'}'s profile`}
+                            className="profile-picture"
+                        />
+                        <div className="tweet-details">
+                            <div className="tweet-info">
+                                <span className="tweet-user">{users[tweet.user_id]?.full_name || 'Unknown'}</span>
+                                <span className="tweet-username">@{users[tweet.user_id]?.username || 'Unknown'}</span>
+                                <span className="tweet-date">{new Date(tweet.date_posted).toLocaleString()}</span>
+                            </div>
+                            <div className="tweet-content">
+                                {tweet.content}
+                            </div>
+                            <div className="tweet-actions">
+                                <button onClick={() => handleLike(tweet.id)}>
+                                    {userLikes[tweet.id] ? 'Unlike' : 'Like'} {tweet.num_likes}
+                                </button>
+                                <span><strong>Retweets:</strong> {tweet.num_retweets}</span>
+                            </div>
                         </div>
                     </li>
                 ))}
-
             </ul>
         </div>
     );

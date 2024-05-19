@@ -66,13 +66,12 @@ const Connection: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) => 
 
     return (
         <div className="connection-container">
-            <div className="followers">
-                <h3>Followers</h3>
-                <p>Total Followers: {followers && !('error' in followers) ? followers.length : 0}</p>
+            <div className="following"> 
+                <p>{following && !('error' in following) ? following.length : 0}&nbsp;Following</p>
             </div>
-            <div className="following">
-                <h3>Following</h3>
-                <p>Total Following: {following && !('error' in following) ? following.length : 0}</p>
+            &nbsp;&nbsp;
+            <div className="followers">
+                <p>{followers && !('error' in followers) ? followers.length : 0}&nbsp;Followers</p>
             </div>
         </div>
     );

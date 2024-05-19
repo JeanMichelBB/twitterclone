@@ -1,0 +1,71 @@
+/* src/components/TweetListUser/TweetListUser.css */
+.tweet-list-container {
+    max-width: 600px;
+    margin: 0 auto; /* Center the container horizontally */
+    color: #ffffff; /* White text for better readability */
+}
+
+h1 {
+    text-align: center; /* Center the title */
+}
+
+/* Individual tweet item */
+.tweet-list-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.tweet-item {
+    display: flex;
+    border-bottom: 1px solid #333; /* Add a border between tweets */
+    padding: 10px 0; /* Add space around each tweet */
+    align-items: flex-start; /* Align items at the top */
+    padding: 20px;
+}
+
+.profile-picture {
+    border-radius: 50%; /* Round profile pictures */
+    margin-right: 10px; /* Space between profile picture and text */
+    width: 50px; /* Fixed width for profile pictures */
+    height: 50px; /* Fixed height for profile pictures */
+}
+
+.tweet-details {
+    flex: 1; /* Allow details to take remaining space */
+}
+
+.tweet-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px; /* Space between info and content */
+    font-size: 0.9em;
+    color: #888; /* Lighter text color for info */
+}
+
+.tweet-user {
+    font-weight: bold; /* Make the full name bold */
+}
+
+.tweet-content {
+    font-size: 1em;
+    margin-bottom: 10px; /* Space between content and actions */
+}
+
+.tweet-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #888; /* Lighter text color for info */
+}
+
+.tweet-actions button {
+    border: none;
+    border-radius: 20px;
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: black;
+}
+
+.tweet-actions button:hover {
+    background-color: #0d8bd4; /* Darker blue on hover */
+}

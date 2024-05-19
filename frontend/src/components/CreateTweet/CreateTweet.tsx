@@ -43,19 +43,34 @@ const CreateTweet: React.FC<ProfileProps> = ({ user }) => {
 
     return (
         <div className="create-tweet">
-            <h2>Create a Tweet</h2>
+            <div className="create-tweet-header">
+            <h4></h4>
+            <h4>For you</h4>
+            <h4>Following</h4>
+            <h4>...</h4>
+            </div>
+            <div className="create-tweet-body">
+            <img src={user.profile_picture} alt="Profile" />
             <form onSubmit={handleSubmit}>
                 <div>
-                    <textarea
+                    <input
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
                         placeholder="What's happening?"
                         required
                     />
                 </div>
-                <button type="submit">Tweet</button>
+
             </form>
             {message && <p>{message}</p>}
+            </div>
+            <div className='create-tweet-footer'>
+                <p>&#9744;</p>
+                <p>&#9786;</p>
+                <p>&#9872;</p>
+                <p>&#9881;</p>
+                <button type="submit">Post</button>
+                </div>
         </div>
     );
 };

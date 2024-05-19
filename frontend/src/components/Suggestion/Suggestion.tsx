@@ -3,6 +3,7 @@ import './Suggestion.css';
 import User from '../../UserModel';
 import ConnectionButton from '../ConnectionButton/ConnectionButton';
 import { UserData } from '../../pages/Profile/Profile';
+import { Link } from 'react-router-dom';
 
 interface ProfileProps {
     user: User;
@@ -30,10 +31,14 @@ const Suggestion = ({ user }: ProfileProps) => {
     }, []);
 
     return (
-        <div>
-            <h2>Suggestions</h2>
+        <div className='suggestions'>
+            <div className='title'>Suggestions</div>
             {suggestedUsers.map((userData) => (
+                <Link to={`/${userData.username}`} key={userData.id}>
                 <div className="suggestion-container" key={userData.id}>
+                <div className='profile-image'>
+                        <img src={userData.profile_picture} alt='profile' />
+                    </div>
                     <div className="suggestion-info">
                         <h3>{userData.username}</h3>
                         <p>{userData.full_name}</p>
@@ -43,6 +48,7 @@ const Suggestion = ({ user }: ProfileProps) => {
                         <ConnectionButton currentUser={user} visitedUser={userData} />
                     </div>
                 </div>
+            </Link>
             ))}
         </div>
     );
