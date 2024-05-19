@@ -1,1 +1,81 @@
 /* src/pages/Settings/Settings.css */
+.settings-container {
+    display: flex;
+    border: solid 0.1px #000000;
+    background-color: #000000;
+    border-color: rgb(47, 51, 54);
+    height: 100vh;
+  }
+  
+  .settings-menu {
+    width: 200px;
+    border-right: 1px solid #ccc;
+    padding: 10px;
+    border: solid 0.1px #000000;
+    background-color: #000000;
+    border-color: rgb(47, 51, 54);
+    padding: 50px;
+  }
+  
+  .settings-menu ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .settings-menu li {
+    margin: 10px 0;
+    cursor: pointer;
+  }
+  
+  .settings-menu li:hover {
+    text-decoration: underline;
+  }
+  
+  .settings-form {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  .settings-form input {
+    display: block;
+    margin: 10px 0;
+    padding: 8px;
+    width: 100%;
+    max-width: 400px;
+  }
+  
+  .settings-form button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .settings-form button:hover {
+    background-color: #0056b3;
+  }
+  
+  .message {
+    color: red;
+    margin-top: 10px;
+  }
+  
+ .settings-container right-panel {
+    width: 0;
+}
+
+.selected {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arrow {
+    cursor: pointer;
+}
+
+.settings-menu h2 {
+    padding: 0;}

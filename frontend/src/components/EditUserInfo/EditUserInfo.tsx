@@ -1,4 +1,4 @@
-// src/components/EditUserInfo.tsx
+// src/components/EditUserInfo/EditUserInfo.tsx
 import React, { useState } from 'react';
 import User from '../../UserModel';
 import axios from 'axios';
@@ -14,6 +14,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
   const [location, setLocation] = useState(user.location || '');
   const [website, setWebsite] = useState(user.website || '');
   const [currentPassword, setCurrentPassword] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleUpdateUserInfo = async () => {
     try {
@@ -31,9 +32,13 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
       if (response.status === 200) {
         alert('User information updated successfully');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating user info:', error);
-      alert('An error occurred while updating user info');
+      if (error.response && error.response.status === 400) {
+        setErrorMessage('Wrong password. Please try again.');
+      } else {
+        setErrorMessage('An error occurred while updating user info');
+      }
     }
   };
 
@@ -96,6 +101,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
       />
       <br/>
       <button onClick={handleUpdateUserInfo}>Update Info</button>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
     </div>
   );
 };
