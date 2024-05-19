@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import User from '../../UserModel';
 import './TweetList.css';
+import { Link } from 'react-router-dom';
 
 type Tweet = {
     id: string;
@@ -113,17 +114,21 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
             <ul>
                 {tweets.map((tweet) => (
                     <li key={tweet.id} className="tweet-item">
-                        <img
-                            src={users[tweet.user_id]?.profile_picture || 'https://via.placeholder.com/150'}
-                            alt={`${users[tweet.user_id]?.username || 'Unknown'}'s profile`}
-                            className="profile-picture"
-                        />
+                        <Link to={`/${users[tweet.user_id]?.username}`} className="tweet-link">
+                            <img
+                                src={users[tweet.user_id]?.profile_picture || 'https://via.placeholder.com/150'}
+                                alt={`${users[tweet.user_id]?.username || 'Unknown'}'s profile`}
+                                className="profile-picture"
+                            />
+                        </Link>
                         <div className="tweet-details">
-                            <div className="tweet-info">
-                                <span className="tweet-user">{users[tweet.user_id]?.full_name || 'Unknown'}</span>
-                                <span className="tweet-username">@{users[tweet.user_id]?.username || 'Unknown'}</span>
-                                <span className="tweet-date">{new Date(tweet.date_posted).toLocaleString()}</span>
-                            </div>
+                            <Link to={`/${users[tweet.user_id]?.username}`} className="tweet-link">
+                                <div className="tweet-info">
+                                    <span className="tweet-user">{users[tweet.user_id]?.full_name || 'Unknown'}</span>
+                                    <span className="tweet-username">@{users[tweet.user_id]?.username || 'Unknown'}</span>
+                                    <span className="tweet-date">{new Date(tweet.date_posted).toLocaleString()}</span>
+                                </div>
+                            </Link>
                             <div className="tweet-content">
                                 {tweet.content}
                             </div>

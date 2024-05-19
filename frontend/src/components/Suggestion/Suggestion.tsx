@@ -18,7 +18,8 @@ const Suggestion = ({ user }: ProfileProps) => {
                 const response = await fetch('http://127.0.0.1:8000/users');
                 if (response.ok) {
                     const userData = await response.json();
-                    setSuggestedUsers(userData);
+                    shuffle(userData); // Shuffle the array
+                    setSuggestedUsers(userData.slice(0, 5)); // Slice the array to contain only the first 5 elements
                 } else {
                     console.error('Failed to fetch suggested users');
                 }
@@ -30,25 +31,33 @@ const Suggestion = ({ user }: ProfileProps) => {
         fetchSuggestedUsers();
     }, []);
 
+    // Function to shuffle an array
+    const shuffle = (array: any[]) => {
+        for (let i = array.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [array[i], array[j]] = [array[j], array[i]];
+        }
+    };
+
     return (
         <div className='suggestions'>
             <div className='title'>Suggestions</div>
             {suggestedUsers.map((userData) => (
                 <Link to={`/${userData.username}`} key={userData.id}>
-                <div className="suggestion-container" key={userData.id}>
-                <div className='profile-image'>
-                        <img src={userData.profile_picture} alt='profile' />
+                    <div className="suggestion-container" key={userData.id}>
+                        <div className='profile-image'>
+                            <img src={userData.profile_picture} alt='profile' />
+                        </div>
+                        <div className="suggestion-info">
+                            <h3>{userData.username}</h3>
+                            <p>{userData.full_name}</p>
+                            {/* You can add more user details here */}
+                        </div>
+                        <div className="suggestion-button">
+                            <ConnectionButton currentUser={user} visitedUser={userData} />
+                        </div>
                     </div>
-                    <div className="suggestion-info">
-                        <h3>{userData.username}</h3>
-                        <p>{userData.full_name}</p>
-                        {/* You can add more user details here */}
-                    </div>
-                    <div className="suggestion-button">
-                        <ConnectionButton currentUser={user} visitedUser={userData} />
-                    </div>
-                </div>
-            </Link>
+                </Link>
             ))}
         </div>
     );

@@ -7,22 +7,46 @@ from app.auth import get_password_hash  # Import the get_password_hash function
 def seed_data():
     # Create a Faker instance
     faker = Faker()
+    
+    width = 200
+    height = 200
 
     # Create a database session
     db = SessionLocal()
 
-    try:
+    try:        
+         # Create a default user
+        default_user = models.User(
+            # use faker to generate a random username
+            username="john",  # Change the default username to "default_user
+            email=faker.email(),
+            password=get_password_hash("john"),
+            full_name=faker.name(),
+            profile_picture = faker.image_url(placeholder_url="https://picsum.photos/{width}/{height}"),
+            bio=faker.sentence(),
+            location=faker.city(),
+            website=faker.url(),
+            date_joined=datetime.utcnow()
+        )
+        db.add(default_user)
+        db.commit()
+
         # Create users
         users = []
-        for i in range(1, 6):
+        num_users = 10  # Increase the number of users to 50
+        for i in range(1, num_users + 1):
+            # Generate random email and username using Faker
+            email = faker.email()
+            username = faker.user_name()
+            
             # Hash the password using the same function used in signup
             hashed_password = get_password_hash(f"password{i}")
             user = models.User(
-                username=f"user{i}",
-                email=f"user{i}@example.com",
+                username=username,
+                email=email,
                 password=hashed_password,
                 full_name=faker.name(),
-                profile_picture=faker.image_url(),  # Generate random profile picture URL
+                profile_picture=faker.image_url(placeholder_url="https://picsum.photos/{width}/{height}"), 
                 bio=faker.sentence(),  # Generate random bio
                 location=faker.city(),  # Generate random location
                 website=faker.url(),  # Generate random website URL
@@ -33,80 +57,85 @@ def seed_data():
         db.commit()  # Commit users first to ensure user IDs are available for other tables
 
         # Create tweets, followers, likes, retweets, notifications, and messages
-        for i in range(1, 6):
+        for i in range(1, num_users + 1):
             user = users[i-1]  # Get the user object from the list
 
             # Create tweets
-            tweet = models.Tweet(
-                user_id=user.id,
-                content=faker.text(),
-                date_posted=datetime.utcnow(),
-                num_likes=0,
-                num_retweets=0
-            )
-            db.add(tweet)
-            db.commit()  # Commit tweet to ensure tweet ID is available for other tables
+            num_tweets = 10  # Increase the number of tweets per user to 10
+            for _ in range(num_tweets):
+                tweet = models.Tweet(
+                    user_id=user.id,
+                    content=faker.text(),
+                    date_posted=datetime.utcnow(),
+                    num_likes=0,
+                    num_retweets=0
+                )
+                db.add(tweet)
 
             # Create followers
-            follower_user = users[(i % 5) - 1]  # Ensure each user follows the next user in a circular manner
-            follower = models.Follower(
-                user_id=user.id,
-                follower_user_id=follower_user.id
-            )
-            db.add(follower)
-            
-            # Create following
-            following_user = users[(i % 5) - 1]  # Ensure each user follows the next user in a circular manner
-            following = models.Following(
-                user_id=user.id,
-                following_user_id=following_user.id
-            )
-            db.add(following)
-
-            # Create likes
-            like_tweet = db.query(models.Tweet).filter_by(user_id=follower_user.id).first()
-            if like_tweet:
-                like = models.Like(
+            num_followers = 5  # Increase the number of followers per user to 5
+            for j in range(1, num_followers + 1):
+                follower_user = users[(i + j) % num_users]  # Ensure each user follows the next user in a circular manner
+                follower = models.Follower(
                     user_id=user.id,
-                    tweet_id=like_tweet.id,
-                    date_liked=datetime.utcnow()
+                    follower_user_id=follower_user.id
                 )
-                db.add(like)
-
-            # Create retweets
-            retweet_tweet = db.query(models.Tweet).filter_by(user_id=follower_user.id).first()
-            if retweet_tweet:
-                retweet = models.Retweet(
+                db.add(follower)
+                
+                # Create following
+                following_user = users[(i + j) % num_users]  # Ensure each user follows the next user in a circular manner
+                following = models.Following(
                     user_id=user.id,
-                    original_tweet_id=retweet_tweet.id,
-                    date_retweeted=datetime.utcnow()
+                    following_user_id=following_user.id
                 )
-                db.add(retweet)
+                db.add(following)
 
-            # Create notifications
-            notification_tweet = db.query(models.Tweet).filter_by(user_id=follower_user.id).first()
-            notification_actor_user = users[i % 5]  # Ensure each user gets a notification from the next user in a circular manner
-            if notification_tweet:
-                notification = models.Notification(
-                    user_id=user.id,
-                    notification_type="Like",
-                    actor_user_id=notification_actor_user.id,
-                    tweet_id=notification_tweet.id,
-                    date_created=datetime.utcnow(),
-                    read=False
-                )
-                db.add(notification)
+                # Create likes
+                like_tweet = db.query(models.Tweet).filter_by(user_id=follower_user.id).first()
+                if like_tweet:
+                    like = models.Like(
+                        user_id=user.id,
+                        tweet_id=like_tweet.id,
+                        date_liked=datetime.utcnow()
+                    )
+                    db.add(like)
+
+                # Create retweets
+                retweet_tweet = db.query(models.Tweet).filter_by(user_id=follower_user.id).first()
+                if retweet_tweet:
+                    retweet = models.Retweet(
+                        user_id=user.id,
+                        original_tweet_id=retweet_tweet.id,
+                        date_retweeted=datetime.utcnow()
+                    )
+                    db.add(retweet)
+
+                # Create notifications
+                notification_tweet = db.query(models.Tweet).filter_by(user_id=follower_user.id).first()
+                notification_actor_user = users[(i + j) % num_users]  # Ensure each user gets a notification from the next user in a circular manner
+                if notification_tweet:
+                    notification = models.Notification(
+                        user_id=user.id,
+                        notification_type="Like",
+                        actor_user_id=notification_actor_user.id,
+                        tweet_id=notification_tweet.id,
+                        date_created=datetime.utcnow(),
+                        read=False
+                    )
+                    db.add(notification)
 
             # Create messages
-            recipient_user = users[(i % 5)]  # Ensure each message is sent to the next user in a circular manner
-            message = models.Message(
-                sender_user_id=user.id,
-                recipient_user_id=recipient_user.id,
-                content=faker.text(),
-                date_sent=datetime.utcnow(),
-                read=False
-            )
-            db.add(message)
+            num_messages = 5  # Increase the number of messages per user to 5
+            for _ in range(num_messages):
+                recipient_user = users[(i + 1) % num_users]  # Ensure each message is sent to the next user in a circular manner
+                message = models.Message(
+                    sender_user_id=user.id,
+                    recipient_user_id=recipient_user.id,
+                    content=faker.text(),
+                    date_sent=datetime.utcnow(),
+                    read=False
+                )
+                db.add(message)
 
         # Commit changes
         db.commit()
