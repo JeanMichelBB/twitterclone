@@ -1,23 +1,98 @@
-// src/pages/Signup/Signup.tsx
-// import { Link } from 'react-router-dom';
-import { useState } from "react";
+import { useState, useEffect } from 'react';
 import axios from "axios";
 import './Signup.css';
 import { Link } from "react-router-dom";
+import User from "../../UserModel";
+import { faker } from '@faker-js/faker';
 
 const Signup = () => {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [email, setEmail] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [username, setUsername] = useState<string>("");
+  const [password, setPassword] = useState<string>("password");
+  const [email, setEmail] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("password");
+  const [error, setError] = useState<string>("");
+  const [users, setUsers] = useState<User[]>([]);
+  const [initialUsername, setInitialUsername] = useState<string>("");
+  const [initialEmail, setInitialEmail] = useState<string>("");
   const currentDate = new Date();
-  const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' '); // Trim milliseconds and remove 'T' separator
+  const formattedDate = currentDate.toISOString().slice(0, 19).replace('T', ' '); 
+
+  const generateUniqueUsername = () => {
+    const existingUsernames = users.map((user) => user.username);
+    let suggestedUsername;
+    do {
+      suggestedUsername = faker.internet.userName();
+    } while (existingUsernames.includes(suggestedUsername));
+    return suggestedUsername;
+  };
+
+  const generateUniqueEmail = () => {
+    let email = "";
+    do {
+      email = faker.internet.email();
+    } while (users.some(user => user.email === email));
+    return email;
+  };
+
+  const generateUniquePassword = () => {
+    return "password"; // Generate your password logic here
+  };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const response = await fetch('http://127.0.0.1:8000/users');
+        if (!response.ok) {
+          throw new Error('Failed to fetch users');
+        }
+        const data = await response.json();
+        setUsers(data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchUsers();
+  }, []);
+
+  useEffect(() => {
+    if (users.length > 0) {
+      const newUsername = generateUniqueUsername();
+      const newEmail = generateUniqueEmail();
+      setUsername(newUsername);
+      setInitialUsername(newUsername);
+      setEmail(newEmail);
+      setInitialEmail(newEmail);
+      const newPassword = generateUniquePassword();
+      setPassword(newPassword);
+      setConfirmPassword(newPassword);
+    }
+  }, [users]);
+
+  const isAbusive = (value: string) => {
+    // Define your abusive username or email validation logic here
+    // For example, you can check for offensive words or patterns
+    return false; // Return true if the value is abusive, false otherwise
+  };
 
   const handleSignup = async () => {
     try {
       if (password !== confirmPassword) {
         setError("Passwords do not match");
+        return;
+      }
+
+      if (isAbusive(username) || isAbusive(email)) {
+        setError("Username or email is abusive");
+        return;
+      }
+
+      if (username !== initialUsername || email !== initialEmail) {
+        setError("Invalid username or email");
+        return;
+      }
+
+      if (password !== generateUniquePassword() || confirmPassword !== generateUniquePassword()) {
+        setError("Invalid password or confirm password");
         return;
       }
 
@@ -28,9 +103,7 @@ const Signup = () => {
         date_joined: formattedDate,
       });
 
-      // Optionally handle successful signup response here
       console.log("Signup successful:", response.data);
-      // Redirect user to login page or perform any other action
       window.location.href = "/login";
     } catch (err) {
       setError("Error signing up");
@@ -46,7 +119,7 @@ const Signup = () => {
       <div className="signup-form">
         <h2>Signup</h2>
         <input
-          type="text"
+          type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -69,7 +142,9 @@ const Signup = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
         />
-        <button onClick={handleSignup}>Signup</button>
+        <button onClick={handleSignup}>
+          Signup
+        </button>
         {error && <div>{error}</div>}
         <p>Already have an account? <Link to="/login">Login</Link></p>
       </div>

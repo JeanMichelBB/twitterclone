@@ -37,3 +37,23 @@
     color: #ffffff;
     
 }
+
+.suggestions-box {
+    border: 1px solid #ccc;
+    background-color: #3a3a3a;
+    position: absolute;
+    max-height: 150px;
+    overflow-y: auto;
+    width: calc(20px 20px); /* Adjust to fit your input width */
+    z-index: 1000;
+    border-radius: 5px;
+  }
+  
+  .suggestion-item {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .suggestion-item:hover {
+    background-color: #696969;
+  }

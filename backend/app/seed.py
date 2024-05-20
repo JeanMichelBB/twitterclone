@@ -15,21 +15,6 @@ def seed_data():
     db = SessionLocal()
 
     try:        
-         # Create a default user
-        default_user = models.User(
-            # use faker to generate a random username
-            username="john",  # Change the default username to "default_user
-            email=faker.email(),
-            password=get_password_hash("john"),
-            full_name=faker.name(),
-            profile_picture = faker.image_url(placeholder_url="https://picsum.photos/{width}/{height}"),
-            bio=faker.sentence(),
-            location=faker.city(),
-            website=faker.url(),
-            date_joined=datetime.utcnow()
-        )
-        db.add(default_user)
-        db.commit()
 
         # Create users
         users = []
@@ -40,7 +25,7 @@ def seed_data():
             username = faker.user_name()
             
             # Hash the password using the same function used in signup
-            hashed_password = get_password_hash(f"password{i}")
+            hashed_password = get_password_hash("password")
             user = models.User(
                 username=username,
                 email=email,
