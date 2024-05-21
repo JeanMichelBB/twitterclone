@@ -7,6 +7,16 @@
     margin: 0 10px;
 }
 
+textarea {
+    background-color: black;
+    font-size: 16px;
+    border: none;
+    padding: 5px; /* Increase padding for better spacing */
+    width: 100%; /* Ensure textarea takes the full width */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+    color: white; /* Ensure text is visible on black background */
+}
+
 input {
     background-color: black;
     font-size: 16px;
@@ -56,3 +66,30 @@ button:hover {
     margin: 0 10px;
     border-bottom: solid 0.1px rgb(47, 51, 54);
 }
+
+.suggestions-box {
+    border: 1px solid #ccc;
+    background-color: #1e1e1e;
+    position: absolute;
+    max-height: 40px;
+    overflow-y: auto;
+    z-index: 1000;
+    border-radius: 5px;
+    list-style-type: none;
+    padding: 10px;
+  }
+  
+  .suggestions-box ul {
+    padding: 0;
+    margin: 0;
+  }
+  
+  .suggestions-box li {
+    padding: 8px;
+    cursor: pointer;
+  }
+  
+  .suggestions-box li:hover {
+    background-color: #121212;
+  }
+  

@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from faker import Faker
 from app.models import models
 from app.database import SessionLocal, engine
@@ -35,7 +35,7 @@ def seed_data():
                 bio=faker.sentence(),  # Generate random bio
                 location=faker.city(),  # Generate random location
                 website=faker.url(),  # Generate random website URL
-                date_joined=datetime.utcnow()
+                date_joined=datetime.utcnow() - timedelta(hours=4)  # Adjust date joined to 4 hours earlier
             )
             users.append(user)
             db.add(user)
@@ -51,7 +51,7 @@ def seed_data():
                 tweet = models.Tweet(
                     user_id=user.id,
                     content=faker.text(),
-                    date_posted=datetime.utcnow(),
+                    date_posted=datetime.utcnow() - timedelta(hours=4),  # Adjust date joined to 4 hours earlier,
                     num_likes=0,
                     num_retweets=0
                 )
@@ -81,7 +81,7 @@ def seed_data():
                     like = models.Like(
                         user_id=user.id,
                         tweet_id=like_tweet.id,
-                        date_liked=datetime.utcnow()
+                        date_liked=datetime.utcnow() - timedelta(hours=4)  # Adjust date joined to 4 hours earlier
                     )
                     db.add(like)
 
@@ -91,7 +91,7 @@ def seed_data():
                     retweet = models.Retweet(
                         user_id=user.id,
                         original_tweet_id=retweet_tweet.id,
-                        date_retweeted=datetime.utcnow()
+                        date_retweeted=datetime.utcnow() - timedelta(hours=4)  # Adjust date joined to 4 hours earlier
                     )
                     db.add(retweet)
 
@@ -104,7 +104,7 @@ def seed_data():
                         notification_type="Like",
                         actor_user_id=notification_actor_user.id,
                         tweet_id=notification_tweet.id,
-                        date_created=datetime.utcnow(),
+                        date_created=datetime.utcnow() - timedelta(hours=4),  # Adjust date joined to 4 hours earlier,
                         read=False
                     )
                     db.add(notification)
@@ -117,7 +117,7 @@ def seed_data():
                     sender_user_id=user.id,
                     recipient_user_id=recipient_user.id,
                     content=faker.text(),
-                    date_sent=datetime.utcnow(),
+                    date_sent=datetime.utcnow() - timedelta(hours=4), # Adjust date joined to 4 hours earlier,
                     read=False
                 )
                 db.add(message)

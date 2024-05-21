@@ -3,21 +3,25 @@ import './Home.css';
 import TweetList from '../../components/TweetList/TweetList';
 import CreateTweet from '../../components/CreateTweet/CreateTweet';
 import User from '../../UserModel';
+import React, { useState } from 'react';
 
 interface ProfileProps {
   user: User;
 }
 
 const Home: React.FC<ProfileProps> = ({ user }) => {
-  
-    return (
-      <div className='home'>
-        <CreateTweet user={user} />
-        <TweetList user={user}/>
-        
+  const [refresh, setRefresh] = useState(false);
 
-      </div>
-    );
+  const handleNewTweet = () => {
+    setRefresh(prevRefresh => !prevRefresh);
   };
-  
-  export default Home;
+
+  return (
+    <div className='home'>
+      <CreateTweet user={user} onNewTweet={handleNewTweet} />
+      <TweetList user={user} refresh={refresh} />
+    </div>
+  );
+};
+
+export default Home;

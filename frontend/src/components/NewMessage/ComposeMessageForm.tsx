@@ -2,24 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import './ComposeMessageForm.css';
 import User from '../../UserModel';
-
-interface UserData {
-  id: string;
-  username: string;
-  email: string;
-  full_name: string;
-  profile_picture: string;
-  bio: string;
-  location: string;
-  website: string;
-  date_joined: string;
-}
+import { UserData } from '../../pages/Profile/Profile';
 
 interface ComposeMessageFormProps {
   user: User;
+  refreshMessageList: (selectedUserId: string) => void;
 }
 
-const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user }) => {
+const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user, refreshMessageList }) => {
   const [username, setUsername] = useState('');
   const [suggestions, setSuggestions] = useState<UserData[]>([]);
   const [filteredSuggestions, setFilteredSuggestions] = useState<UserData[]>([]);
@@ -27,9 +17,19 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user }) => {
   const [highlightedIndex, setHighlightedIndex] = useState<number>(-1);
   const [selectedUser, setSelectedUser] = useState<UserData | null>(null);
   const [newMessage, setNewMessage] = useState<string>('');
+  const [message, setMessage] = useState<string>(''); // State to display error messages
 
   const inputRef = useRef<HTMLInputElement>(null);
   const suggestionsRef = useRef<HTMLUListElement>(null);
+  const [suggestionsMessage, setSuggestionsMessage] = useState<string>('');
+
+
+  const generateSuggestion = () => {
+    // one suggestion from faker
+    const fakeSuggestion = 'Hey, what\'s up?';
+    setSuggestionsMessage(fakeSuggestion);
+  };
+
 
   useEffect(() => {
     // Fetch users when the component mounts
@@ -47,6 +47,7 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user }) => {
       }
     };
 
+    generateSuggestion();
     fetchUsers();
   }, []);
 
@@ -68,6 +69,7 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user }) => {
     setSelectedUser(user);
     setFilteredSuggestions([]);
     setShowSuggestions(false);
+    generateSuggestion(); // Autofill textarea with a Faker sentence
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -106,20 +108,29 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user }) => {
   }, []);
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setNewMessage(e.target.value);
+    setNewMessage(suggestionsMessage);
   };
 
   const handleSendMessage = async () => {
-    if (!newMessage.trim() || !selectedUser) return; // Ignore empty messages or if no user is selected
+    if (!newMessage.trim() || !selectedUser) return; 
+    if (!suggestionsMessage.includes(newMessage)) {
+      setMessage('Please select a suggestion from the list');
+      return; // Return without sending the message
+    }
+  
     try {
       const url = `http://127.0.0.1:8000/messages?sender_id=${user.id}&recipient_id=${selectedUser.id}&content=${encodeURIComponent(newMessage)}`;
       await axios.post(url);
       setNewMessage(''); // Clear the input field after sending the message
+      refreshMessageList(selectedUser.id); // Pass the selected user's ID to the refresh function
+      setUsername(''); // Clear the search input field
     } catch (error) {
       console.error('Error sending message:', error);
       // Optionally, handle errors and display a message to the user
     }
   };
+  
+
 
   return (
     <div className="compose-message-container">
@@ -134,7 +145,7 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user }) => {
           ref={inputRef}
         />
         {showSuggestions && filteredSuggestions.length > 0 && (
-          <ul className="suggestions-list" ref={suggestionsRef}>
+          <ul className="suggestions-box" ref={suggestionsRef}>
             {filteredSuggestions.map((user, index) => (
               <li
                 key={user.id}
@@ -154,6 +165,7 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user }) => {
             value={newMessage}
             onChange={handleMessageChange}
           ></textarea>
+          <p className="error-message">{message}</p>
           <button onClick={handleSendMessage}>Send Message</button>
         </div>
       )}

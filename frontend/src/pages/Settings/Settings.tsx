@@ -93,23 +93,28 @@ const Settings: React.FC<SettingsProps> = ({ user }) => {
         {selectedSetting === 'changePassword' && (
           <div>
             <h3>Change Password</h3>
+            {/* disabled attribute is used to prevent user input */}
+            <p>The form is disabled for user input in this example</p>
             <input
               type="password"
               placeholder="Current Password"
               value={currentPassword}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setCurrentPassword(e.target.value)}
+              disabled
             />
             <input
               type="password"
               placeholder="New Password"
               value={newPassword}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setNewPassword(e.target.value)}
+              disabled
             />
             <input
               type="password"
               placeholder="Confirm New Password"
               value={confirmNewPassword}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setConfirmNewPassword(e.target.value)}
+              disabled
             />
             <button onClick={handlePasswordChange}>Change Password</button>
           </div>
@@ -118,17 +123,20 @@ const Settings: React.FC<SettingsProps> = ({ user }) => {
           <div>
             <h3>Change Username</h3>
             <p>Changing your username will log you out. You will need to log in again with your new username.</p>
+            <p>The form is disabled for user input in this example</p>
             <input
               type="text"
               placeholder="Current Username"
               value={currentUsername}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setCurrentUsername(e.target.value)}
+              disabled
             />
             <input
               type="text"
               placeholder="New Username"
               value={newUsername}
               onChange={(e: ChangeEvent<HTMLInputElement>) => setNewUsername(e.target.value)}
+              disabled
             />
             <button onClick={handleUsernameChange}>Change Username</button>
           </div>

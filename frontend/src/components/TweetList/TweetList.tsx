@@ -1,3 +1,4 @@
+// src/components/TweetList/TweetList.tsx
 import React, { useState, useEffect } from 'react';
 import User from '../../UserModel';
 import './TweetList.css';
@@ -12,11 +13,12 @@ type Tweet = {
     num_retweets: number;
 };
 
-interface ProfileProps {
+interface TweetListProps {
     user: User;
+    refresh: boolean;  // Add this line to accept the refresh prop
 }
 
-const TweetList: React.FC<ProfileProps> = ({ user }) => {
+const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
     const [tweets, setTweets] = useState<Tweet[]>([]);
     const [users, setUsers] = useState<{ [key: string]: User }>({});
     const [userLikes, setUserLikes] = useState<{ [key: string]: boolean }>({});
@@ -24,7 +26,7 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
     const handleLike = async (tweetId: string) => {
         try {
             const alreadyLiked = userLikes[tweetId];
-
+    
             if (alreadyLiked) {
                 await fetch(`http://127.0.0.1:8000/tweets/unlike?user_id=${user.id}&tweet_id=${tweetId}`, {
                     method: 'POST',
@@ -32,7 +34,18 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
                         'Accept': 'application/json'
                     }
                 });
-
+    
+                // Decrement num_likes by one
+                setTweets(prevTweets => prevTweets.map(tweet => {
+                    if (tweet.id === tweetId) {
+                        return {
+                            ...tweet,
+                            num_likes: tweet.num_likes - 1
+                        };
+                    }
+                    return tweet;
+                }));
+    
                 setUserLikes(prevUserLikes => ({
                     ...prevUserLikes,
                     [tweetId]: false
@@ -44,7 +57,18 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
                         'Accept': 'application/json'
                     }
                 });
-
+    
+                // Increment num_likes by one
+                setTweets(prevTweets => prevTweets.map(tweet => {
+                    if (tweet.id === tweetId) {
+                        return {
+                            ...tweet,
+                            num_likes: tweet.num_likes + 1
+                        };
+                    }
+                    return tweet;
+                }));
+    
                 setUserLikes(prevUserLikes => ({
                     ...prevUserLikes,
                     [tweetId]: true
@@ -54,6 +78,7 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
             console.error('Error handling like:', error);
         }
     };
+    
 
     useEffect(() => {
         const fetchTweets = async () => {
@@ -63,6 +88,7 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
                     throw new Error('Failed to fetch tweets');
                 }
                 const data = await response.json();
+                // Sort tweets by date_posted in descending order
                 const sortedTweets = data.sort((a: Tweet, b: Tweet) => new Date(b.date_posted).getTime() - new Date(a.date_posted).getTime());
                 setTweets(sortedTweets);
             } catch (error) {
@@ -107,7 +133,7 @@ const TweetList: React.FC<ProfileProps> = ({ user }) => {
         checkUserLikes();
         fetchUsers();
         fetchTweets();
-    }, []);
+    }, [refresh]);  // Add refresh to the dependency array
 
     return (
         <div className="tweet-list-container">

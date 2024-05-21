@@ -77,37 +77,60 @@ const TweetListUser: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) 
 
   const handleLike = async (tweetId: string) => {
     try {
-      const alreadyLiked = userLikes[tweetId];
+        const alreadyLiked = userLikes[tweetId];
 
-      if (alreadyLiked) {
-        await fetch(`http://127.0.0.1:8000/tweets/unlike?user_id=${currentUser.id}&tweet_id=${tweetId}`, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
+        if (alreadyLiked) {
+            await fetch(`http://127.0.0.1:8000/tweets/unlike?user_id=${currentUser.id}&tweet_id=${tweetId}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
 
-        setUserLikes(prevUserLikes => ({
-          ...prevUserLikes,
-          [tweetId]: false
-        }));
-      } else {
-        await fetch(`http://127.0.0.1:8000/tweets/like?user_id=${currentUser.id}&tweet_id=${tweetId}`, {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json'
-          }
-        });
+            // Decrement num_likes by one
+            setTweets(prevTweets => prevTweets.map(tweet => {
+                if (tweet.id === tweetId) {
+                    return {
+                        ...tweet,
+                        num_likes: tweet.num_likes - 1
+                    };
+                }
+                return tweet;
+            }));
 
-        setUserLikes(prevUserLikes => ({
-          ...prevUserLikes,
-          [tweetId]: true
-        }));
-      }
+            setUserLikes(prevUserLikes => ({
+                ...prevUserLikes,
+                [tweetId]: false
+            }));
+        } else {
+            await fetch(`http://127.0.0.1:8000/tweets/like?user_id=${currentUser.id}&tweet_id=${tweetId}`, {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json'
+                }
+            });
+
+            // Increment num_likes by one
+            setTweets(prevTweets => prevTweets.map(tweet => {
+                if (tweet.id === tweetId) {
+                    return {
+                        ...tweet,
+                        num_likes: tweet.num_likes + 1
+                    };
+                }
+                return tweet;
+            }));
+
+            setUserLikes(prevUserLikes => ({
+                ...prevUserLikes,
+                [tweetId]: true
+            }));
+        }
     } catch (error) {
-      console.error('Error handling like:', error);
+        console.error('Error handling like:', error);
     }
-  };
+};
+
 
   return (
     <div className="tweet-list-container">

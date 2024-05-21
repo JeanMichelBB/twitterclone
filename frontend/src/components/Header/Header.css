@@ -53,6 +53,10 @@ nav ul li button:hover {
     background-color: #000000;
 
 }
+
+.user-info button {
+    background-color: #ffffff;
+}
 .full_name {
     font-size: 1.2rem;
 }
@@ -78,7 +82,6 @@ nav ul li button:hover {
     width: 100%;
 }
 .logout {
-    padding: 5px 10px;
     font-size: small;
 }
 .logout-modal {
