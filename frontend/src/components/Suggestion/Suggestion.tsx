@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './Suggestion.css';
 import User from '../../UserModel';
 import ConnectionButton from '../ConnectionButton/ConnectionButton';

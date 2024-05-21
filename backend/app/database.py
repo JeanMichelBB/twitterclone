@@ -1,9 +1,11 @@
 # app/database.py
+
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from sqlalchemy_utils import database_exists, create_database
 
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://app:app@localhost/mydb"
+SQLALCHEMY_DATABASE_URL = "mysql+pymysql://app:app@mysql/mydb"
 
 # Adjust the values according to your needs
 engine = create_engine(
@@ -18,8 +20,17 @@ SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
 
+# Function to create or rebuild the database
+def create_or_rebuild_database():
+    if not database_exists(engine.url):
+        create_database(engine.url)
+        Base.metadata.create_all(bind=engine)
+    else:
+        Base.metadata.drop_all(bind=engine)
+        Base.metadata.create_all(bind=engine)
+
 # Ensure tables are created if they don't exist already
-Base.metadata.create_all(bind=engine)
+create_or_rebuild_database()
 
 # Function to get a new session
 def get_db_session():

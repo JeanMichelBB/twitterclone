@@ -67,6 +67,7 @@ const CreateTweet: React.FC<ProfileProps> = ({ user, onNewTweet }) => {
         setContent('');
         setSuggestionSelected(false);
         onNewTweet(); // Call the function passed via props to notify parent component
+        console.log(message);
       } else {
         const errorData = await response.json();
         console.error('Error data:', errorData);

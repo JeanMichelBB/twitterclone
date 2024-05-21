@@ -27,7 +27,7 @@ type ConnectionProps = {
     visitedUser: UserData;
 };
 
-const Connection: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) => {
+const Connection: React.FC<ConnectionProps> = ({ visitedUser }) => {
     const [followers, setFollowers] = useState<FollowerList>(null);
     const [following, setFollowing] = useState<FollowingList>(null);
 
@@ -52,17 +52,6 @@ const Connection: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) => 
         fetchFollowersAndFollowing();
     }, [visitedUser.id]);
 
-    // Handle follow/unfollow action
-    const handleFollow = async () => {
-        try {
-            // Perform follow/unfollow action here
-
-            // After follow/unfollow action, refresh followers and following counts
-            fetchFollowersAndFollowing();
-        } catch (error) {
-            console.error('Error following/unfollowing user:', error);
-        }
-    };
 
     return (
         <div className="connection-container">

@@ -68,21 +68,11 @@ const Signup = () => {
     }
   }, [users]);
 
-  const isAbusive = (value: string) => {
-    // Define your abusive username or email validation logic here
-    // For example, you can check for offensive words or patterns
-    return false; // Return true if the value is abusive, false otherwise
-  };
 
   const handleSignup = async () => {
     try {
       if (password !== confirmPassword) {
         setError("Passwords do not match");
-        return;
-      }
-
-      if (isAbusive(username) || isAbusive(email)) {
-        setError("Username or email is abusive");
         return;
       }
 

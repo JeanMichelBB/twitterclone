@@ -1,0 +1,23 @@
+# Stage 1: Build the React app
+FROM node:16 as build
+
+# Set the working directory
+WORKDIR /app
+
+# Copy package.json and package-lock.json
+COPY package.json package-lock.json ./
+
+# Install dependencies
+RUN npm install
+
+# Copy the rest of the application
+COPY . .
+
+# Build the React app
+RUN npm run build
+
+# Expose port 80 (or any other port you want to use)
+EXPOSE 3000
+
+# Command to serve the built React app
+CMD ["npm", "run", "dev"]

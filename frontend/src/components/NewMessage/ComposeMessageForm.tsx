@@ -107,7 +107,7 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user, refreshMe
     };
   }, []);
 
-  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const handleMessageChange = () => {
     setNewMessage(suggestionsMessage);
   };
 

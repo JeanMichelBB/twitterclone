@@ -15,7 +15,6 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
   const [website, setWebsite] = useState(user.website || '');
   const [currentPassword, setCurrentPassword] = useState('password');
   const [errorMessage, setErrorMessage] = useState('');
-  const [inputsDisabled, setInputsDisabled] = useState(false);
 
   const handleUpdateUserInfo = async () => {
     try {
@@ -53,7 +52,6 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
 
   const handleGenerateFakerData = () => {
     generateFakerData();
-    setInputsDisabled(false); // Enable input fields after generating Faker data
   };
 
   return (

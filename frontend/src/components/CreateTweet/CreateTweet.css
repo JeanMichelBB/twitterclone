@@ -12,7 +12,7 @@ textarea {
     font-size: 16px;
     border: none;
     padding: 5px; /* Increase padding for better spacing */
-    width: 100%; /* Ensure textarea takes the full width */
+    width: 100%; /* Ensuzre textarea takes the full width */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     color: white; /* Ensure text is visible on black background */
 }
@@ -22,7 +22,6 @@ input {
     font-size: 16px;
     border: none;
     padding: 5px; /* Increase padding for better spacing */
-    width: 100%; /* Ensure textarea takes the full width */
     box-sizing: border-box; /* Include padding and border in the element's total width and height */
     color: white; /* Ensure text is visible on black background */
 }
@@ -33,6 +32,13 @@ input {
     padding: 16px; /* Add padding inside the body */
     display: flex;
     align-items: center;
+}
+
+.create-tweet-body textarea {
+    resize: none; /* Disable resizing */
+    flex-grow: 1; /* Allow textarea to grow within flex container */
+    width: 400px;
+
 }
 img {
     width: 50px;
@@ -71,7 +77,7 @@ button:hover {
     border: 1px solid #ccc;
     background-color: #1e1e1e;
     position: absolute;
-    max-height: 40px;
+    max-height: 80px;
     overflow-y: auto;
     z-index: 1000;
     border-radius: 5px;

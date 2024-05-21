@@ -10,7 +10,6 @@ const Login = () => {
   const [error, setError] = useState("");
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
-  const [users, setUsers] = useState<User[]>([]);
   const [allowedUsernames, setAllowedUsernames] = useState<string[]>([]);
 
   useEffect(() => {
@@ -21,7 +20,6 @@ const Login = () => {
           throw new Error('Failed to fetch users');
         }
         const data = await response.json();
-        setUsers(data);
         const usernames = data.map((user: User) => user.username);
         setAllowedUsernames(usernames);
       } catch (error) {
@@ -80,6 +78,11 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      <div className="login-top-text">React, TypeScript, FastAPI, Python, and MySQL are used in a Twitter clone to create a comprehensive web application that combines frontend and backend technologies. Complete with features like interactions, tweet management, and user authentication.
+      </div>
+      <div className="login-top-text-2">
+      The Twitter clone's security and dependability are increased by input constraints, which protect against abuse and guarantee data integrity.
+      </div>
       <div className="login-logo">
         X
       </div>
