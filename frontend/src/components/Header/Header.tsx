@@ -53,9 +53,8 @@ const Header = ({ username, user }: HeaderProps) => {
         <button className='post'>Post</button>
         <button className="user-info" onClick={() => setShowLogoutModal(!showLogoutModal)}>
           <img className='profile_picture' src={user.profile_picture} alt="Profile" />
-          <div>
+          <div className='user-info-text'>
             <span className='full_name'>{user.full_name}</span>
-            <br />
             <span className='username'>@{username}</span>
           </div>
           <div className='logout'>...</div>

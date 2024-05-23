@@ -44,9 +44,9 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
 
   const generateFakerData = () => {
     setFullName(faker.person.fullName());
-    setProfilePicture(faker.internet.avatar());
+    setProfilePicture(faker.image.avatar());
     setBio(faker.lorem.sentences());
-    setLocation(faker.address.city());
+    setLocation(faker.location.city());
     setWebsite(faker.internet.url());
   };
 

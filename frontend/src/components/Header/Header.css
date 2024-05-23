@@ -51,7 +51,6 @@ nav ul li button:hover {
     bottom: 0;
     padding: 10px;
     background-color: #000000;
-
 }
 
 .user-info button {
@@ -105,4 +104,11 @@ nav ul li button:hover {
 .logoutButton {
     background-color: #000000;
 
+}
+
+.user-info-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
 }
