@@ -1,0 +1,27 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main  # Deploy on push to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: SSH into the server and deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no jmbberube@10.0.0.55 << 'EOF'
+            cd /project/twitterclone
+            git pull origin main  # Pull the latest changes from your GitHub repository
+            docker-compose up -d  # Or any other deployment command
+          EOF
