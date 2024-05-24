@@ -51,7 +51,7 @@ const CreateTweet: React.FC<ProfileProps> = ({ user, onNewTweet }) => {
       date_posted: datePosted
     }).toString();
 
-    const url = `http://127.0.0.1:8000/tweets?${queryParams}`;
+    const url = `http://10.0.0.55:8000/tweets?${queryParams}`;
     console.log('Request URL:', url);
 
     try {

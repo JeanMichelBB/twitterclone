@@ -28,7 +28,7 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
             const alreadyLiked = userLikes[tweetId];
     
             if (alreadyLiked) {
-                await fetch(`http://127.0.0.1:8000/tweets/unlike?user_id=${user.id}&tweet_id=${tweetId}`, {
+                await fetch(`http://10.0.0.55:8000/tweets/unlike?user_id=${user.id}&tweet_id=${tweetId}`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json'
@@ -51,7 +51,7 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
                     [tweetId]: false
                 }));
             } else {
-                await fetch(`http://127.0.0.1:8000/tweets/like?user_id=${user.id}&tweet_id=${tweetId}`, {
+                await fetch(`http://10.0.0.55:8000/tweets/like?user_id=${user.id}&tweet_id=${tweetId}`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json'
@@ -83,7 +83,7 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
     useEffect(() => {
         const fetchTweets = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/tweets');
+                const response = await fetch('http://10.0.0.55:8000/tweets');
                 if (!response.ok) {
                     throw new Error('Failed to fetch tweets');
                 }
@@ -98,7 +98,7 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
 
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/users');
+                const response = await fetch('http://10.0.0.55:8000/users');
                 if (!response.ok) {
                     throw new Error('Failed to fetch users');
                 }
@@ -115,7 +115,7 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
 
         const checkUserLikes = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/tweets/likes/${user.id}`);
+                const response = await fetch(`http://10.0.0.55:8000/tweets/likes/${user.id}`);
                 if (!response.ok) {
                     throw new Error('Failed to check user likes');
                 }

@@ -33,8 +33,8 @@ const Connection: React.FC<ConnectionProps> = ({ visitedUser }) => {
 
     const fetchFollowersAndFollowing = async () => {
         try {
-            const followersResponse = await fetch(`http://127.0.0.1:8000/followers/${visitedUser.id}`);
-            const followingResponse = await fetch(`http://127.0.0.1:8000/following/${visitedUser.id}`);
+            const followersResponse = await fetch(`http://10.0.0.55:8000/followers/${visitedUser.id}`);
+            const followingResponse = await fetch(`http://10.0.0.55:8000/following/${visitedUser.id}`);
 
             if (followersResponse.ok && followingResponse.ok) {
                 const followersData = await followersResponse.json();

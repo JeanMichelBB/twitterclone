@@ -58,7 +58,7 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
     const fetchData = async () => {
       try {
         // Fetch list of users
-        const usersResponse = await axios.get('http://127.0.0.1:8000/users');
+        const usersResponse = await axios.get('http://10.0.0.55:8000/users');
         const usersData: UserData[] = usersResponse.data;
 
         // Create a map of user IDs to usernames and full names
@@ -72,7 +72,7 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
         setUsernames(usersMap);
 
         // Fetch messages
-        const messagesResponse = await axios.get(`http://127.0.0.1:8000/messages/${user.id}`);
+        const messagesResponse = await axios.get(`http://10.0.0.55:8000/messages/${user.id}`);
         let messages: Message[] = messagesResponse.data;
 
         // Sort messages by date ascending
@@ -146,7 +146,7 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
       content: newMessage,
     }).toString();
     try {
-      const url = `http://127.0.0.1:8000/messages?${queryParams}`;
+      const url = `http://10.0.0.55:8000/messages?${queryParams}`;
       try {
         const response = await axios.post(url);
         console.log('Message sent successfully:', response.data);

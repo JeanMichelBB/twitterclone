@@ -25,7 +25,7 @@ const TweetListUser: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) 
   useEffect(() => {
     const fetchTweets = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/tweets/${visitedUser.id}`);
+        const response = await fetch(`http://10.0.0.55:8000/tweets/${visitedUser.id}`);
         if (!response.ok) {
           throw new Error('Failed to fetch tweets');
         }
@@ -38,7 +38,7 @@ const TweetListUser: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) 
 
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/users');
+        const response = await fetch('http://10.0.0.55:8000/users');
         if (!response.ok) {
           throw new Error('Failed to fetch users');
         }
@@ -55,7 +55,7 @@ const TweetListUser: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) 
 
     const checkUserLikes = async () => {
       try {
-        const response = await fetch(`http://127.0.0.1:8000/tweets/likes/${currentUser.id}`);
+        const response = await fetch(`http://10.0.0.55:8000/tweets/likes/${currentUser.id}`);
         if (!response.ok) {
           throw new Error('Failed to check user likes');
         }
@@ -80,7 +80,7 @@ const TweetListUser: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) 
         const alreadyLiked = userLikes[tweetId];
 
         if (alreadyLiked) {
-            await fetch(`http://127.0.0.1:8000/tweets/unlike?user_id=${currentUser.id}&tweet_id=${tweetId}`, {
+            await fetch(`http://10.0.0.55:8000/tweets/unlike?user_id=${currentUser.id}&tweet_id=${tweetId}`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json'
@@ -103,7 +103,7 @@ const TweetListUser: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) 
                 [tweetId]: false
             }));
         } else {
-            await fetch(`http://127.0.0.1:8000/tweets/like?user_id=${currentUser.id}&tweet_id=${tweetId}`, {
+            await fetch(`http://10.0.0.55:8000/tweets/like?user_id=${currentUser.id}&tweet_id=${tweetId}`, {
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json'

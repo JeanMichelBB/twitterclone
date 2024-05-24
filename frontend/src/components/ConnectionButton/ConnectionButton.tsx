@@ -18,7 +18,7 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
             if (!currentUser || !visitedUser) return;
             
             try {
-                const response = await fetch(`http://127.0.0.1:8000/isfollowing/${currentUser.id}?follow_id=${visitedUser.id}`);
+                const response = await fetch(`http://10.0.0.55:8000/isfollowing/${currentUser.id}?follow_id=${visitedUser.id}`);
                 if (response.ok) {
                     const data = await response.json();
                     setIsFollowing(data.following);
@@ -38,7 +38,7 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
 
         try {
             if (isFollowing) {
-                const response = await fetch(`http://127.0.0.1:8000/unfollow/${currentUser.id}?unfollow_id=${visitedUser.id}`, {
+                const response = await fetch(`http://10.0.0.55:8000/unfollow/${currentUser.id}?unfollow_id=${visitedUser.id}`, {
                     method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',
@@ -51,7 +51,7 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
                     console.error('Error unfollowing user:', response.statusText);
                 }
             } else {
-                const response = await fetch(`http://127.0.0.1:8000/follow/${currentUser.id}?follow_id=${visitedUser.id}`, {
+                const response = await fetch(`http://10.0.0.55:8000/follow/${currentUser.id}?follow_id=${visitedUser.id}`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',

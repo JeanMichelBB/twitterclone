@@ -35,7 +35,7 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user, refreshMe
     // Fetch users when the component mounts
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/users', {
+        const response = await fetch('http://10.0.0.55:8000/users', {
           headers: {
             'Accept': 'application/json'
           }
@@ -119,7 +119,7 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user, refreshMe
     }
   
     try {
-      const url = `http://127.0.0.1:8000/messages?sender_id=${user.id}&recipient_id=${selectedUser.id}&content=${encodeURIComponent(newMessage)}`;
+      const url = `http://10.0.0.55:8000/messages?sender_id=${user.id}&recipient_id=${selectedUser.id}&content=${encodeURIComponent(newMessage)}`;
       await axios.post(url);
       setNewMessage(''); // Clear the input field after sending the message
       refreshMessageList(selectedUser.id); // Pass the selected user's ID to the refresh function

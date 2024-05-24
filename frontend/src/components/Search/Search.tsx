@@ -27,7 +27,7 @@ const Search = () => {
         // Fetch users when the component mounts
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/users', {
+                const response = await fetch('http://10.0.0.55:8000/users', {
                     headers: {
                         'Accept': 'application/json'
                     }

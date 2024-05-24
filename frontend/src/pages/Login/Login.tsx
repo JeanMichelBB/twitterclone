@@ -15,7 +15,7 @@ const Login = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/users');
+        const response = await fetch('http://10.0.0.55:8000/users');
         if (!response.ok) {
           throw new Error('Failed to fetch users');
         }
@@ -61,7 +61,7 @@ const Login = () => {
     }
 
     try {
-      const response = await axios.get("http://127.0.0.1:8000/login", {
+      const response = await axios.get("http://10.0.0.55:8000/login", {
         params: { username, password },
       });
       const accessToken = response.data.access_token;

@@ -24,7 +24,7 @@ function App() {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          const response = await fetch('http://127.0.0.1:8000/protected', {
+          const response = await fetch('http://10.0.0.55:8000/protected', {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -32,7 +32,7 @@ function App() {
           if (response.ok) {
             setIsAuthenticated(true);
             // Fetch username here
-            const userDataResponse = await fetch('http://127.0.0.1:8000/userdata', {
+            const userDataResponse = await fetch('http://10.0.0.55:8000/userdata', {
               headers: {
                 Authorization: `Bearer ${token}`,
               },

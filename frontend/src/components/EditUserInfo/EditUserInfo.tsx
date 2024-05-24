@@ -18,7 +18,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
 
   const handleUpdateUserInfo = async () => {
     try {
-      const response = await axios.put(`http://127.0.0.1:8000/user/${user.id}`, null, {
+      const response = await axios.put(`http://10.0.0.55:8000/user/${user.id}`, null, {
         params: {
           current_username: user.username,
           current_password: currentPassword,

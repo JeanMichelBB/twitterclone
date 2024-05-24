@@ -38,7 +38,7 @@ const Profile = ({ logUsername, user }: ProfileProps) => {
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
-                const response = await fetch(`http://127.0.0.1:8000/profile/${username}`);
+                const response = await fetch(`http://10.0.0.55:8000/profile/${username}`);
                 if (response.ok) {
                     const data = await response.json();
                     setUserData(data);

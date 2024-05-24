@@ -41,7 +41,7 @@ const Signup = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://127.0.0.1:8000/users');
+        const response = await fetch('http://10.0.0.55:8000/users');
         if (!response.ok) {
           throw new Error('Failed to fetch users');
         }
@@ -86,7 +86,7 @@ const Signup = () => {
         return;
       }
 
-      const response = await axios.post("http://127.0.0.1:8000/signup", {
+      const response = await axios.post("http://10.0.0.55:8000/signup", {
         username,
         email,
         password,

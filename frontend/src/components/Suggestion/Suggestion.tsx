@@ -15,7 +15,7 @@ const Suggestion = ({ user }: ProfileProps) => {
     useEffect(() => {
         const fetchSuggestedUsers = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:8000/users');
+                const response = await fetch('http://10.0.0.55:8000/users');
                 if (response.ok) {
                     const userData = await response.json();
                     shuffle(userData); // Shuffle the array
