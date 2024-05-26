@@ -1,9 +1,14 @@
 from datetime import timedelta
-from fastapi import Depends, FastAPI, HTTPException, Header
+from fastapi import Depends, FastAPI, HTTPException, Header, Request, Security
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.security import OAuth2PasswordRequestForm
-from app.database import engine, Base, SessionLocal
+from fastapi.security.api_key import APIKeyHeader, APIKey
+from fastapi.openapi.models import APIKey as APIKeyModel
+from fastapi.openapi.models import APIKeyIn
+from fastapi.openapi.utils import get_openapi
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
+from app.database import engine, Base, SessionLocal
 from app.auth import ACCESS_TOKEN_EXPIRE_MINUTES, authenticate_user, create_access_token, get_current_user
 from app.user import router as signup
 from app.messages import router as messages
@@ -12,8 +17,39 @@ from app.followers import router as followers
 from app.tweets import router as tweets
 from app.seed import seed_data
 from app.models import User, Tweet, Follower, Like, Retweet, Notification, Message
+import os
+from dotenv import load_dotenv
+
+
+# Load environment variables
+load_dotenv()
+
+API_KEY = os.getenv("API_KEY")
+API_KEY_NAME = "access-token"
 
 app = FastAPI()
+
+api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
+
+def get_api_key(
+    api_key_header: str = Security(api_key_header)
+):
+    if api_key_header == API_KEY:
+        return api_key_header
+    else:
+        raise HTTPException(
+            status_code=403, detail="Could not validate credentials"
+        )
+
+@app.middleware("http")
+async def api_key_middleware(request: Request, call_next):
+    if request.url.path not in ["/docs", "/openapi.json", "/login"]:
+        api_key = request.headers.get(API_KEY_NAME)
+        if api_key != API_KEY:
+            return JSONResponse(status_code=403, content={"detail": "Could not validate credentials"})
+    
+    response = await call_next(request)
+    return response
 
 app.include_router(signup)
 app.include_router(messages)
@@ -29,6 +65,29 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title="FastAPI",
+        version="1.0.0",
+        description="API for Twitter Clone",
+        routes=app.routes,
+    )
+    api_key_security_scheme = {
+        "type": "apiKey",
+        "name": API_KEY_NAME,
+        "in": "header",
+    }
+    openapi_schema["components"]["securitySchemes"] = {
+        API_KEY_NAME: api_key_security_scheme
+    }
+    openapi_schema["security"] = [{API_KEY_NAME: []}]
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+app.openapi = custom_openapi
+
 models = {
     'User': User,
     'Tweet': Tweet,
@@ -38,7 +97,6 @@ models = {
     'Notification': Notification,
     'Message': Message
 }
-
 
 def get_db():
     db = SessionLocal()
@@ -123,4 +181,3 @@ async def get_all_users():
         }
         user_info_list.append(user_info)
     return user_info_list
-

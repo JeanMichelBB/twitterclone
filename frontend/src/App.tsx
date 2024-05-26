@@ -12,6 +12,7 @@ import NotFound from './pages/NotFound/NotFound';
 import Footer from './components/Footer/Footer';
 import User from './UserModel';
 
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);

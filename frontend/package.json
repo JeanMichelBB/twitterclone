@@ -4,11 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port 3000",
+    "dev": "vite --mode development --host 0.0.0.0 --port 3000 & npm run sv",
     "build": "tsc && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
-    
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
@@ -16,10 +15,12 @@
     "faker": "^6.6.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "sv": "^0.4.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
+    "@types/node": "^20.12.12",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
