@@ -20,51 +20,30 @@ from app.models import User, Tweet, Follower, Like, Retweet, Notification, Messa
 import os
 from dotenv import load_dotenv
 
-
-# Load environment variables
 load_dotenv()
 
 API_KEY = os.getenv("API_KEY")
-API_KEY_NAME = "access-token"
 
 app = FastAPI()
 
-api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
+api_key_header = APIKeyHeader(name="access-token", auto_error=False)
 
-def get_api_key(
-    api_key_header: str = Security(api_key_header)
-):
+def get_api_key(api_key_header: str = Security(api_key_header)):
     if api_key_header == API_KEY:
         return api_key_header
     else:
-        raise HTTPException(
-            status_code=403, detail="Could not validate credentials"
-        )
+        raise HTTPException(status_code=403, detail="Could not validate credentials")
 
 @app.middleware("http")
 async def api_key_middleware(request: Request, call_next):
     if request.url.path not in ["/docs", "/openapi.json", "/login"]:
-        api_key = request.headers.get(API_KEY_NAME)
+        api_key = request.headers.get("access-token")
         if api_key != API_KEY:
             return JSONResponse(status_code=403, content={"detail": "Could not validate credentials"})
-    
     response = await call_next(request)
     return response
 
-app.include_router(signup)
-app.include_router(messages)
-app.include_router(settings)
-app.include_router(followers)
-app.include_router(tweets)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
+# Custom OpenAPI schema
 def custom_openapi():
     if app.openapi_schema:
         return app.openapi_schema
@@ -76,27 +55,19 @@ def custom_openapi():
     )
     api_key_security_scheme = {
         "type": "apiKey",
-        "name": API_KEY_NAME,
+        "name": "access-token",
         "in": "header",
     }
     openapi_schema["components"]["securitySchemes"] = {
-        API_KEY_NAME: api_key_security_scheme
+        "access-token": api_key_security_scheme
     }
-    openapi_schema["security"] = [{API_KEY_NAME: []}]
+    openapi_schema["security"] = [{"access-token": []}]
     app.openapi_schema = openapi_schema
     return app.openapi_schema
 
 app.openapi = custom_openapi
 
-models = {
-    'User': User,
-    'Tweet': Tweet,
-    'Follower': Follower,
-    'Like': Like,
-    'Retweet': Retweet,
-    'Notification': Notification,
-    'Message': Message
-}
+
 
 def get_db():
     db = SessionLocal()
@@ -181,3 +152,27 @@ async def get_all_users():
         }
         user_info_list.append(user_info)
     return user_info_list
+
+models = {
+    'User': User,
+    'Tweet': Tweet,
+    'Follower': Follower,
+    'Like': Like,
+    'Retweet': Retweet,
+    'Notification': Notification,
+    'Message': Message
+}
+
+app.include_router(signup)
+app.include_router(messages)
+app.include_router(settings)
+app.include_router(followers)
+app.include_router(tweets)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
