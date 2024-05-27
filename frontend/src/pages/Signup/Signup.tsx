@@ -100,6 +100,9 @@ const Signup = () => {
         password,
         date_joined: formattedDate,
       });
+      if (response.status !== 200) {
+        throw new Error('Failed to signup');
+      }
 
       window.location.href = "/login";
     } catch (err) {

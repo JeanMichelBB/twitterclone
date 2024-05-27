@@ -164,7 +164,11 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
             'Accept': 'application/json',
             'access-token': apiKey,
           },
+          
       } );
+      if (response.status !== 200) {
+        throw new Error('Failed to send message');
+      }
         setRefresh(prevRefresh => !prevRefresh); // Toggle refresh state to trigger app refresh
       }
       catch (error) {

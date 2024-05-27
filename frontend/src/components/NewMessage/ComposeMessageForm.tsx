@@ -131,6 +131,9 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user, refreshMe
           content: newMessage,
         }
       });
+      if (response.status !== 200) {
+        throw new Error('Failed to send message');
+      }
       setNewMessage(''); // Clear the input field after sending the message
       refreshMessageList(selectedUser.id); // Pass the selected user's ID to the refresh function
       setUsername(''); // Clear the search input field
