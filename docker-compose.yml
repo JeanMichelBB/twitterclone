@@ -5,12 +5,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    environment:
-      - VITE_APP_API_URL=${VITE_APP_API_URL}
-      - VITE_APP_API_KEY=${VITE_APP_API_KEY}
-
     ports:
-      - "80:80"  # Map port 80 of the host to port 80 of the container
+      - "3000:3000"  # Map port 80 of the host to port 80 of the container
     depends_on:
       - backend
 
