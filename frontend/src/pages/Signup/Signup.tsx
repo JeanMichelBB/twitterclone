@@ -101,7 +101,6 @@ const Signup = () => {
         date_joined: formattedDate,
       });
 
-      console.log("Signup successful:", response.data);
       window.location.href = "/login";
     } catch (err) {
       setError("Error signing up");

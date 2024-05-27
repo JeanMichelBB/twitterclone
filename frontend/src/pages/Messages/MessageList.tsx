@@ -165,7 +165,6 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
             'access-token': apiKey,
           },
       } );
-        console.log('Message sent successfully:', response.data);
         setRefresh(prevRefresh => !prevRefresh); // Toggle refresh state to trigger app refresh
       }
       catch (error) {

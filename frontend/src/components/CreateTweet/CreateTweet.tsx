@@ -12,7 +12,6 @@ interface ProfileProps {
 
 const CreateTweet: React.FC<ProfileProps> = ({ user, onNewTweet }) => {
   const [content, setContent] = useState('');
-  const [message, setMessage] = useState('');
   const formRef = useRef<HTMLFormElement>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
@@ -42,7 +41,7 @@ const CreateTweet: React.FC<ProfileProps> = ({ user, onNewTweet }) => {
     const finalContent = suggestionSelected ? content : suggestions[0];
 
     if (finalContent !== content && !suggestions.includes(content)) {
-      setMessage('Invalid content selected');
+      
       return;
     }
 
@@ -64,20 +63,18 @@ const CreateTweet: React.FC<ProfileProps> = ({ user, onNewTweet }) => {
       });
 
       if (response.ok) {
-        setMessage('Tweet created successfully');
+        
         setContent('');
         setSuggestionSelected(false);
         onNewTweet(); // Call the function passed via props to notify parent component
-        console.log(message);
       } else {
         const errorData = await response.json();
         console.error('Error data:', errorData);
-        const detailedMessage = errorData.detail.map((err: any) => `${err.msg} (field: ${err.loc[1]})`).join(', ');
-        setMessage(detailedMessage || 'Failed to create tweet');
+        
       }
     } catch (error) {
       console.error('Error creating tweet:', error);
-      setMessage('An error occurred');
+      
     }
   };
 

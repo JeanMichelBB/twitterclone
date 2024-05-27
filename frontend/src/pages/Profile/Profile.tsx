@@ -47,7 +47,6 @@ const Profile = ({ logUsername, user }: ProfileProps) => {
                 if (response.ok) {
                     const data = await response.json();
                     setUserData(data);
-                    console.log('Profile data:', data);
                 } else {
                     // Redirect to 404 page if user not found
                     setUserData({ error: 'User not found' });

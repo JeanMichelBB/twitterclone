@@ -77,7 +77,6 @@ const Login = () => {
       const accessToken = response.data.access_token;
       // Store accessToken in localStorage or session storage
       localStorage.setItem("token", accessToken);
-      console.log("Login successful. Access Token:", accessToken);
       // Redirect user to home page
       window.location.href = "/";
     } catch (err) {
@@ -85,8 +84,6 @@ const Login = () => {
       console.error("Login error:", err);
     }
   };
-
-  console.log("API Key:", apiKey);
 
   return (
     <div className="login-container">

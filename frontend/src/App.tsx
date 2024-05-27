@@ -43,7 +43,6 @@ function App() {
             const userData = await userDataResponse.json();
             setUsername(userData.username);
             setUser(userData);
-            console.log('User data:', userData);
           }
         }
       } catch (err) {
