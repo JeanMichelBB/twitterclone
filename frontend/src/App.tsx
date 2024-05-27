@@ -11,6 +11,8 @@ import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
 import Footer from './components/Footer/Footer';
 import User from './UserModel';
+import { apiKey, apiUrl } from './api';
+import axios from 'axios';
 
 
 function App() {
@@ -25,17 +27,19 @@ function App() {
       try {
         const token = localStorage.getItem('token');
         if (token) {
-          const response = await fetch('http://10.0.0.55:8000/protected', {
+          const response = await axios.get(`${apiUrl}/protected`, {
             headers: {
+              "access-token": apiKey,
               Authorization: `Bearer ${token}`,
             },
           });
-          if (response.ok) {
-            setIsAuthenticated(true);
+          if (response.status === 200) {
+            setIsAuthenticated(true);// userdata
             // Fetch username here
-            const userDataResponse = await fetch('http://10.0.0.55:8000/userdata', {
+            const userDataResponse = await fetch(`${apiUrl}/userdata`, {
               headers: {
                 Authorization: `Bearer ${token}`,
+                "access-token": apiKey,
               },
             });
             const userData = await userDataResponse.json();

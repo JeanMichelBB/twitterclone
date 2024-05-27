@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Connection.css';
 import User from '../../UserModel';
 import { UserData } from '../../pages/Profile/Profile';
+import { apiKey, apiUrl } from '../../api';
+
 
 interface FollowerData {
     id: string;
@@ -33,8 +35,18 @@ const Connection: React.FC<ConnectionProps> = ({ visitedUser }) => {
 
     const fetchFollowersAndFollowing = async () => {
         try {
-            const followersResponse = await fetch(`http://10.0.0.55:8000/followers/${visitedUser.id}`);
-            const followingResponse = await fetch(`http://10.0.0.55:8000/following/${visitedUser.id}`);
+            const followersResponse = await fetch(`${apiUrl}/followers/${visitedUser.id}`, {
+                headers: {
+                    'access-token': apiKey,
+                },
+            }
+            );
+            const followingResponse = await fetch(`${apiUrl}/following/${visitedUser.id}`, {
+                headers: {
+                    'access-token': apiKey,
+                },
+            }
+            );
 
             if (followersResponse.ok && followingResponse.ok) {
                 const followersData = await followersResponse.json();

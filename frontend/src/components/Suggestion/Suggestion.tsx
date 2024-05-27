@@ -4,6 +4,7 @@ import User from '../../UserModel';
 import ConnectionButton from '../ConnectionButton/ConnectionButton';
 import { UserData } from '../../pages/Profile/Profile';
 import { Link } from 'react-router-dom';
+import { apiKey, apiUrl } from '../../api';
 
 interface ProfileProps {
     user: User;
@@ -15,7 +16,11 @@ const Suggestion = ({ user }: ProfileProps) => {
     useEffect(() => {
         const fetchSuggestedUsers = async () => {
             try {
-                const response = await fetch('http://10.0.0.55:8000/users');
+                const response = await fetch(`${apiUrl}/users`, {
+                    headers: {
+                        'access-token': apiKey,
+                    },
+                });
                 if (response.ok) {
                     const userData = await response.json();
                     shuffle(userData); // Shuffle the array

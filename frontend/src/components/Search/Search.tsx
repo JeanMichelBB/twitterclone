@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Search.css';
+import { apiKey, apiUrl } from '../../api';
+
 
 interface User {
     id: string;
@@ -27,9 +29,10 @@ const Search = () => {
         // Fetch users when the component mounts
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://10.0.0.55:8000/users', {
+                const response = await fetch(`${apiUrl}/users`, {
                     headers: {
-                        'Accept': 'application/json'
+                        'Accept': 'application/json',
+                        "access-token": apiKey
                     }
                 });
                 const users: User[] = await response.json();

@@ -3,6 +3,7 @@ import React, { useState, ChangeEvent } from 'react';
 import './Settings.css';
 import User from '../../UserModel';
 import EditUserInfo from '../../components/EditUserInfo/EditUserInfo';
+import { apiKey, apiUrl } from '../../api';
 
 interface SettingsProps {
   user: User;
@@ -20,12 +21,13 @@ const Settings: React.FC<SettingsProps> = ({ user }) => {
   const handlePasswordChange = async () => {
     try {
       const response = await fetch(
-        `http://10.0.0.55:8000/user/${user.id}/password?current_password=${currentPassword}&new_password=${newPassword}`,
+        `${apiUrl}/user/${user.id}/password?current_password=${currentPassword}&new_password=${newPassword}`,
         {
           method: 'PUT',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            "access-token": apiKey
           },
         }
       );
@@ -44,12 +46,13 @@ const Settings: React.FC<SettingsProps> = ({ user }) => {
   const handleUsernameChange = async () => {
     try {
       const response = await fetch(
-        `http://10.0.0.55:8000/user/${user.id}/username?current_username=${currentUsername}&new_username=${newUsername}`,
+        `${apiUrl}/user/${user.id}/username?current_username=${currentUsername}&new_username=${newUsername}`,
         {
           method: 'PUT',
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
+            "access-token": apiKey
           },
         }
       );

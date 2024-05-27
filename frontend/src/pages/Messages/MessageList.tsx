@@ -6,6 +6,7 @@ import './MessageList.css'; // Import CSS file for styling
 import ComposeMessageForm from '../../components/NewMessage/ComposeMessageForm';
 import { UserData } from '../../pages/Profile/Profile';
 import { faker } from '@faker-js/faker';
+import { apiKey, apiUrl } from '../../api';
 
 interface Message {
   id: string;
@@ -58,7 +59,12 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
     const fetchData = async () => {
       try {
         // Fetch list of users
-        const usersResponse = await axios.get('http://10.0.0.55:8000/users');
+        const usersResponse = await axios.get(`${apiUrl}/users`, {
+          headers: {
+            'Accept': 'application/json',
+            'access-token': apiKey,
+          },
+        });
         const usersData: UserData[] = usersResponse.data;
 
         // Create a map of user IDs to usernames and full names
@@ -72,7 +78,12 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
         setUsernames(usersMap);
 
         // Fetch messages
-        const messagesResponse = await axios.get(`http://10.0.0.55:8000/messages/${user.id}`);
+        const messagesResponse = await axios.get(`${apiUrl}/messages/${user.id}`, {
+          headers: {
+            'Accept': 'application/json',
+            'access-token': apiKey,
+          },
+        });
         let messages: Message[] = messagesResponse.data;
 
         // Sort messages by date ascending
@@ -146,9 +157,14 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
       content: newMessage,
     }).toString();
     try {
-      const url = `http://10.0.0.55:8000/messages?${queryParams}`;
+      const url = `${apiUrl}/messages?${queryParams}`;
       try {
-        const response = await axios.post(url);
+        const response = await axios.post(url, null, {
+          headers: {
+            'Accept': 'application/json',
+            'access-token': apiKey,
+          },
+      } );
         console.log('Message sent successfully:', response.data);
         setRefresh(prevRefresh => !prevRefresh); // Toggle refresh state to trigger app refresh
       }

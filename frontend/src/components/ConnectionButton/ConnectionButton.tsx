@@ -4,6 +4,8 @@ import React, { useState, useEffect } from 'react';
 import './ConnectionButton.css';
 import User from '../../UserModel';
 import { UserData } from '../../pages/Profile/Profile';
+import { apiKey, apiUrl } from '../../api';
+
 
 type ConnectionProps = {
     currentUser: User | null;
@@ -18,7 +20,11 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
             if (!currentUser || !visitedUser) return;
             
             try {
-                const response = await fetch(`http://10.0.0.55:8000/isfollowing/${currentUser.id}?follow_id=${visitedUser.id}`);
+                const response = await fetch(`${apiUrl}/isfollowing/${currentUser.id}?follow_id=${visitedUser.id}`, {
+                    headers: {
+                        'access-token': apiKey,
+                    },
+                });
                 if (response.ok) {
                     const data = await response.json();
                     setIsFollowing(data.following);
@@ -38,11 +44,12 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
 
         try {
             if (isFollowing) {
-                const response = await fetch(`http://10.0.0.55:8000/unfollow/${currentUser.id}?unfollow_id=${visitedUser.id}`, {
+                const response = await fetch(`${apiUrl}/unfollow/${currentUser.id}?unfollow_id=${visitedUser.id}`, {
                     method: 'DELETE',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        "access-token": apiKey
                     }
                 });
                 if (response.ok) {
@@ -51,11 +58,12 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
                     console.error('Error unfollowing user:', response.statusText);
                 }
             } else {
-                const response = await fetch(`http://10.0.0.55:8000/follow/${currentUser.id}?follow_id=${visitedUser.id}`, {
+                const response = await fetch(`${apiUrl}/follow/${currentUser.id}?follow_id=${visitedUser.id}`, {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json',
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        "access-token": apiKey,
                     }
                 });
                 if (response.ok) {

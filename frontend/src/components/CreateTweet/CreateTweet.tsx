@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './CreateTweet.css';
 import User from '../../UserModel';
 import { faker } from '@faker-js/faker';
+import { apiKey, apiUrl } from '../../api';
 
 interface ProfileProps {
   user: User;
@@ -51,13 +52,13 @@ const CreateTweet: React.FC<ProfileProps> = ({ user, onNewTweet }) => {
       date_posted: datePosted
     }).toString();
 
-    const url = `http://10.0.0.55:8000/tweets?${queryParams}`;
-    console.log('Request URL:', url);
+    const url = `${apiUrl}/tweets?${queryParams}`;
 
     try {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
+          "access-token": apiKey,
           'Accept': 'application/json'
         }
       });

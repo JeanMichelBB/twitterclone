@@ -4,6 +4,7 @@ import './Signup.css';
 import { Link } from "react-router-dom";
 import User from "../../UserModel";
 import { faker } from '@faker-js/faker';
+import { apiKey, apiUrl } from '../../api';
 
 const Signup = () => {
   const [username, setUsername] = useState<string>("");
@@ -41,7 +42,11 @@ const Signup = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await fetch('http://10.0.0.55:8000/users');
+        const response = await fetch(`${apiUrl}/users` , {
+          headers: {
+            "access-token": apiKey
+          }
+        });
         if (!response.ok) {
           throw new Error('Failed to fetch users');
         }
@@ -86,7 +91,10 @@ const Signup = () => {
         return;
       }
 
-      const response = await axios.post("http://10.0.0.55:8000/signup", {
+      const response = await axios.post(`${apiUrl}/signup`, {
+        headers: {
+          "access-token": apiKey
+        },
         username,
         email,
         password,

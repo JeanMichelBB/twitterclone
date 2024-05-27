@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import User from '../../UserModel';
 import './TweetList.css';
 import { Link } from 'react-router-dom';
+import { apiKey, apiUrl } from '../../api';
 
 type Tweet = {
     id: string;
@@ -28,9 +29,10 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
             const alreadyLiked = userLikes[tweetId];
     
             if (alreadyLiked) {
-                await fetch(`http://10.0.0.55:8000/tweets/unlike?user_id=${user.id}&tweet_id=${tweetId}`, {
+                await fetch(`${apiUrl}/tweets/unlike?user_id=${user.id}&tweet_id=${tweetId}`, {
                     method: 'POST',
                     headers: {
+                        "access-token": apiKey,
                         'Accept': 'application/json'
                     }
                 });
@@ -51,9 +53,10 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
                     [tweetId]: false
                 }));
             } else {
-                await fetch(`http://10.0.0.55:8000/tweets/like?user_id=${user.id}&tweet_id=${tweetId}`, {
+                await fetch(`${apiUrl}/tweets/like?user_id=${user.id}&tweet_id=${tweetId}`, {
                     method: 'POST',
                     headers: {
+                        "access-token": apiKey,
                         'Accept': 'application/json'
                     }
                 });
@@ -83,7 +86,11 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
     useEffect(() => {
         const fetchTweets = async () => {
             try {
-                const response = await fetch('http://10.0.0.55:8000/tweets');
+                const response = await fetch(`${apiUrl}/tweets`, {
+                    headers: {
+                        "access-token": apiKey
+                    }
+                });
                 if (!response.ok) {
                     throw new Error('Failed to fetch tweets');
                 }
@@ -98,7 +105,11 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
 
         const fetchUsers = async () => {
             try {
-                const response = await fetch('http://10.0.0.55:8000/users');
+                const response = await fetch(`${apiUrl}/users`, {
+                    headers: {
+                        "access-token": apiKey
+                    }
+                });
                 if (!response.ok) {
                     throw new Error('Failed to fetch users');
                 }
@@ -115,7 +126,11 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
 
         const checkUserLikes = async () => {
             try {
-                const response = await fetch(`http://10.0.0.55:8000/tweets/likes/${user.id}`);
+                const response = await fetch(`${apiUrl}/tweets/likes/${user.id}` , {
+                    headers: {
+                        "access-token": apiKey
+                    }
+                });
                 if (!response.ok) {
                     throw new Error('Failed to check user likes');
                 }
