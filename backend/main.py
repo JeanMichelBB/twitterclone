@@ -80,13 +80,10 @@ def get_db():
 Base.metadata.create_all(bind=engine)
 seed_data()
 
-@app.websocket("/ws")
-async def websocket_endpoint(websocket: WebSocket):
-    await websocket.accept()
-    while True:
-        data = await websocket.receive_text()
-        await websocket.send_text(f"Message text was: {data}")
-
+#get api key
+@app.get("/get_api_key")
+async def get_api_key():
+    return {"API_KEY": API_KEY}
 
 @app.get("/login")
 async def login(username: str, password: str):

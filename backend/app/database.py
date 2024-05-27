@@ -1,9 +1,14 @@
+import os
 from sqlalchemy import create_engine, event, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database
 
-SQLALCHEMY_DATABASE_URL = "mysql+pymysql://app:app@mysql/mydb"
+MYSQL_DB = os.getenv("MYSQL_DB") # localhost
+
+
+SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://app:app@mysql/mydb"
+
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,

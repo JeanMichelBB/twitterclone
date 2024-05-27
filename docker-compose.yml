@@ -5,8 +5,12 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    environment:
+      - VITE_APP_API_URL=${VITE_APP_API_URL}
+      - VITE_APP_API_KEY=${VITE_APP_API_KEY}
+
     ports:
-      - "3000:3000"  # Map port 80 of the host to port 80 of the container
+      - "80:80"  # Map port 80 of the host to port 80 of the container
     depends_on:
       - backend
 
@@ -18,6 +22,7 @@ services:
       - "8000:8000"
     environment:
       - DATABASE_URL=mysql+pymysql://app:app@mysql/mydb
+      - API_KEY=${API_KEY}
     depends_on:
       - mysql
 
