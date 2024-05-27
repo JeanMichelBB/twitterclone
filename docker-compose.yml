@@ -6,7 +6,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     ports:
-      - "80:80"  # Map port 80 of the host to port 80 of the container
+      - "3000:3000"  # Map port 80 of the host to port 80 of the container
     depends_on:
       - backend
 
