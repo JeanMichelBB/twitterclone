@@ -1,5 +1,5 @@
 from datetime import timedelta
-from fastapi import Depends, FastAPI, HTTPException, Header, Request, Security
+from fastapi import Depends, FastAPI, HTTPException, Header, Request, Security, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.security.api_key import APIKeyHeader, APIKey
 from fastapi.openapi.models import APIKey as APIKeyModel
@@ -79,6 +79,14 @@ def get_db():
 # Create tables and seed data
 Base.metadata.create_all(bind=engine)
 seed_data()
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+    await websocket.accept()
+    while True:
+        data = await websocket.receive_text()
+        await websocket.send_text(f"Message text was: {data}")
+
 
 @app.get("/login")
 async def login(username: str, password: str):

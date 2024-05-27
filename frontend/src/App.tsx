@@ -15,13 +15,15 @@ import { apiKey, apiUrl } from './api';
 import axios from 'axios';
 
 
+
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState('');
   const [user, setUser] = useState<User>({} as User);
+  const [message, setMessage] = useState('');
   
-
+console.log('message:', message);
   useEffect(() => {
     const checkAuthenticated = async () => {
       try {
@@ -58,10 +60,37 @@ function App() {
     checkAuthenticated();
   }, []);
 
+  useEffect(() => {
+    const ws = new WebSocket('ws://twitterclone.sacenpapier.synology.me/ws');
+
+    ws.onopen = () => {
+      console.log('WebSocket connection opened');
+      ws.send('Hello Server!');
+    };
+
+    ws.onmessage = (event) => {
+      console.log('Message from server:', event.data);
+      setMessage(event.data);
+    };
+
+    ws.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    ws.onerror = (error) => {
+      console.log('WebSocket error:', error);
+    };
+
+    return () => {
+      ws.close();
+    };
+  }, []);
+
   if (loading) {
     // Render loading indicator while checking authentication status
     return <div>Loading...</div>;
   }
+
 
   return (
     <BrowserRouter>
