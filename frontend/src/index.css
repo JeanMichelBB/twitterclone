@@ -19,13 +19,25 @@
   /* Hide scrollbar in Firefox */
   scrollbar-color: transparent transparent;
 
+
   /* Hide scrollbar in Chrome */
   &::-webkit-scrollbar {
     width: 0;
     background: transparent;
   }
+  
 
 
+}
+
+html {
+  height: -webkit-fill-available;
+}
+
+html.fixed {
+  overflow: hidden;
+  max-height: 100vh;
+  max-height: 100svh;
 }
 
 a {
@@ -42,10 +54,11 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 320px;
-  min-height: 100vh;
   background-color: var(--background-color);
   color: var(--color);
+  min-height: 100vh;
+  /* mobile viewport bug fix */
+  min-height: -webkit-fill-available;
 }
 
 h1 {

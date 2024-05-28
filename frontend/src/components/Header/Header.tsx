@@ -4,12 +4,14 @@ import User from '../../UserModel';
 import { useState, useEffect, useRef } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import Connection from '../Connection/Connection';
+import { IoIosSettings } from "react-icons/io";
+
+
 
 interface HeaderProps {
   username: string; 
   user: User;
 }
-
 const Header = ({ username, user }: HeaderProps) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -52,7 +54,7 @@ const Header = ({ username, user }: HeaderProps) => {
               <img className='profile_picture' src={user.profile_picture} alt="Profile" />
             </button>
             <Link to="/" className='logo'>X</Link>
-            <Link to="/settings" className='logo'>&#9881;</Link>
+            <Link to="/settings" className='logo'><IoIosSettings/></Link>
             {showMobileMenu && (
               <nav className="mobile-menu">
                 <Link to={`/${username}`} onClick={handleMenuLinkClick}>

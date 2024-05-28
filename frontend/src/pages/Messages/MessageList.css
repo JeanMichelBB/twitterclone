@@ -2,7 +2,6 @@
 
 .message-list-container {
   display: flex;
-  height: 100vh; /* Full height of the viewport */
 }
 
 .user-list {
@@ -179,7 +178,7 @@
     margin: 0;
   }
 
-  .suggestions-box {
+  .message-input-container .suggestions-box {
     display: flex;
     flex-direction: column;
     max-height: 150px;

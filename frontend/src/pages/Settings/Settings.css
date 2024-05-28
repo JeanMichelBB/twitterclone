@@ -4,7 +4,6 @@
   border: solid 0.1px #000000;
   background-color: #000000;
   border-color: rgb(47, 51, 54);
-  height: 100vh;
 }
 
 .settings-menu {
@@ -119,5 +118,5 @@
   }
 
   
-  
+
 }

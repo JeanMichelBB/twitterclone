@@ -8,7 +8,7 @@ interface TwoColumnLayoutProps {
 
 const TwoColumnLayout = ({ leftContent, rightContent }: TwoColumnLayoutProps) => {
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
+    <div style={{ display: 'flex' }}>
       <div style={{ flex: 1 }}>{leftContent}</div>
       <div style={{ flex: 1 }}>{rightContent}</div>
     </div>

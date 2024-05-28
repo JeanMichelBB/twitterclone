@@ -128,6 +128,11 @@ a {
     }
     .header-container a {
         margin: 0 10px;
+        display: flex;
+        align-items: center;
+    }
+
+    .header-container .logo {
         color: #ffffff;
     }
 
@@ -198,7 +203,6 @@ a {
         padding: 4px 4px;
         border-radius: 50px;
         cursor: pointer;
-        height: 48px;
 
     }
     .menu:hover {
@@ -215,7 +219,7 @@ a {
         left: 0;
         padding: 0 10px;
         font-size: 20px;
-        height: 100vh;
+        height: 100svh;
     }
 
     .mobile-menu ul {
@@ -251,4 +255,5 @@ a {
         align-items: flex-start;
         gap: 5px;
     }
+    
 }
