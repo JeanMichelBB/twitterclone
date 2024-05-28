@@ -8,7 +8,6 @@ import { UserData } from '../../pages/Profile/Profile';
 import { faker } from '@faker-js/faker';
 import { useMediaQuery } from 'react-responsive';
 import { apiKey, apiUrl } from '../../api';
-import { Link } from 'react-router-dom';
 
 interface Message {
   id: string;
