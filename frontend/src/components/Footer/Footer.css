@@ -1,1 +1,60 @@
 /* src/components/Footer/Footer.css */
+
+/* Add a CSS rule to change the color of FaHome icon to white */
+.footer-buttons button svg {
+    color: #fff; /* Change to white */
+}
+
+/* Rest of your existing CSS styles */
+@media (max-width: 768px) {
+    /* Styling for mobile footer buttons */
+    .footer-buttons {
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .footer-buttons button {
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        color: #000;
+        outline: none;
+        flex-grow: 1; /* Ensure buttons grow to fill available space */
+        display: flex; /* Make button contents (icon) align to center */
+        justify-content: center; /* Center button contents (icon) horizontally */
+        align-items: center; /* Center button contents (icon) vertically */
+    }
+
+    .footer-buttons button:hover {
+        color: #007bff;
+    }
+
+    /* Styling for web footer content */
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background-color: #f2f2f2;
+        border-top: 1px solid #ddd;
+    }
+
+    .footer-content .search-input {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    .footer-content .suggestion {
+        flex: 1;
+    }
+    .footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        bottom: 0;
+    }
+}

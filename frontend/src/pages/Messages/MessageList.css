@@ -153,3 +153,57 @@
 .message-input input:hover + .suggestions-box {
   display: block;
 }
+
+@media screen and (max-width: 768px) {
+  .message-list-container {
+    flex-direction: column;
+  }
+
+  .user-list {
+    width: 100%;
+  }
+
+  .message-content-container {
+    border-top: solid 0.1px #000000;
+    position: absolute;
+    top: 90px;
+    left: 0;
+    right: 0;
+    bottom: 60px;
+
+
+  }
+
+  .user-list {
+    padding: 0;
+    margin: 0;
+  }
+
+  .suggestions-box {
+    display: flex;
+    flex-direction: column;
+    max-height: 150px;
+    overflow-y: auto;
+    z-index: 1000;
+    border-radius: 5px;
+    bottom: 0;
+  }
+
+  .message-content-container .back-button {
+    padding: 10px;
+  }
+  .back-button {
+    color: #ffffff;
+    text-decoration: none;
+    background-color: #000000;
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+    align-items: left;
+
+    
+  }
+  .back-button:hover {
+    background-color: #696969;
+  }
+}

@@ -27,3 +27,14 @@
     flex: 1;
   }
   
+/* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+    .layout-container {
+        flex-direction: column;
+    }
+
+
+    .right-panel {
+        background-color: transparent; /* Remove the background color for mobile if it was set */
+    }
+}

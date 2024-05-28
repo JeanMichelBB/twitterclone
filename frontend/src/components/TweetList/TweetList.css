@@ -63,7 +63,7 @@ h1 {
     border-radius: 20px;
     padding: 5px 10px;
     cursor: pointer;
-    background-color: black;
+    background-color: rgb(0, 0, 0);
 }
 
 .tweet-actions button {

@@ -1,13 +1,9 @@
 /* src/components/NewMessage/ComposeMessageForm.css */
 
 .compose-message-container {
-    position: relative;
     margin: 0 auto;
 }
 
-.search-container {
-    position: relative;
-}
 
 .suggestions-list {
     list-style-type: none;
@@ -41,7 +37,7 @@
     margin-bottom: 10px;
     resize: none;
     border: none;
-    background-color: black;
+    background-color: rgb(0, 0, 0);
 }
 
 .message-form button {

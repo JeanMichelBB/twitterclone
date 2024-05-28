@@ -1,3 +1,4 @@
+// src/Layout.tsx
 import { ReactNode } from 'react';
 import Header from './components/Header/Header';
 import User from './UserModel';

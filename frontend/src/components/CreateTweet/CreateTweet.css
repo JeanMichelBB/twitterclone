@@ -18,7 +18,7 @@ textarea {
 }
 
 input {
-    background-color: black;
+    background-color: rgb(0, 0, 0);
     font-size: 16px;
     border: none;
     padding: 5px; /* Increase padding for better spacing */
@@ -98,4 +98,12 @@ button:hover {
   .suggestions-box li:hover {
     background-color: #121212;
   }
-  
+
+  /* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+    .create-tweet-body textarea {
+        resize: none;
+        flex-grow: 1;
+        width: 200px;
+    }
+}

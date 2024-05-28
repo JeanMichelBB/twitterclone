@@ -6,7 +6,9 @@ import './MessageList.css'; // Import CSS file for styling
 import ComposeMessageForm from '../../components/NewMessage/ComposeMessageForm';
 import { UserData } from '../../pages/Profile/Profile';
 import { faker } from '@faker-js/faker';
+import { useMediaQuery } from 'react-responsive';
 import { apiKey, apiUrl } from '../../api';
+import { Link } from 'react-router-dom';
 
 interface Message {
   id: string;
@@ -35,7 +37,8 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
   const [suggestionSelected, setSuggestionSelected] = useState(false); // State to track if a suggestion is selected
   const [message, setMessage] = useState(''); // State to display error messages
   const [refresh, setRefresh] = useState(false); // State to trigger app refresh
-
+  const [showMessageContent, setShowMessageContent] = useState(false); // State to manage message content visibility
+  const isMobile = useMediaQuery({ maxWidth: 767 });
 
   // Function to refresh the MessageList component
   const refreshMessageList = async (selectedUserId: string) => {
@@ -139,6 +142,10 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
 
   const handleUserClick = (userId: string) => {
     setSelectedUser(userId === selectedUser ? null : userId);
+    setShowMessageContent(true); // Show message content when a user is selected
+  };
+  const handleBackButtonClick = () => {
+    setShowMessageContent(false); // Hide message content when back button is clicked
   };
 
   const handleSendMessage = async () => {
@@ -164,11 +171,11 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
             'Accept': 'application/json',
             'access-token': apiKey,
           },
-          
-      } );
-      if (response.status !== 200) {
-        throw new Error('Failed to send message');
-      }
+
+        });
+        if (response.status !== 200) {
+          throw new Error('Failed to send message');
+        }
         setRefresh(prevRefresh => !prevRefresh); // Toggle refresh state to trigger app refresh
       }
       catch (error) {
@@ -190,62 +197,130 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
     setSuggestionSelected(true); // Mark a suggestion as selected
   }
 
+
   return (
-    <div className="message-list-container">
-      <div className="user-list">
-        <ComposeMessageForm user={user} refreshMessageList={refreshMessageList} />
-        <ul>
-          {filteredUsernames.map(userId => (
-            <li key={userId} onClick={() => handleUserClick(userId)} className={selectedUser === userId ? 'selected' : 'unselected'}>
-              <div>{usernames[userId].full_name} </div>
-              <div className='username'>@{usernames[userId].username}</div>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="message-content-container">
-        <div className="message-content">
-          {selectedUser && userMessages[selectedUser] ? (
+    <div>
+      {isMobile ? (
+        <div className="message-list-container">
+          <div className="user-list">
+            <ComposeMessageForm user={user} refreshMessageList={refreshMessageList} />
             <ul>
-              {userMessages[selectedUser].map(message => (
-                <li key={message.id}>
-                  <MessageProps message={message} user={user} />
+              {filteredUsernames.map(userId => (
+                <li key={userId} onClick={() => handleUserClick(userId)} className={selectedUser === userId ? 'selected' : 'unselected'}>
+                  <div>{usernames[userId].full_name} </div>
+                  <div className='username'>@{usernames[userId].username}</div>
                 </li>
               ))}
             </ul>
-          ) : (
-            <p>Select a user to view messages</p>
-          )}
+          </div>
+          {showMessageContent && (
+            <div className="message-content-container">
 
+              <button className='back-button' onClick={handleBackButtonClick}>&#8592;</button>
+              <div className="message-content">
+                {selectedUser && userMessages[selectedUser] ? (
+                  <ul>
+                    {userMessages[selectedUser].map(message => (
+                      <li key={message.id}>
+                        <MessageProps message={message} user={user} />
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p>Select a user to view messages</p>
+                )}
+
+              </div>
+              {selectedUser && (
+                <div className="message-input-container">
+                  {showSuggestions && (
+                    <div className="suggestions-box">
+                      <ul>
+                        {suggestions.map((suggestion, index) => (
+                          <li key={index} onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  <div className="message-input">
+                    <input
+                      type="text"
+                      value={newMessage}
+                      onChange={(e) => setNewMessage(e.target.value)}
+                      placeholder="Type your message..."
+                      readOnly={suggestionSelected} // Disable manual input when a suggestion is selected
+                      onFocus={() => setShowSuggestions(true)}
+                    />
+                  </div>
+                  <div className="send-button-container">
+                    <button onClick={handleSendMessage}>Send</button>
+                  </div>
+                  {message && <div className="error-message">{message}</div>}
+                </div>
+              )}
+            </div>
+          )}
         </div>
-        {selectedUser && (
-          <div className="message-input-container">
-            {showSuggestions && (
-              <div className="suggestions-box">
+      ) : (
+
+        <div className="message-list-container">
+          <div className="user-list">
+            <ComposeMessageForm user={user} refreshMessageList={refreshMessageList} />
+            <ul>
+              {filteredUsernames.map(userId => (
+                <li key={userId} onClick={() => handleUserClick(userId)} className={selectedUser === userId ? 'selected' : 'unselected'}>
+                  <div>{usernames[userId].full_name} </div>
+                  <div className='username'>@{usernames[userId].username}</div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="message-content-container">
+            <div className="message-content">
+              {selectedUser && userMessages[selectedUser] ? (
                 <ul>
-                  {suggestions.map((suggestion, index) => (
-                    <li key={index} onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</li>
+                  {userMessages[selectedUser].map(message => (
+                    <li key={message.id}>
+                      <MessageProps message={message} user={user} />
+                    </li>
                   ))}
                 </ul>
+              ) : (
+                <p>Select a user to view messages</p>
+              )}
+
+            </div>
+            {selectedUser && (
+              <div className="message-input-container">
+                {showSuggestions && (
+                  <div className="suggestions-box">
+                    <ul>
+                      {suggestions.map((suggestion, index) => (
+                        <li key={index} onClick={() => handleSuggestionClick(suggestion)}>{suggestion}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                <div className="message-input">
+                  <input
+                    type="text"
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    placeholder="Type your message..."
+                    readOnly={suggestionSelected} // Disable manual input when a suggestion is selected
+                    onFocus={() => setShowSuggestions(true)}
+                  />
+                </div>
+                <div className="send-button-container">
+                  <button onClick={handleSendMessage}>Send</button>
+                </div>
+                {message && <div className="error-message">{message}</div>}
               </div>
             )}
-            <div className="message-input">
-              <input
-                type="text"
-                value={newMessage}
-                onChange={(e) => setNewMessage(e.target.value)}
-                placeholder="Type your message..."
-                readOnly={suggestionSelected} // Disable manual input when a suggestion is selected
-                onFocus={() => setShowSuggestions(true)}
-              />
-            </div>
-            <div className="send-button-container">
-              <button onClick={handleSendMessage}>Send</button>
-            </div>
-            {message && <div className="error-message">{message}</div>}
           </div>
-        )}
-      </div>
+        </div>
+
+      )}
     </div>
   );
 };

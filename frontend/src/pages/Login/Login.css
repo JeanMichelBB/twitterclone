@@ -96,3 +96,38 @@
     text-align: center;
 
   }
+
+  /* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+  .login-container {
+      padding: 10px;
+      flex-direction: column;
+  }
+
+  .login-logo {
+      font-size: 80px;
+      margin: 0;
+      padding: 0;
+      width: auto;
+      height: auto;
+  }
+
+  .login-form {
+      width: 100%;
+      padding: 15px;
+  }
+
+  .login-top-text, .login-top-text-2 {
+      font-size: 10px;
+      padding: auto;
+      margin: auto;      
+  }
+
+  .login-top-text-2 {
+      top: 80px;
+  }
+
+  .suggestions-container {
+      width: calc(100% - 20px); /* Adjust to fit your input width on smaller screens */
+  }
+}

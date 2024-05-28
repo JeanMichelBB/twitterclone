@@ -37,3 +37,26 @@
     color: #ffffff;
     
 }
+
+.signup-form h2 {
+    margin: 0;
+}
+
+/* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+    .signup-container {
+        padding: 10px;
+        flex-direction: column;
+    }
+
+    .signup-logo {
+        font-size: 80px;
+        width: auto;
+        height: auto;
+    }
+
+    .signup-form {
+        width: 100%;
+        padding: 15px;
+    }
+}

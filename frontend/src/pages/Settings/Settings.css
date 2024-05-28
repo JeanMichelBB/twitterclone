@@ -8,7 +8,6 @@
 }
 
 .settings-menu {
-  width: 200px;
   border-right: 1px solid #ccc;
   padding: 10px;
   border: solid 0.1px #000000;
@@ -81,4 +80,44 @@
 
 .settings-menu h2 {
   padding: 0;
+}
+
+@media screen and (max-width: 768px){
+  .settings-container {
+    flex-direction: column;
+  }
+
+  .settings-menu {
+    border-right: none;
+    border-bottom: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  .settings-form {
+    padding: 10px;
+  }
+
+  .settings-form input {
+    padding: 8px;
+  }
+
+  .settings-form button {
+    padding: 10px 20px;
+  }
+
+  .settings-menu ul {
+    margin: auto;
+    padding: 0;
+  }
+
+  .settings-menu li {
+    margin: 0;
+  }
+
+  .settings-menu li:hover {
+    text-decoration: none;
+  }
+
+  
+  
 }

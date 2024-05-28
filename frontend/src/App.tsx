@@ -10,8 +10,10 @@ import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
 import Footer from './components/Footer/Footer';
+import Search from './components/Search/Search';
 import User from './UserModel';
 import { apiKey, apiUrl } from './api';
+import { useMediaQuery } from 'react-responsive';
 import axios from 'axios';
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState('');
   const [user, setUser] = useState<User>({} as User);
+  const isMobile = useMediaQuery({ maxWidth: 767 });
+
 
   useEffect(() => {
     const checkAuthenticated = async () => {
@@ -86,31 +90,46 @@ function App() {
                     />
                   }
                 />
-                <Route 
-                path="/messages"
-                 element={ 
-                  <Layout
-                  username={username}
-                  user={user}
-                  leftChild={<MessageList user={user} />} // Render MessageList component in the left section
-                  // Empty div in the right section
-                  rightChild={<div></div>}
-                  />
-                }
+                <Route
+                  path="/messages"
+                  element={
+                    <Layout
+                      username={username}
+                      user={user}
+                      leftChild={<MessageList user={user} />} // Render MessageList component in the left section
+                      // Empty div in the right section
+                      rightChild={
+                        <div>
+                          {isMobile ? (
+                          <Footer user={user} />
+                        ) : (
+                          <div></div>
+                        )}
+                        </div>
+                      }
+                    />
+                  }
                 />
 
-                <Route 
-                  path="/settings" 
-                    element={ 
-                      <Layout
+                <Route
+                  path="/settings"
+                  element={
+                    <Layout
                       username={username}
                       user={user}
                       leftChild={<Settings user={user} />} // Corrected to pass user prop as lowercase
-                      rightChild={<div></div>} // Empty div in the right section
-                      />
-                    }
+                      rightChild={<div>
+                        {isMobile ? (
+                        <Footer user={user} />
+                      ) : (
+                        <div></div>
+                      )}
+                      </div>
+                      } // Empty div in the right section
+                    />
+                  }
                 />
-                   
+
                 <Route
                   path="/:username"
                   element={
@@ -118,6 +137,17 @@ function App() {
                       username={username}
                       user={user}
                       leftChild={<Profile logUsername={username} user={user} />} // Render Profile component in the left section
+                      rightChild={<Footer user={user} />} // Empty div in the right section
+                    />
+                  }
+                />
+                <Route
+                  path="search"
+                  element={
+                    <Layout
+                      username={username}
+                      user={user}
+                      leftChild={<Search />} // Render Search component in the left section
                       rightChild={<Footer user={user} />} // Empty div in the right section
                     />
                   }
