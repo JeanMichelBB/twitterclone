@@ -1,14 +1,14 @@
 import os
+import time
+
 from sqlalchemy import create_engine, event, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database
+from sqlalchemy.exc import OperationalError
 
 MYSQL_DB = os.getenv("MYSQL_DB") # localhost
-
-
 SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://app:app@mysql/mydb"
-
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
@@ -20,6 +20,23 @@ engine = create_engine(
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
+
+def wait_for_db():
+    max_retries = 10
+    retry_interval = 5
+    for _ in range(max_retries):
+        try:
+            # Try to connect to the database
+            with engine.connect() as connection:
+                print("Database is up and running!")
+                return
+        except OperationalError:
+            print("Database not ready, retrying...")
+            time.sleep(retry_interval)
+    raise Exception("Could not connect to the database after several retries")
+
+# Wait for the database before creating or rebuilding it
+wait_for_db()
 
 def create_or_rebuild_database():
     if not database_exists(engine.url):
