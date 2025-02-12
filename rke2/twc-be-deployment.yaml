@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twc-be
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twc-be
+  template:
+    metadata:
+      labels:
+        app: twc-be
+    spec:
+      containers:
+        - name: twc-be
+          image: jeanmichelbb/twc-be:latest # Replace with your Docker Hub image
+          ports:
+            - containerPort: 8000
+          env:
+            - name: DATABASE_URL
+              value: "mysql+pymysql://app:app@mysql/mydb"
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: api-key-secret
+                  key: api_key

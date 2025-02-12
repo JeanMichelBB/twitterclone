@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twc-fe
+spec:
+  replicas: 2  # Adjust based on your needs
+  selector:
+    matchLabels:
+      app: twc-fe
+  template:
+    metadata:
+      labels:
+        app: twc-fe
+    spec:
+      containers:
+      - name: twc-fe
+        image: jeanmichelbb/twc-fe
+        ports:
+        - containerPort: 80  # Assuming your app uses port 80
+        env:
+        - name: VITE_APP_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets  # Name of the Secret
+              key: VITE_APP_API_KEY  # Key in the Secret
+        - name: VITE_APP_API_URL
+          valueFrom:
+            secretKeyRef:
+              name: app-secrets  # Name of the Secret
+              key: VITE_APP_API_URL  # Key in the Secret
