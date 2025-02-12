@@ -12,7 +12,8 @@
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
     "axios": "^1.6.8",
-    "faker": "^6.6.6",
+    "esbuild": "^0.25.0",
+    "faker": "^5.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.2.1",
