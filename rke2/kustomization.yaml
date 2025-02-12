@@ -1,0 +1,8 @@
+resources:
+  - namespace.yaml   # <-- This ensures the namespace exists before deploying other resources
+  - twc-fe-service.yaml
+  - twc-fe-deployment.yaml
+  - twc-fe-secrets.yaml
+  - twc-be-deployment.yaml
+  - twc-be-service.yaml
+  - twc-fe-secrets.yaml

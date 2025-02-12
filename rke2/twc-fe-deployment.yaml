@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: twc-fe
+  namespace: twitterclone  # <--- Add this line
 spec:
   replicas: 2  # Adjust based on your needs
   selector:
