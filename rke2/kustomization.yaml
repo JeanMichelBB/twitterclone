@@ -7,4 +7,5 @@ resources:
   - twc-fe-secrets.yaml
   - twc-be-deployment.yaml
   - twc-be-service.yaml
+  - twc-be-secrets.yaml
 namespace: twitterclone
