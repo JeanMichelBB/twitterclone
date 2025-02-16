@@ -14,8 +14,8 @@ declare global {
 }
 
 // Safely access environment variables
-let apiKey: string | undefined;
-let apiUrl: string | undefined;
+let apiKey: string;
+let apiUrl: string;
 
 // First check if `import.meta.env` is available (for Vite environments)
 if (import.meta.env.VITE_APP_API_KEY && import.meta.env.VITE_APP_API_URL) {
