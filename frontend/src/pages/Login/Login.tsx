@@ -5,8 +5,6 @@ import { Link } from "react-router-dom";
 import User from "../../UserModel";
 import { apiKey, apiUrl } from '../../api';
 
-
-
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -14,8 +12,8 @@ const Login = () => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredSuggestions, setFilteredSuggestions] = useState<string[]>([]);
   const [allowedUsernames, setAllowedUsernames] = useState<string[]>([]);
-
-  useEffect(() => {
+  
+      useEffect(() => {
     const fetchUsers = async () => {
       try {
         const response: AxiosResponse<User[]> = await axios.get(`${apiUrl}/users`, {
