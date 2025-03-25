@@ -36,11 +36,21 @@ def get_api_key(api_key_header: str = Security(api_key_header)):
 
 @app.middleware("http")
 async def api_key_middleware(request: Request, call_next):
+    allowed_iframe_origin = "https://jeanmichelbb.github.io"
+
+    # Check for API key authentication, except for specific routes
     if request.url.path not in ["/docs", "/openapi.json", "/login"]:
         api_key = request.headers.get("access-token")
         if api_key != API_KEY:
+            print(f"Unauthorized access attempt from {request.client.host}")
             return JSONResponse(status_code=403, content={"detail": "Could not validate credentials"})
+
     response = await call_next(request)
+
+    # Allow iframe embedding only from your portfolio
+    response.headers["X-Frame-Options"] = f"ALLOW-FROM {allowed_iframe_origin}"
+    response.headers["Content-Security-Policy"] = f"frame-ancestors {allowed_iframe_origin};"
+
     return response
 
 # Custom OpenAPI schema
@@ -176,7 +186,10 @@ app.include_router(tweets)
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://twitterclone.sacenpapier.org"],
+    allow_origins=[
+        "https://twitterclone.sacenpapier.org"
+        "https://jeanmichelbb.github.io"
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
