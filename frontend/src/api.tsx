@@ -1,2 +1,2 @@
-export const apiKey = import.meta.env.VITE_APP_API_KEY;
-export const apiUrl = import.meta.env.VITE_APP_API_URL;
+export const apiKey = 'ae1b2c3d4e';
+export const apiUrl = 'https://twittercloneapi.sacenpapier.org';
