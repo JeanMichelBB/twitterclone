@@ -187,7 +187,7 @@ app.include_router(tweets)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://twitterclone.sacenpapier.org"
+        "https://twitterclone.sacenpapier.org",
         "https://jeanmichelbb.github.io"
     ],
     allow_credentials=True,
