@@ -16,7 +16,11 @@ from app.models import User, Tweet, Follower, Like, Retweet, Notification, Messa
 
 app = FastAPI()
 
-PUBLIC_PATHS = ["/docs", "/openapi.json", "/login", "/users", "/signup"]
+PUBLIC_PATHS = ["/docs", "/openapi.json", "/login", "/users", "/signup", "/health"]
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
 
 @app.middleware("http")
 async def auth_middleware(request: Request, call_next):
@@ -49,8 +53,6 @@ def get_db():
     finally:
         db.close()
 
-# Create tables and seed data
-Base.metadata.create_all(bind=engine)
 seed_data()
 
 @app.get("/login")
