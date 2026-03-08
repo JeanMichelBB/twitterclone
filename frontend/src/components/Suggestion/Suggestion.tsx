@@ -4,7 +4,7 @@ import User from '../../UserModel';
 import ConnectionButton from '../ConnectionButton/ConnectionButton';
 import { UserData } from '../../pages/Profile/Profile';
 import { Link } from 'react-router-dom';
-import { apiKey, apiUrl } from '../../api';
+import { apiUrl, getAuthHeader } from '../../api';
 
 interface ProfileProps {
     user: User;
@@ -17,9 +17,7 @@ const Suggestion = ({ user }: ProfileProps) => {
         const fetchSuggestedUsers = async () => {
             try {
                 const response = await fetch(`${apiUrl}/users`, {
-                    headers: {
-                        'access-token': apiKey,
-                    },
+                    headers: { ...getAuthHeader() },
                 });
                 if (response.ok) {
                     const userData = await response.json();

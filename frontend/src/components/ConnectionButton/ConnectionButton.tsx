@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import './ConnectionButton.css';
 import User from '../../UserModel';
 import { UserData } from '../../pages/Profile/Profile';
-import { apiKey, apiUrl } from '../../api';
+import { apiUrl, getAuthHeader } from '../../api';
 
 
 type ConnectionProps = {
@@ -21,9 +21,7 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
             
             try {
                 const response = await fetch(`${apiUrl}/isfollowing/${currentUser.id}?follow_id=${visitedUser.id}`, {
-                    headers: {
-                        'access-token': apiKey,
-                    },
+                    headers: { ...getAuthHeader() },
                 });
                 if (response.ok) {
                     const data = await response.json();
@@ -49,7 +47,7 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        "access-token": apiKey
+                        ...getAuthHeader()
                     }
                 });
                 if (response.ok) {
@@ -63,7 +61,7 @@ const ConnectionButton: React.FC<ConnectionProps> = ({ currentUser, visitedUser 
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        "access-token": apiKey,
+                        ...getAuthHeader()
                     }
                 });
                 if (response.ok) {

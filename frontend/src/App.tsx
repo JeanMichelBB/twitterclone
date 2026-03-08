@@ -12,7 +12,7 @@ import NotFound from './pages/NotFound/NotFound';
 import Footer from './components/Footer/Footer';
 import Search from './components/Search/Search';
 import User from './UserModel';
-import { apiKey, apiUrl } from './api';
+import { apiUrl, getAuthHeader } from './api';
 import { useMediaQuery } from 'react-responsive';
 import axios from 'axios';
 
@@ -30,19 +30,13 @@ function App() {
         const token = localStorage.getItem('token');
         if (token) {
           const response = await axios.get(`${apiUrl}/protected`, {
-            headers: {
-              "access-token": apiKey,
-              Authorization: `Bearer ${token}`,
-            },
+            headers: { ...getAuthHeader() },
           });
           if (response.status === 200) {
             setIsAuthenticated(true);// userdata
             // Fetch username here
             const userDataResponse = await fetch(`${apiUrl}/userdata`, {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "access-token": apiKey,
-              },
+              headers: { ...getAuthHeader() },
             });
             const userData = await userDataResponse.json();
             setUsername(userData.username);

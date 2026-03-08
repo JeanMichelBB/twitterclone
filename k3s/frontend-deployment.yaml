@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twitterclone-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: twitterclone-frontend
+  template:
+    metadata:
+      labels:
+        app: twitterclone-frontend
+    spec:
+      containers:
+        - name: twitterclone-frontend
+          image: jeanmichelbb/twc-frontend:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: twitterclone-frontend
+spec:
+  selector:
+    app: twitterclone-frontend
+  ports:
+    - port: 3000
+      targetPort: 3000

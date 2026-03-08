@@ -7,7 +7,7 @@ import ConnectionButton from '../../components/ConnectionButton/ConnectionButton
 import { Link } from 'react-router-dom';
 import TweetListUser from '../../components/TweetListUser/TweetListUser';
 import './Profile.css';
-import { apiKey, apiUrl } from '../../api';
+import { apiUrl, getAuthHeader } from '../../api';
 
 export interface UserData {
     id: string;
@@ -39,10 +39,8 @@ const Profile = ({ logUsername, user }: ProfileProps) => {
     useEffect(() => {
         const fetchProfileData = async () => {
             try {
-                const response = await fetch(`${apiUrl}/profile/${username}` , {
-                    headers: {
-                        'access-token': apiKey,
-                    },
+                const response = await fetch(`${apiUrl}/profile/${username}`, {
+                    headers: { ...getAuthHeader() },
                 });
                 if (response.ok) {
                     const data = await response.json();

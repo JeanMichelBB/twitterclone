@@ -7,7 +7,7 @@ import ComposeMessageForm from '../../components/NewMessage/ComposeMessageForm';
 import { UserData } from '../../pages/Profile/Profile';
 import { faker } from '@faker-js/faker';
 import { useMediaQuery } from 'react-responsive';
-import { apiKey, apiUrl } from '../../api';
+import { apiUrl, getAuthHeader } from '../../api';
 
 interface Message {
   id: string;
@@ -64,7 +64,7 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
         const usersResponse = await axios.get(`${apiUrl}/users`, {
           headers: {
             'Accept': 'application/json',
-            'access-token': apiKey,
+            ...getAuthHeader(),
           },
         });
         const usersData: UserData[] = usersResponse.data;
@@ -83,7 +83,7 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
         const messagesResponse = await axios.get(`${apiUrl}/messages/${user.id}`, {
           headers: {
             'Accept': 'application/json',
-            'access-token': apiKey,
+            ...getAuthHeader(),
           },
         });
         let messages: Message[] = messagesResponse.data;
@@ -168,9 +168,8 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
         const response = await axios.post(url, null, {
           headers: {
             'Accept': 'application/json',
-            'access-token': apiKey,
+            ...getAuthHeader(),
           },
-
         });
         if (response.status !== 200) {
           throw new Error('Failed to send message');

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './Search.css';
-import { apiKey, apiUrl } from '../../api';
+import { apiUrl, getAuthHeader } from '../../api';
 
 
 interface User {
@@ -32,7 +32,7 @@ const Search = () => {
                 const response = await fetch(`${apiUrl}/users`, {
                     headers: {
                         'Accept': 'application/json',
-                        "access-token": apiKey
+                        ...getAuthHeader()
                     }
                 });
                 const users: User[] = await response.json();

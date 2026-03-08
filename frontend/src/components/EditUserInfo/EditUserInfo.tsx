@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import User from '../../UserModel';
 import axios from 'axios';
 import { faker } from '@faker-js/faker';
-import { apiKey, apiUrl } from '../../api';
+import { apiUrl, getAuthHeader } from '../../api';
 
 
 interface EditUserInfoProps {
@@ -21,9 +21,7 @@ const EditUserInfo: React.FC<EditUserInfoProps> = ({ user }) => {
   const handleUpdateUserInfo = async () => {
     try {
       const response = await axios.put(`${apiUrl}/user/${user.id}`, null, {
-        headers: {
-          'access-token': apiKey,
-        },
+        headers: { ...getAuthHeader() },
         params: {
           current_username: user.username,
           current_password: currentPassword,

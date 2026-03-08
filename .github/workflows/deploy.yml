@@ -1,41 +1,82 @@
-name: Deploy to Server
+name: Build and Push Docker Images
 
 on:
   push:
     branches:
-      - main 
+      - main
+    paths:
+      - "frontend/**"
+      - "backend/**"
+      - ".github/workflows/deploy.yml"
 
 jobs:
-  deploy:
+  build-frontend:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4.2.2
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3.7.1
+        uses: docker/setup-buildx-action@v3
 
       - name: Log in to Docker Hub
-        uses: docker/login-action@v3.1.0
+        uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Build and push Backend Docker image
-        uses: docker/build-push-action@v5.3.0
-        with:
-          context: ./backend
-          file: ./backend/Dockerfile
-          push: true
-          tags: |
-            jeanmichelbb/twc-be:latest
-
-      - name: Build and push Frontend Docker image
-        uses: docker/build-push-action@v5.3.0
+      - name: Build and push frontend image
+        uses: docker/build-push-action@v6
         with:
           context: ./frontend
-          file: ./frontend/Dockerfile
+          platforms: linux/amd64,linux/arm64
           push: true
-          tags: |
-            jeanmichelbb/twc-fe:latest
+          tags: jeanmichelbb/twc-frontend:latest
+          build-args: VITE_API_URL=${{ secrets.VITE_API_URL }}
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
+
+      - name: Deploy frontend to k3s
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo kubectl rollout restart deployment/twitterclone-frontend
+            sudo kubectl rollout status deployment/twitterclone-frontend --timeout=120s
+
+  build-backend:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+
+      - name: Build and push backend image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./backend
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: jeanmichelbb/twc-backend:latest
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,mode=max,scope=backend
+
+      - name: Deploy backend to k3s
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo kubectl rollout restart deployment/twitterclone-backend
+            sudo kubectl rollout status deployment/twitterclone-backend --timeout=120s

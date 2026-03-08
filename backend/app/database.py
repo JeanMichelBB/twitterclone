@@ -1,42 +1,86 @@
 import os
+import pathlib
+import subprocess
 import time
 
+from dotenv import load_dotenv
 from sqlalchemy import create_engine, event, text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy_utils import database_exists, create_database
 from sqlalchemy.exc import OperationalError
 
-MYSQL_DB = os.getenv("MYSQL_DB") # localhost
-SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://app:app@mysql/mydb"
+load_dotenv(pathlib.Path(__file__).parents[1] / ".env")
+
+MYSQL_DB = os.getenv("MYSQL_DB", "mysql")
+MYSQL_USER = os.getenv("MYSQL_USER", "app")
+MYSQL_PASSWORD = os.getenv("MYSQL_PASSWORD", "app")
+MYSQL_ROOT_PASSWORD = os.getenv("MYSQL_ROOT_PASSWORD", "root")
+SQLALCHEMY_DATABASE_URL = f"mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_DB}/twitter_db"
+
+
+def run_dev_sh():
+    """Start MySQL via dev.sh (local dev only)."""
+    dev_script = pathlib.Path(__file__).parents[1] / "dev.sh"
+    if dev_script.exists():
+        print("Running dev.sh to start MySQL...")
+        subprocess.run(["bash", str(dev_script)], check=False)
+
+
+def provision_mysql():
+    """Create the app user and database using the root account."""
+    import pymysql
+    try:
+        conn = pymysql.connect(host=MYSQL_DB, user="root", password=MYSQL_ROOT_PASSWORD)
+        with conn.cursor() as cur:
+            cur.execute("CREATE DATABASE IF NOT EXISTS twitter_db")
+            cur.execute(
+                f"CREATE USER IF NOT EXISTS '{MYSQL_USER}'@'%' IDENTIFIED BY '{MYSQL_PASSWORD}'"
+            )
+            cur.execute(
+                f"GRANT ALL PRIVILEGES ON twitter_db.* TO '{MYSQL_USER}'@'%'"
+            )
+            cur.execute("FLUSH PRIVILEGES")
+        conn.close()
+        print(f"Provisioned user '{MYSQL_USER}' and database 'twitter_db'.")
+    except Exception as e:
+        print(f"WARNING: Could not provision MySQL user/db: {e}")
+
+
+run_dev_sh()
+provision_mysql()
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
     pool_size=20,
     max_overflow=40,
     pool_timeout=10,
-    pool_recycle=1800
+    pool_recycle=1800,
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
-def wait_for_db():
-    max_retries = 10
-    retry_interval = 5
-    for _ in range(max_retries):
-        try:
-            # Try to connect to the database
-            with engine.connect() as connection:
-                print("Database is up and running!")
-                return
-        except OperationalError:
-            print("Database not ready, retrying...")
-            time.sleep(retry_interval)
-    raise Exception("Could not connect to the database after several retries")
 
-# Wait for the database before creating or rebuilding it
+def wait_for_db():
+    max_retries = 3
+    retry_interval = 2
+    for attempt in range(1, max_retries + 1):
+        try:
+            with engine.connect() as connection:
+                print(f"Database is up and running! (host={MYSQL_DB})")
+                return
+        except OperationalError as e:
+            if attempt < max_retries:
+                print(f"DB not ready (attempt {attempt}/{max_retries}, host={MYSQL_DB}): {e}. Retrying in {retry_interval}s...")
+                time.sleep(retry_interval)
+            else:
+                print(f"ERROR: Could not connect to database at '{MYSQL_DB}' after {max_retries} attempts. Is MySQL running?")
+                raise SystemExit(1)
+
+
 wait_for_db()
+
 
 def create_or_rebuild_database():
     if not database_exists(engine.url):
@@ -45,6 +89,7 @@ def create_or_rebuild_database():
     else:
         Base.metadata.drop_all(bind=engine)
         Base.metadata.create_all(bind=engine)
+
 
 create_or_rebuild_database()
 

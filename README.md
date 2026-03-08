@@ -1,6 +1,6 @@
 # Twitter Clone
 
-This repository contains the code for a Twitter clone application built with a full-stack approach using React, Vite, TypeScript, FastAPI, and MySQL. The application allows users to post tweets, follow other users, send messages, and more. The deployed application can be found [here](https://twitterclone.sacenpapier.synology.me/).
+A Twitter clone built with React, Vite, TypeScript, FastAPI, and MySQL. Users can post tweets, follow others, send direct messages, and more. Live at [twitterclone.sacenpapier.org](https://twitterclone.sacenpapier.org).
 
 ![image](header.png)
 
@@ -15,32 +15,30 @@ This repository contains the code for a Twitter clone application built with a f
 - [Folder Structure](#folder-structure)
 - [Environment Variables](#environment-variables)
 - [Deployment](#deployment)
-- [Contributing](#contributing)
-- [License](#license)
+- [Personal Information](#personal-information)
 
 ## Features
 
-- User authentication and authorization
+- User authentication and authorization (JWT)
 - Tweet creation, deletion, and liking
+- Retweets and notifications
 - Follow and unfollow users
 - Send and receive direct messages
 - Responsive design for mobile and desktop
 
 ## Tech Stack
 
-- **Frontend**: React, Vite, TypeScript
-- **Backend**: FastAPI
-- **Database**: MySQL
-- **Deployment**: Docker, Nginx
+- **Frontend**: React, Vite, TypeScript, Nginx (port 3000)
+- **Backend**: FastAPI, Uvicorn (port 8000)
+- **Database**: MySQL 8
+- **Deployment**: Docker, k3s (Kubernetes), Traefik, Cloudflare
 
 ## Getting Started
 
 ### Prerequisites
 
-Before you begin, ensure you have the following installed:
-
 - [Node.js](https://nodejs.org/en/download/)
-- [Python](https://www.python.org/downloads/)
+- [Python 3.10+](https://www.python.org/downloads/)
 - [MySQL](https://dev.mysql.com/downloads/mysql/)
 - [Docker](https://www.docker.com/products/docker-desktop)
 
@@ -55,128 +53,144 @@ cd twitterclone
 
 2. **Backend Setup:**
 
-   - Navigate to the `backend` directory:
-   ```bash
-   cd backend
-   ```
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+pip install -r requirements.txt
+```
 
-   - Create a virtual environment and activate it:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows use `venv\Scripts\activate`
-   ```
+Create a `.env` file in the `backend/` directory (see [Environment Variables](#environment-variables)).
 
-   - Install the required packages:
-   ```bash
-   pip install -r requirements.txt
-   ```
+Start the FastAPI server:
 
-   - Run the database migrations:
-   ```bash
-   alembic upgrade head
-   ```
-
-   - Start the FastAPI server:
-   ```bash
-   uvicorn main:app --reload
-   ```
+```bash
+uvicorn main:app --reload --port 8000
+```
 
 3. **Frontend Setup:**
 
-   - Navigate to the `frontend` directory:
-   ```bash
-   cd ../frontend
-   ```
-
-   - Install the dependencies:
-   ```bash
-   npm install
-   ```
-
-   - Start the development server:
-   ```bash
-   npm run dev
-   ```
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
 ### Running the Application
 
-1. **Backend:**
-   - The FastAPI backend will be running at `http://localhost:8000`.
-
-2. **Frontend:**
-   - The React frontend will be running at `http://localhost:3000`.
+| Service  | URL                    |
+|----------|------------------------|
+| Backend  | http://localhost:8000  |
+| Frontend | http://localhost:3000  |
+| API Docs | http://localhost:8000/docs |
 
 ## Folder Structure
 
 ```
-twitter-clone/
+twitterclone/
 │
 ├── backend/
-│   ├── alembic/               # Database migrations
 │   ├── app/
-│   │   ├── api/               # API routes
-│   │   ├── core/              # Core settings and configurations
-│   │   ├── models/            # Database models
-│   │   ├── schemas/           # Pydantic schemas
-│   │   ├── services/          # Business logic
-│   │   └── main.py            # Entry point for the backend
-│   ├── tests/                 # Backend tests
+│   │   ├── auth.py            # JWT authentication
+│   │   ├── database.py        # DB connection & session
+│   │   ├── followers.py       # Follow/unfollow routes
+│   │   ├── messages.py        # Direct messages routes
+│   │   ├── models.py          # SQLAlchemy models
+│   │   ├── seed.py            # Seed data
+│   │   ├── settings.py        # User settings routes
+│   │   ├── tweets.py          # Tweet routes
+│   │   └── user.py            # User/signup routes
+│   ├── main.py                # FastAPI entry point
 │   ├── requirements.txt       # Python dependencies
-│   └── alembic.ini            # Alembic configuration
+│   └── dockerfile
 │
 ├── frontend/
-│   ├── public/                # Static files
 │   ├── src/
 │   │   ├── components/        # React components
-│   │   ├── contexts/          # Context API
-│   │   ├── hooks/             # Custom hooks
 │   │   ├── pages/             # React pages
-│   │   ├── services/          # API services
-│   │   ├── App.tsx            # Main App component
-│   │   └── index.tsx          # Entry point for the frontend
-│   ├── vite.config.ts         # Vite configuration
-│   └── tsconfig.json          # TypeScript configuration
+│   │   ├── api.tsx            # API service layer
+│   │   └── App.tsx            # Main App component
+│   ├── default.conf           # Nginx config (port 3000)
+│   ├── vite.config.ts
+│   └── dockerfile
 │
-└── docker-compose.yml         # Docker Compose configuration
+├── k3s/
+│   ├── backend-deployment.yaml
+│   ├── frontend-deployment.yaml
+│   ├── ingress.yaml
+│   ├── mysql.yaml
+│   └── secrets/
+│       ├── twitterclone-backend-secret.yml
+│       └── mysql-secret.yml
+│
+└── .github/
+    └── workflows/
+        └── deploy.yml         # CI/CD: build & push Docker images, rollout on k3s
 ```
 
 ## Environment Variables
 
-Create a `.env` file in the `backend` directory and add the following environment variables:
+Create a `.env` file in `backend/`:
 
-```
-DATABASE_URL=mysql://username:password@localhost:3306/twitter_clone
-SECRET_KEY=your_secret_key
+```env
+MYSQL_DB=localhost
+MYSQL_USER=app
+MYSQL_PASSWORD=your_password
+MYSQL_ROOT_PASSWORD=your_root_password
+SECRET_KEY=your_jwt_secret_key
 ```
 
-For the frontend, you can create a `.env` file in the `frontend` directory and add any necessary environment variables, such as API endpoint URLs.
+For the frontend, set in `.env` or as a Docker build arg:
+
+```env
+VITE_API_URL=https://twittercloneapi.sacenpapier.org
+```
 
 ## Deployment
 
-1. **Docker:**
+### Docker (local)
 
-   - Ensure Docker is installed and running.
-   - Build and start the containers:
-   ```bash
-   docker-compose up --build
-   ```
+Build and run each service individually:
 
-2. **Nginx:**
+```bash
+# Backend
+docker build -t twc-backend ./backend
+docker run -p 8000:8000 --env-file backend/.env twc-backend
 
-   - Nginx is used as a reverse proxy to handle requests.
-   - Configure Nginx with your domain and SSL certificates.
-   - Restart Nginx to apply the new configuration.
+# Frontend
+docker build --build-arg VITE_API_URL=http://localhost:8000 -t twc-frontend ./frontend
+docker run -p 3000:3000 twc-frontend
+```
 
-## Contributing
+### k3s (production)
 
-Contributions are welcome! Please fork the repository and create a pull request with your changes.
+Apply the manifests in order:
+
+```bash
+kubectl apply -f k3s/secrets/mysql-secret.yml
+kubectl apply -f k3s/secrets/twitterclone-backend-secret.yml
+kubectl apply -f k3s/mysql.yaml
+kubectl apply -f k3s/backend-deployment.yaml
+kubectl apply -f k3s/frontend-deployment.yaml
+kubectl apply -f k3s/ingress.yaml
+```
+
+The app is exposed via Traefik + Cloudflare at:
+
+| Service  | URL                                    |
+|----------|----------------------------------------|
+| Frontend | https://twitterclone.sacenpapier.org   |
+| Backend  | https://twittercloneapi.sacenpapier.org |
+
+### CI/CD
+
+Pushing to `main` triggers GitHub Actions (`.github/workflows/deploy.yml`), which:
+1. Builds and pushes `jeanmichelbb/twc-frontend:latest` and `jeanmichelbb/twc-backend:latest` to Docker Hub
+2. SSH into the k3s node and runs `kubectl rollout restart` for each deployment
+
+Required GitHub secrets: `DOCKERHUB_USERNAME`, `DOCKERHUB_PASSWORD`, `VITE_API_URL`, `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`.
 
 ## Personal Information
-<!-- linktend webside  -->
-- [Linkedin](http://linkedin.com/in/jeanmichelbb/)
+
+- [LinkedIn](http://linkedin.com/in/jeanmichelbb/)
 - [Portfolio](https://jeanmichelbb.github.io/)
-
-
-<!-- mysql -u root -p -->
-
-

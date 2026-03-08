@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './TweetListUser.css';
 import User from '../../UserModel';
 import { UserData } from '../../pages/Profile/Profile';
-import { apiKey, apiUrl } from '../../api';
+import { apiUrl, getAuthHeader } from '../../api';
 
 type Tweet = {
   id: string;
@@ -27,9 +27,7 @@ const TweetListUser: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) 
     const fetchTweets = async () => {
       try {
         const response = await fetch(`${apiUrl}/tweets/${visitedUser.id}`, {
-          headers: {
-            'access-token': apiKey,
-          },
+          headers: { ...getAuthHeader() },
         });
         if (!response.ok) {
           throw new Error('Failed to fetch tweets');
@@ -44,9 +42,7 @@ const TweetListUser: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) 
     const fetchUsers = async () => {
       try {
         const response = await fetch(`${apiUrl}/users`, {
-          headers: {
-            'access-token': apiKey,
-          },
+          headers: { ...getAuthHeader() },
         });
         if (!response.ok) {
           throw new Error('Failed to fetch users');
@@ -65,9 +61,7 @@ const TweetListUser: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) 
     const checkUserLikes = async () => {
       try {
         const response = await fetch(`${apiUrl}/tweets/likes/${currentUser.id}`, {
-          headers: {
-            'access-token': apiKey,
-          },
+          headers: { ...getAuthHeader() },
         });
         if (!response.ok) {
           throw new Error('Failed to check user likes');
@@ -97,7 +91,7 @@ const TweetListUser: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) 
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
-                    "access-token": apiKey
+                    ...getAuthHeader()
                 }
             });
 
@@ -121,7 +115,7 @@ const TweetListUser: React.FC<ConnectionProps> = ({ currentUser, visitedUser }) 
                 method: 'POST',
                 headers: {
                     'Accept': 'application/json',
-                    "access-token": apiKey
+                    ...getAuthHeader()
                 }
             });
 

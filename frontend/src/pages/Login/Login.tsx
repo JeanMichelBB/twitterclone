@@ -3,7 +3,7 @@ import axios, { AxiosResponse } from "axios";
 import './Login.css';
 import { Link } from "react-router-dom";
 import User from "../../UserModel";
-import { apiKey, apiUrl } from '../../api';
+import { apiUrl } from '../../api';
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -16,11 +16,7 @@ const Login = () => {
       useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response: AxiosResponse<User[]> = await axios.get(`${apiUrl}/users`, {
-          headers: {
-            "access-token": apiKey
-          }
-        });
+        const response: AxiosResponse<User[]> = await axios.get(`${apiUrl}/users`);
         if (response.status !== 200) {
           throw new Error('Failed to fetch users');
         }
@@ -67,9 +63,6 @@ const Login = () => {
 
     try {
       const response = await axios.get(`${apiUrl}/login`, {
-        headers: {
-          "access-token": apiKey,
-        },
         params: { username, password },
       });
       const accessToken = response.data.access_token;

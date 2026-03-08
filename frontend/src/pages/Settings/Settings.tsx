@@ -3,7 +3,7 @@ import React, { useState, ChangeEvent } from 'react';
 import './Settings.css';
 import User from '../../UserModel';
 import EditUserInfo from '../../components/EditUserInfo/EditUserInfo';
-import { apiKey, apiUrl } from '../../api';
+import { apiUrl, getAuthHeader } from '../../api';
 
 interface SettingsProps {
   user: User;
@@ -27,7 +27,7 @@ const Settings: React.FC<SettingsProps> = ({ user }) => {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            "access-token": apiKey
+            ...getAuthHeader()
           },
         }
       );
@@ -52,7 +52,7 @@ const Settings: React.FC<SettingsProps> = ({ user }) => {
           headers: {
             'Accept': 'application/json',
             'Content-Type': 'application/json',
-            "access-token": apiKey
+            ...getAuthHeader()
           },
         }
       );

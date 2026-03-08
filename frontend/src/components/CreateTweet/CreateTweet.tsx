@@ -3,7 +3,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import './CreateTweet.css';
 import User from '../../UserModel';
 import { faker } from '@faker-js/faker';
-import { apiKey, apiUrl } from '../../api';
+import { apiUrl, getAuthHeader } from '../../api';
 
 interface ProfileProps {
   user: User;
@@ -57,7 +57,7 @@ const CreateTweet: React.FC<ProfileProps> = ({ user, onNewTweet }) => {
       const response = await fetch(url, {
         method: 'POST',
         headers: {
-          "access-token": apiKey,
+          ...getAuthHeader(),
           'Accept': 'application/json'
         }
       });

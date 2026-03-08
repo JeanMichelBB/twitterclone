@@ -25,3 +25,8 @@ yarn-error.log*
 
 myenv
 
+.claude/settings.local.json
+frontend/.claude/settings.local.json
+frontend/.env.development
+frontend/.env.production
+k3s/secrets/twitterclone-backend-secret.yml

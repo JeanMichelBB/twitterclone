@@ -3,7 +3,7 @@ import axios from 'axios';
 import './ComposeMessageForm.css';
 import User from '../../UserModel';
 import { UserData } from '../../pages/Profile/Profile';
-import { apiKey, apiUrl } from '../../api';
+import { apiUrl, getAuthHeader } from '../../api';
 
 interface ComposeMessageFormProps {
   user: User;
@@ -37,7 +37,7 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user, refreshMe
         const response = await fetch(`${apiUrl}/users`, {
           headers: {
             'Accept': 'application/json',
-            'access-token': apiKey
+            ...getAuthHeader()
           }
         });
         const users: UserData[] = await response.json();
@@ -123,7 +123,7 @@ const ComposeMessageForm: React.FC<ComposeMessageFormProps> = ({ user, refreshMe
       const response = await axios.post(url, null, {
         headers: {
           'Accept': 'application/json',
-          'access-token': apiKey
+          ...getAuthHeader()
         },
         params: {
           sender_id: user.id,
