@@ -188,7 +188,7 @@ Pushing to `main` triggers GitHub Actions (`.github/workflows/deploy.yml`), whic
 1. Builds and pushes `jeanmichelbb/twc-frontend:latest` and `jeanmichelbb/twc-backend:latest` to Docker Hub
 2. SSH into the k3s node and runs `kubectl rollout restart` for each deployment
 
-Required GitHub secrets: `DOCKERHUB_USERNAME`, `DOCKERHUB_PASSWORD`, `VITE_API_URL`, `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`.
+Required GitHub secrets: `DOCKER_USERNAME`, `DOCKER_PASSWORD`, `VITE_API_URL`, `SSH_HOST`, `SSH_USER`, `SSH_PRIVATE_KEY`.
 
 ## Personal Information
 
