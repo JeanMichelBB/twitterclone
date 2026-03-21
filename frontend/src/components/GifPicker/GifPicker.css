@@ -100,8 +100,13 @@
 
 .gif-attribution {
     text-align: center;
-    color: #555;
-    font-size: 0.7em;
-    padding: 6px;
-    border-top: 1px solid #222;
+    font-size: 0.78em;
+    font-weight: 700;
+    padding: 7px;
+    border-top: 1px solid #2f3336;
+    background: linear-gradient(90deg, #00ff99, #00ccff, #9933ff, #ff6699);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: 0.04em;
 }

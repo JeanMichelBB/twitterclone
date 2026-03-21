@@ -36,9 +36,9 @@ const CookieBanner = () => {
         </div>
 
         <p className="cb-notice">
-          This site does <strong>not</strong> use cookies. Your session token is stored
-          in <code>localStorage</code> on your device only. If that ever changes,
-          we will notify you here first.
+          No cookies from us — your token lives in <code>localStorage</code> only.
+          The GIF feature loads Giphy, which may set their own cookies on <code>.giphy.com</code> —
+          see <a href="https://support.giphy.com/hc/en-us/articles/360032872931" target="_blank" rel="noreferrer">Giphy's privacy policy</a>.
         </p>
 
         <div className="cb-divider" />
@@ -54,6 +54,7 @@ const CookieBanner = () => {
               {icon} {name}
             </span>
           ))}
+          <span className="cb-badge cb-badge-giphy">✨ GIPHY</span>
         </div>
 
         <button className="cb-btn" onClick={dismiss}>Got it</button>

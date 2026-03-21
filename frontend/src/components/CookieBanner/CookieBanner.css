@@ -73,6 +73,15 @@
   color: #e7e9ea;
 }
 
+.cb-notice a {
+  color: #1d9bf0;
+  text-decoration: none;
+}
+
+.cb-notice a:hover {
+  text-decoration: underline;
+}
+
 .cb-notice code {
   font-family: 'Courier New', monospace;
   font-size: 0.82rem;
@@ -116,6 +125,16 @@
   border: 1px solid;
   font-size: 0.78rem;
   font-weight: 600;
+}
+
+.cb-badge-giphy {
+  border-color: #9933ff88 !important;
+  background: linear-gradient(90deg, rgba(0,255,153,0.08), rgba(255,102,153,0.08)) !important;
+  font-weight: 700;
+  background: linear-gradient(90deg, #00ff99, #00ccff, #9933ff, #ff6699) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
 }
 
 /* ── Button — matches global site button ── */
