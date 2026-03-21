@@ -44,7 +44,6 @@ const Status: React.FC<StatusProps> = ({ user }) => {
     const [newComment, setNewComment] = useState('');
     const [commentSuggestions, setCommentSuggestions] = useState<string[]>([]);
     const [showCommentSuggestions, setShowCommentSuggestions] = useState(false);
-    const [commentSuggestionSelected, setCommentSuggestionSelected] = useState(false);
     const commentFormRef = useRef<HTMLFormElement>(null);
 
     useEffect(() => {
@@ -134,7 +133,6 @@ const Status: React.FC<StatusProps> = ({ user }) => {
             setComments(prev => [...prev, comment]);
             setTweet(prev => prev ? { ...prev, num_comments: prev.num_comments + 1 } : prev);
             setNewComment('');
-            setCommentSuggestionSelected(false);
             const fresh: string[] = [];
             for (let i = 0; i < 5; i++) fresh.push(faker.lorem.sentence());
             setCommentSuggestions(fresh);
@@ -199,7 +197,6 @@ const Status: React.FC<StatusProps> = ({ user }) => {
                                         {commentSuggestions.map((s, i) => (
                                             <li key={i} onClick={() => {
                                                 setNewComment(s);
-                                                setCommentSuggestionSelected(true);
                                                 setShowCommentSuggestions(false);
                                             }}>{s}</li>
                                         ))}

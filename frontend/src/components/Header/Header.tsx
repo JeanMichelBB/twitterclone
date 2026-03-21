@@ -4,7 +4,6 @@ import User from '../../UserModel';
 import { useState, useEffect, useRef } from 'react';
 import { useMediaQuery } from 'react-responsive';
 import Connection from '../Connection/Connection';
-import { IoIosSettings } from "react-icons/io";
 
 
 
