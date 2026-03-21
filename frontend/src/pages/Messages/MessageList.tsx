@@ -197,7 +197,7 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
 
 
   return (
-    <div>
+    <>
       {isMobile ? (
         <div className="message-list-container">
           <div className="user-list">
@@ -225,7 +225,11 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
                     ))}
                   </ul>
                 ) : (
-                  <p>Select a user to view messages</p>
+                  <div className="empty-state">
+                    <span className="empty-state-icon">💬</span>
+                    <h3>Start Conversation</h3>
+                    <p>Choose from your existing conversations, or start a new one.</p>
+                  </div>
                 )}
 
               </div>
@@ -284,7 +288,11 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
                   ))}
                 </ul>
               ) : (
-                <p>Select a user to view messages</p>
+                  <div className="empty-state">
+                    <span className="empty-state-icon">💬</span>
+                    <h3>Start Conversation</h3>
+                    <p>Choose from your existing conversations, or start a new one.</p>
+                  </div>
               )}
 
             </div>
@@ -319,7 +327,7 @@ const MessageList: React.FC<MessageListProps> = ({ user }) => {
         </div>
 
       )}
-    </div>
+    </>
   );
 };
 

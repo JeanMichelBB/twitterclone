@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, Text
 from sqlalchemy.orm import relationship, backref
 from .database import Base
 from uuid import uuid4
@@ -30,6 +30,7 @@ class Tweet(Base):
     id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
     user_id = Column(String(36), ForeignKey('users.id', ondelete="CASCADE"))
     content = Column(String(280), nullable=False)
+    image_url = Column(Text, nullable=True)
     date_posted = Column(DateTime)
     num_likes = Column(Integer, default=0)
     num_retweets = Column(Integer, default=0)
@@ -60,6 +61,22 @@ class Retweet(Base):
     original_tweet_id = Column(String(36), ForeignKey('tweets.id', ondelete="CASCADE"))
     date_retweeted = Column(DateTime)
 
+class Comment(Base):
+    __tablename__ = "comments"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
+    user_id = Column(String(36), ForeignKey('users.id', ondelete="CASCADE"))
+    tweet_id = Column(String(36), ForeignKey('tweets.id', ondelete="CASCADE"))
+    content = Column(String(280), nullable=False)
+    date_posted = Column(DateTime)
+    num_likes = Column(Integer, default=0)
+
+class CommentLike(Base):
+    __tablename__ = "comment_likes"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
+    user_id = Column(String(36), ForeignKey('users.id', ondelete="CASCADE"))
+    comment_id = Column(String(36), ForeignKey('comments.id', ondelete="CASCADE"))
+    date_liked = Column(DateTime)
+
 class Notification(Base):
     __tablename__ = "notifications"
     id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
@@ -79,6 +96,13 @@ class Message(Base):
     date_sent = Column(DateTime)
     read = Column(Boolean, default=False)
 
+class GifCache(Base):
+    __tablename__ = "gif_cache"
+    query = Column(String(255), primary_key=True)
+    data = Column(Text, nullable=False)   # JSON array of {id, url, thumbnail}
+    fetched_at = Column(DateTime, nullable=False)
+
+
 class models:
     User = User
     Tweet = Tweet
@@ -86,5 +110,8 @@ class models:
     Following = Following
     Like = Like
     Retweet = Retweet
+    Comment = Comment
+    CommentLike = CommentLike
+    GifCache = GifCache
     Notification = Notification
     Message = Message

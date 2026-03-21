@@ -1,6 +1,8 @@
 import './Footer.css';
 import Search from '../Search/Search';
+import Trending from '../Trending/Trending';
 import Suggestion from '../Suggestion/Suggestion';
+import LegalFooter from '../LegalFooter/LegalFooter';
 import User from '../../UserModel';
 import { useMediaQuery } from 'react-responsive'; // Import useMediaQuery hook
 import { FaHome, FaSearch, FaPlus, FaBell, FaEnvelope } from 'react-icons/fa'; // Import icons
@@ -30,7 +32,9 @@ const Footer = ({ user }: ProfileProps) => {
                 // Web footer with content
                 <div className="footer-content">
                     <Search />
+                    <Trending />
                     <Suggestion user={user} />
+                    <LegalFooter />
                 </div>
             )}
         </div>

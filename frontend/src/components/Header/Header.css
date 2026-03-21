@@ -150,8 +150,20 @@ a {
 
     .header {
         margin: 0;
-        padding: 10px;
-        width: auto;
+        padding: 4px 10px;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(8px);
+        transition: transform 0.3s ease;
+        box-sizing: border-box;
+    }
+
+    .header-hidden {
+        transform: translateY(-100%);
     }
 
     .mobile-menu-toggle {
@@ -196,14 +208,19 @@ a {
     .logout-modal {
         bottom: 120px;
     }
+    .header-spacer {
+        width: 40px;
+        flex-shrink: 0;
+    }
+
     .menu {
-        /* no style */
         background-color: #000;
         border: none;
-        padding: 4px 4px;
+        padding: 0;
         border-radius: 50px;
         cursor: pointer;
-
+        display: flex;
+        align-items: center;
     }
     .menu:hover {
         background-color: #000;

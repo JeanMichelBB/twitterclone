@@ -5,6 +5,7 @@ interface User {
     email: string;
     full_name: string;
     profile_picture: string;
+    background_picture: string;
     bio: string;
     location: string;
     website: string;

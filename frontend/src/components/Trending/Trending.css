@@ -1,0 +1,49 @@
+.trending {
+    border: solid 0.1px rgb(47, 51, 54);
+    border-radius: 20px;
+    padding: 15px;
+    width: 95%;
+    background-color: #000;
+    margin-top: 20px;
+}
+
+.trending-title {
+    font-size: x-large;
+    font-weight: bold;
+    color: #fff;
+    margin: 0 0 12px;
+}
+
+.trend-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 10px 0;
+    border-bottom: 1px solid #111;
+    cursor: pointer;
+}
+
+.trend-item:last-child {
+    border-bottom: none;
+}
+
+.trend-item:hover {
+    background: rgba(255,255,255,0.03);
+    border-radius: 8px;
+}
+
+.trend-category {
+    font-size: 0.75em;
+    color: #555;
+}
+
+.trend-topic {
+    font-size: 0.95em;
+    font-weight: bold;
+    color: #fff;
+}
+
+.trend-posts {
+    font-size: 0.75em;
+    color: #555;
+}

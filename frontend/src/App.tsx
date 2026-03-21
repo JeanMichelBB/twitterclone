@@ -9,6 +9,8 @@ import MessageList from './pages/Messages/MessageList';
 import Profile from './pages/Profile/Profile';
 import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
+import Status from './pages/Status/Status';
+import ComingSoon from './pages/ComingSoon/ComingSoon';
 import Footer from './components/Footer/Footer';
 import Search from './components/Search/Search';
 import User from './UserModel';
@@ -146,6 +148,39 @@ function App() {
                     />
                   }
                 />
+                <Route
+                  path="/status/:tweetId"
+                  element={
+                    <Layout
+                      username={username}
+                      user={user}
+                      leftChild={<Status user={user} />}
+                      rightChild={<Footer user={user} />}
+                    />
+                  }
+                />
+                {[
+                    { path: '/explore', name: 'Explore' },
+                    { path: '/notifications', name: 'Notifications' },
+                    { path: '/grok', name: 'Grok' },
+                    { path: '/lists', name: 'Lists' },
+                    { path: '/bookmarks', name: 'Bookmarks' },
+                    { path: '/communities', name: 'Communities' },
+                    { path: '/premium', name: 'Premium' },
+                ].map(({ path, name }) => (
+                    <Route
+                        key={path}
+                        path={path}
+                        element={
+                            <Layout
+                                username={username}
+                                user={user}
+                                leftChild={<ComingSoon pageName={name} />}
+                                rightChild={<Footer user={user} />}
+                            />
+                        }
+                    />
+                ))}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             ) : (

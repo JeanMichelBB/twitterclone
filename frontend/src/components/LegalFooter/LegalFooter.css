@@ -1,0 +1,29 @@
+.legal-footer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 16px 0 24px;
+    border-top: 1px solid #333;
+}
+
+.legal-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 8px;
+}
+
+.legal-links a {
+    color: #555;
+    font-size: 0.78em;
+    text-decoration: none;
+}
+
+.legal-links a:hover {
+    text-decoration: underline;
+    color: #888;
+}
+
+.legal-copy {
+    margin: 8px 0 0;
+    color: #555;
+    font-size: 0.78em;
+}

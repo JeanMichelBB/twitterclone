@@ -2,6 +2,8 @@
 
 .message-list-container {
   display: flex;
+  height: 100%;
+  overflow: hidden;
 }
 
 .user-list {
@@ -104,6 +106,32 @@
 
 .username {
   color: gray;
+}
+
+.empty-state {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  color: #888;
+  padding: 20px;
+}
+
+.empty-state-icon {
+  font-size: 48px;
+}
+
+.empty-state h3 {
+  color: #fff;
+  margin: 0;
+  font-size: 1.2em;
+}
+
+.empty-state p {
+  margin: 0;
+  font-size: 0.9em;
 }
 
 .message-input-container {

@@ -58,7 +58,7 @@ engine = create_engine(
     pool_recycle=1800,
 )
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine, expire_on_commit=False)
 Base = declarative_base()
 
 
@@ -144,9 +144,3 @@ def enforce_message_limit(mapper, connection, target):
         oldest_message = connection.execute(text('SELECT id FROM messages ORDER BY date_sent ASC LIMIT 1')).scalar()
         connection.execute(text('DELETE FROM messages WHERE id = :id'), {'id': oldest_message})
 
-# Attach the event listeners to the corresponding models
-from .models import Tweet, User, Message
-
-event.listen(Tweet, 'after_insert', enforce_tweet_limit)
-event.listen(User, 'after_insert', enforce_user_limit)
-event.listen(Message, 'after_insert', enforce_message_limit)

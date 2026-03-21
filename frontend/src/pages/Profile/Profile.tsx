@@ -17,6 +17,7 @@ export interface UserData {
     location: string;
     website: string;
     profile_picture: string;
+    background_picture: string;
     // Add other profile fields as needed
 }
 
@@ -83,7 +84,7 @@ const Profile = ({ logUsername, user }: ProfileProps) => {
                         <h2>{userData.full_name}</h2>
                     </div>
                     <div className='profile-background'>
-                        <img src={userData.profile_picture} alt="Profile" />
+                        <img src={userData.background_picture} alt="Profile background" />
                     </div>
                     <div className='profile-header-info'>
                     <img src={userData.profile_picture} alt="Profile" />
