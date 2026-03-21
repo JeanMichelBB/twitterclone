@@ -1,6 +1,6 @@
 # X
 
-A Twitter-like app built with React, Vite, TypeScript, FastAPI, and MySQL. Users can post tweets, follow others, send direct messages, and more. Live at [x.sacenpapier.org](https://x.sacenpapier.org).
+A X-like app built with React, Vite, TypeScript, FastAPI, and MySQL. Users can post tweets, follow others, send direct messages, and more. Live at [x.sacenpapier.org](https://x.sacenpapier.org).
 
 ![image](header.png)
 
