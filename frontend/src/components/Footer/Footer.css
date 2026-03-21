@@ -23,10 +23,8 @@
         transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
-    .scrolled-down .footer-buttons {
-        opacity: 0;
-        transform: translateY(100%);
-        pointer-events: none;
+    .footer-faded .footer-buttons {
+        opacity: 0.25;
     }
 
     .footer-buttons button {

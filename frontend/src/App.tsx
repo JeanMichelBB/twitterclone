@@ -13,10 +13,22 @@ import Status from './pages/Status/Status';
 import ComingSoon from './pages/ComingSoon/ComingSoon';
 import Footer from './components/Footer/Footer';
 import Search from './components/Search/Search';
+import CookieBanner from './components/CookieBanner/CookieBanner';
 import User from './UserModel';
-import { apiUrl, getAuthHeader } from './api';
+import { apiUrl, getAuthHeader, handleUnauthorized } from './api';
 import { useMediaQuery } from 'react-responsive';
 import axios from 'axios';
+
+// Global axios interceptor — auto-logout on 401 / 403
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401 || error.response?.status === 403) {
+      handleUnauthorized();
+    }
+    return Promise.reject(error);
+  }
+);
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -63,6 +75,7 @@ function App() {
 
   return (
     <BrowserRouter>
+      <CookieBanner />
       <Routes>
         {/* Public Routes (Login, Signup) */}
         <Route path="/login" element={<Login />} />

@@ -14,7 +14,9 @@ interface LayoutProps {
 
 const Layout = ({ leftChild, rightChild, username, user }: LayoutProps) => {
   const lastScrollY = useRef(0);
+  const scrollPeak = useRef(0);
   const [headerHidden, setHeaderHidden] = useState(false);
+  const [footerFaded, setFooterFaded] = useState(false);
   const location = useLocation();
   const leftPanelRef = useRef<HTMLDivElement>(null);
 
@@ -27,8 +29,18 @@ const Layout = ({ leftChild, rightChild, username, user }: LayoutProps) => {
     const onScroll = () => {
       const y = el.scrollTop;
       sessionStorage.setItem(`scroll:${key}`, String(y));
-      if (y > lastScrollY.current && y > 50) setHeaderHidden(true);
-      else setHeaderHidden(false);
+
+      const scrollingDown = y > lastScrollY.current;
+
+      if (scrollingDown && y > 50) {
+        setHeaderHidden(true);
+        setFooterFaded(true);
+        scrollPeak.current = y;
+      } else if (!scrollingDown) {
+        setHeaderHidden(false);
+        if (scrollPeak.current - y >= 100) setFooterFaded(false);
+      }
+
       lastScrollY.current = y;
     };
 
@@ -52,7 +64,7 @@ const Layout = ({ leftChild, rightChild, username, user }: LayoutProps) => {
   }, [location.key]);
 
   return (
-    <div className={`layout${headerHidden ? ' scrolled-down' : ''}`}>
+    <div className={`layout${headerHidden ? ' scrolled-down' : ''}${footerFaded ? ' footer-faded' : ''}`}>
       <div className="layout-container">
         <Header username={username} user={user} hidden={headerHidden} />
         <div className={`header-spacer-fixed${headerHidden ? ' header-spacer-hidden' : ''}`} />

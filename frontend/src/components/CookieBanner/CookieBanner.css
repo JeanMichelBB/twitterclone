@@ -1,0 +1,149 @@
+/* Matches the site's native dark X style */
+
+.cb-overlay {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 9999;
+  padding: 0 12px 12px;
+  pointer-events: none;
+}
+
+.cb-banner {
+  pointer-events: all;
+  background: #000;
+  border: 1px solid #2f3336;
+  border-radius: 16px;
+  padding: 20px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 0 0 1px #2f3336, 0 8px 32px rgba(0,0,0,0.7);
+  animation: cb-slide-up 0.25s ease;
+}
+
+@keyframes cb-slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Header ── */
+.cb-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.cb-logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: #fff;
+  line-height: 1;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cb-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #e7e9ea;
+}
+
+.cb-subtitle {
+  margin: 2px 0 0;
+  font-size: 0.82rem;
+  color: #71767b;
+}
+
+/* ── Notice ── */
+.cb-notice {
+  font-size: 0.88rem;
+  color: #71767b;
+  line-height: 1.5;
+  margin: 0 0 14px;
+}
+
+.cb-notice strong {
+  color: #e7e9ea;
+}
+
+.cb-notice code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  background: #16181c;
+  border: 1px solid #2f3336;
+  border-radius: 4px;
+  padding: 1px 5px;
+  color: #1d9bf0;
+}
+
+/* ── Divider ── */
+.cb-divider {
+  border: none;
+  border-top: 1px solid #2f3336;
+  margin: 0 0 14px;
+}
+
+/* ── Tech stack ── */
+.cb-stack-label {
+  margin: 0 0 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #71767b;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cb-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 18px;
+}
+
+.cb-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  border: 1px solid;
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+/* ── Button — matches global site button ── */
+.cb-btn {
+  width: 100%;
+  padding: 10px;
+  border-radius: 999px;
+  border: none;
+  background: #1d9bf0;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.cb-btn:hover {
+  background: #1a8cd8;
+  border-color: transparent;
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .cb-banner {
+    border-radius: 16px 16px 0 0;
+    border-bottom: none;
+  }
+  .cb-overlay {
+    padding: 0;
+  }
+}

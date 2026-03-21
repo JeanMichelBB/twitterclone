@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { createPortal } from 'react-dom';
 import './Header.css';
 import User from '../../UserModel';
 import { useState, useEffect, useRef } from 'react';
@@ -41,6 +42,11 @@ const Header = ({ username, user, hidden }: HeaderProps) => {
     };
   }, []);
 
+  // Close mobile menu when header hides on scroll
+  useEffect(() => {
+    if (hidden) setShowMobileMenu(false);
+  }, [hidden]);
+
   const handleMenuLinkClick = () => {
     setShowMobileMenu(false);
   };
@@ -55,6 +61,13 @@ const Header = ({ username, user, hidden }: HeaderProps) => {
             </button>
             <Link to="/" className='logo'>X</Link>
             <div className="header-spacer" />
+            {showMobileMenu && createPortal(
+              <div
+                className="mobile-menu-backdrop"
+                onClick={() => setShowMobileMenu(false)}
+              />,
+              document.body
+            )}
             {showMobileMenu && (
               <nav className="mobile-menu">
                 <Link to={`/${username}`} onClick={handleMenuLinkClick}>
