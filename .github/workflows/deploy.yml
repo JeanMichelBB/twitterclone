@@ -43,8 +43,8 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo kubectl rollout restart deployment/twitterclone-frontend
-            sudo kubectl rollout status deployment/twitterclone-frontend --timeout=120s
+            sudo kubectl rollout restart deployment/x-frontend
+            sudo kubectl rollout status deployment/x-frontend --timeout=120s
 
   build-backend:
     runs-on: ubuntu-latest
@@ -78,5 +78,5 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            sudo kubectl rollout restart deployment/twitterclone-backend
-            sudo kubectl rollout status deployment/twitterclone-backend --timeout=120s
+            sudo kubectl rollout restart deployment/x-backend
+            sudo kubectl rollout status deployment/x-backend --timeout=120s

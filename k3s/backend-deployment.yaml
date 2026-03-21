@@ -1,30 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: twitterclone-backend
+  name: x-backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: twitterclone-backend
+      app: x-backend
   template:
     metadata:
       labels:
-        app: twitterclone-backend
+        app: x-backend
     spec:
       initContainers:
         - name: wait-for-mysql
           image: busybox
           command: ['sh', '-c', 'until nc -z mysql 3306; do echo "Waiting for MySQL..."; sleep 3; done']
       containers:
-        - name: twitterclone-backend
+        - name: x-backend
           image: jeanmichelbb/twc-backend:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 8000
           envFrom:
             - secretRef:
-                name: twitterclone-backend-secret
+                name: x-backend-secret
           readinessProbe:
             httpGet:
               path: /health
@@ -35,10 +35,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: twitterclone-backend
+  name: x-backend
 spec:
   selector:
-    app: twitterclone-backend
+    app: x-backend
   ports:
     - port: 8000
       targetPort: 8000

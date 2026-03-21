@@ -2,29 +2,29 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: twitterclone-ingress
+  name: x-ingress
   namespace: default
   annotations:
     traefik.ingress.kubernetes.io/router.entrypoints: web,websecure
 spec:
   rules:
-    - host: twitterclone.sacenpapier.org
+    - host: x.sacenpapier.org
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: twitterclone-frontend
+                name: x-frontend
                 port:
                   number: 3000
-    - host: twittercloneapi.sacenpapier.org
+    - host: xapi.sacenpapier.org
       http:
         paths:
           - path: /
             pathType: Prefix
             backend:
               service:
-                name: twitterclone-backend
+                name: x-backend
                 port:
                   number: 8000

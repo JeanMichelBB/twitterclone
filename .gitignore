@@ -29,4 +29,4 @@ myenv
 frontend/.claude/settings.local.json
 frontend/.env.development
 frontend/.env.production
-k3s/secrets/twitterclone-backend-secret.yml
+k3s/secrets/x-backend-secret.yml

@@ -147,7 +147,7 @@ app.include_router(tweets)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://twitterclone.sacenpapier.org",
+        "https://x.sacenpapier.org",
         "http://localhost:3000",
     ],
     allow_credentials=True,

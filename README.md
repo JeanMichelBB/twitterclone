@@ -1,6 +1,6 @@
-# Twitter Clone
+# X
 
-A Twitter clone built with React, Vite, TypeScript, FastAPI, and MySQL. Users can post tweets, follow others, send direct messages, and more. Live at [twitterclone.sacenpapier.org](https://twitterclone.sacenpapier.org).
+A Twitter-like app built with React, Vite, TypeScript, FastAPI, and MySQL. Users can post tweets, follow others, send direct messages, and more. Live at [x.sacenpapier.org](https://x.sacenpapier.org).
 
 ![image](header.png)
 
@@ -47,8 +47,8 @@ A Twitter clone built with React, Vite, TypeScript, FastAPI, and MySQL. Users ca
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/JeanMichelBB/twitterclone.git
-cd twitterclone
+git clone https://github.com/JeanMichelBB/x.git
+cd x
 ```
 
 2. **Backend Setup:**
@@ -87,7 +87,7 @@ npm run dev
 ## Folder Structure
 
 ```
-twitterclone/
+x/
 │
 ├── backend/
 │   ├── app/
@@ -120,7 +120,7 @@ twitterclone/
 │   ├── ingress.yaml
 │   ├── mysql.yaml
 │   └── secrets/
-│       ├── twitterclone-backend-secret.yml
+│       ├── x-backend-secret.yml
 │       └── mysql-secret.yml
 │
 └── .github/
@@ -143,7 +143,7 @@ SECRET_KEY=your_jwt_secret_key
 For the frontend, set in `.env` or as a Docker build arg:
 
 ```env
-VITE_API_URL=https://twittercloneapi.sacenpapier.org
+VITE_API_URL=https://xapi.sacenpapier.org
 ```
 
 ## Deployment
@@ -168,7 +168,7 @@ Apply the manifests in order:
 
 ```bash
 kubectl apply -f k3s/secrets/mysql-secret.yml
-kubectl apply -f k3s/secrets/twitterclone-backend-secret.yml
+kubectl apply -f k3s/secrets/x-backend-secret.yml
 kubectl apply -f k3s/mysql.yaml
 kubectl apply -f k3s/backend-deployment.yaml
 kubectl apply -f k3s/frontend-deployment.yaml
@@ -179,8 +179,8 @@ The app is exposed via Traefik + Cloudflare at:
 
 | Service  | URL                                    |
 |----------|----------------------------------------|
-| Frontend | https://twitterclone.sacenpapier.org   |
-| Backend  | https://twittercloneapi.sacenpapier.org |
+| Frontend | https://x.sacenpapier.org   |
+| Backend  | https://xapi.sacenpapier.org |
 
 ### CI/CD
 
