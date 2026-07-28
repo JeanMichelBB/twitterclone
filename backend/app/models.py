@@ -24,6 +24,8 @@ class User(Base):
     notifications = relationship("Notification", foreign_keys="[Notification.user_id]", backref="user", cascade="all, delete-orphan")
     messages_sent = relationship("Message", foreign_keys='Message.sender_user_id', backref="sender", cascade="all, delete-orphan")
     messages_received = relationship("Message", foreign_keys='Message.recipient_user_id', backref="recipient", cascade="all, delete-orphan")
+    comments = relationship("Comment", backref="user", cascade="all, delete-orphan")
+    comment_likes = relationship("CommentLike", backref="user", cascade="all, delete-orphan")
 
 class Tweet(Base):
     __tablename__ = "tweets"
