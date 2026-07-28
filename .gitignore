@@ -36,3 +36,6 @@ graphify-out/
 __pycache__/
 *.pyc
 backend/venv/
+docs/superpowers/plans/2026-07-27-coming-soon-pages.md
+
+__pycache__
