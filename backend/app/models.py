@@ -89,6 +89,13 @@ class Notification(Base):
     date_created = Column(DateTime)
     read = Column(Boolean, default=False)
 
+class Bookmark(Base):
+    __tablename__ = "bookmarks"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
+    user_id = Column(String(36), ForeignKey('users.id', ondelete="CASCADE"))
+    tweet_id = Column(String(36), ForeignKey('tweets.id', ondelete="CASCADE"))
+    date_bookmarked = Column(DateTime)
+
 class Message(Base):
     __tablename__ = "messages"
     id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
@@ -116,4 +123,5 @@ class models:
     CommentLike = CommentLike
     GifCache = GifCache
     Notification = Notification
+    Bookmark = Bookmark
     Message = Message
