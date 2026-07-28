@@ -11,6 +11,7 @@ import Settings from './pages/Settings/Settings';
 import NotFound from './pages/NotFound/NotFound';
 import Status from './pages/Status/Status';
 import ComingSoon from './pages/ComingSoon/ComingSoon';
+import Notifications from './pages/Notifications/Notifications';
 import Footer from './components/Footer/Footer';
 import Search from './components/Search/Search';
 import CookieBanner from './components/CookieBanner/CookieBanner';
@@ -121,6 +122,18 @@ function App() {
                 />
 
                 <Route
+                  path="/notifications"
+                  element={
+                    <Layout
+                      username={username}
+                      user={user}
+                      leftChild={<Notifications />}
+                      rightChild={<Footer user={user} />}
+                    />
+                  }
+                />
+
+                <Route
                   path="/settings"
                   element={
                     <Layout
@@ -174,7 +187,6 @@ function App() {
                 />
                 {[
                     { path: '/explore', name: 'Explore' },
-                    { path: '/notifications', name: 'Notifications' },
                     { path: '/grok', name: 'Grok' },
                     { path: '/lists', name: 'Lists' },
                     { path: '/bookmarks', name: 'Bookmarks' },
