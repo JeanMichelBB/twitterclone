@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import PageHeader from '../../components/PageHeader/PageHeader';
 import { apiUrl, getAuthHeader } from '../../api';
-import '../ComingSoon/ComingSoon.css';
 import './Notifications.css';
 
 type NotificationItem = {
@@ -29,7 +29,6 @@ const verbFor = (type: string): string => {
 };
 
 const Notifications: React.FC = () => {
-    const navigate = useNavigate();
     const [items, setItems] = useState<NotificationItem[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -52,11 +51,8 @@ const Notifications: React.FC = () => {
     };
 
     return (
-        <div className="coming-soon-page">
-            <div className="coming-soon-header">
-                <button className="coming-soon-back" onClick={() => navigate(-1)}>&#8592;</button>
-                <h2>Notifications</h2>
-            </div>
+        <div className="page-container">
+            <PageHeader title="Notifications" />
             <div className="notifications-body">
                 {loading && <p className="notifications-empty">Loading...</p>}
                 {!loading && items.length === 0 && <p className="notifications-empty">No notifications yet.</p>}

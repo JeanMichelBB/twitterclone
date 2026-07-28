@@ -8,7 +8,7 @@ interface ComingSoonProps {
 
 const ComingSoon: React.FC<ComingSoonProps> = ({ pageName }) => {
     return (
-        <div className="coming-soon-page">
+        <div className="page-container">
             <PageHeader title={pageName} />
             <div className="coming-soon-body">
                 <span className="coming-soon-icon">🚧</span>

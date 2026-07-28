@@ -4,7 +4,7 @@ import User from '../../UserModel';
 import './TweetList.css';
 import { Link, useNavigate } from 'react-router-dom';
 import { apiUrl, getAuthHeader } from '../../api';
-import { FaHeart, FaRetweet, FaRegComment } from 'react-icons/fa';
+import { FaHeart, FaRetweet, FaRegComment, FaBookmark, FaRegBookmark } from 'react-icons/fa';
 import { faker } from '@faker-js/faker';
 
 type Tweet = {
@@ -41,6 +41,7 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
     const [users, setUsers] = useState<{ [key: string]: User }>({});
     const [userLikes, setUserLikes] = useState<{ [key: string]: boolean }>({});
     const [userRetweets, setUserRetweets] = useState<{ [key: string]: boolean }>({});
+    const [userBookmarks, setUserBookmarks] = useState<{ [key: string]: boolean }>({});
     const [overlayTweet, setOverlayTweet] = useState<Tweet | null>(null);
     const [overlayComments, setOverlayComments] = useState<Comment[]>([]);
     const [overlayCommentLikes, setOverlayCommentLikes] = useState<{ [key: string]: boolean }>({});
@@ -143,6 +144,19 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
             setOverlayTweet(prev => prev?.id === tweetId ? { ...prev, num_retweets: prev.num_retweets + (alreadyRetweeted ? -1 : 1) } : prev);
         } catch (error) {
             console.error('Error handling retweet:', error);
+        }
+    };
+
+    const handleBookmark = async (tweetId: string) => {
+        try {
+            const alreadyBookmarked = userBookmarks[tweetId];
+            await fetch(`${apiUrl}/bookmarks/${tweetId}`, {
+                method: alreadyBookmarked ? 'DELETE' : 'POST',
+                headers: { ...getAuthHeader() },
+            });
+            setUserBookmarks(prev => ({ ...prev, [tweetId]: !alreadyBookmarked }));
+        } catch (error) {
+            console.error('Error handling bookmark:', error);
         }
     };
 
@@ -251,8 +265,24 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
             }
         };
 
+        const checkUserBookmarks = async () => {
+            try {
+                const response = await fetch(`${apiUrl}/bookmarks`, {
+                    headers: { ...getAuthHeader() }
+                });
+                if (!response.ok) return;
+                const data = await response.json();
+                const map: { [key: string]: boolean } = {};
+                data.forEach((t: Tweet) => { map[t.id] = true; });
+                setUserBookmarks(map);
+            } catch (error) {
+                console.error('Error checking user bookmarks:', error);
+            }
+        };
+
         checkUserLikes();
         checkUserRetweets();
+        checkUserBookmarks();
         fetchUsers();
         fetchTweets();
     }, [refresh]);  // Add refresh to the dependency array
@@ -299,6 +329,9 @@ const TweetList: React.FC<TweetListProps> = ({ user, refresh }) => {
                                 </button>
                                 <button onClick={(e) => { e.stopPropagation(); handleLike(tweet.id); }} style={{ color: userLikes[tweet.id] ? '#e0245e' : undefined }}>
                                     <FaHeart /> {tweet.num_likes}
+                                </button>
+                                <button onClick={(e) => { e.stopPropagation(); handleBookmark(tweet.id); }} style={{ color: userBookmarks[tweet.id] ? '#1d9bf0' : undefined }}>
+                                    {userBookmarks[tweet.id] ? <FaBookmark /> : <FaRegBookmark />}
                                 </button>
                             </div>
                         </div>
