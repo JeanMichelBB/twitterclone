@@ -42,6 +42,10 @@
     min-width: 0;
     overflow: hidden;
   }
+
+  .right-panel.right-panel-messages {
+    width: auto;
+  }
   
 /* Media Query for Mobile Devices */
 @media (max-width: 768px) {

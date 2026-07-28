@@ -72,7 +72,7 @@ const Layout = ({ leftChild, rightChild, username, user }: LayoutProps) => {
           {leftChild}
           <div className={`footer-spacer-fixed${headerHidden ? ' footer-spacer-hidden' : ''}`} />
         </div>
-        <div className="right-panel">{rightChild}</div>
+        <div className={`right-panel${location.pathname === '/messages' ? ' right-panel-messages' : ''}`}>{rightChild}</div>
       </div>
     </div>
   );
