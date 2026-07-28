@@ -44,6 +44,8 @@ def get_notifications(current_user: str = Depends(get_current_user)):
 def mark_notification_read(notification_id: str, current_user: str = Depends(get_current_user)):
     with SessionLocal() as db:
         user = db.query(User).filter(User.username == current_user).first()
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
         notification = (
             db.query(Notification)
             .filter(Notification.id == notification_id, Notification.user_id == user.id)
