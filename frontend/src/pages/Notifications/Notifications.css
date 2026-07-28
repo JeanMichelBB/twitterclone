@@ -1,0 +1,24 @@
+.notifications-body {
+    display: flex;
+    flex-direction: column;
+}
+.notification-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    border-bottom: 1px solid #2f3336;
+    cursor: pointer;
+}
+.notification-unread {
+    background-color: rgba(29, 155, 240, 0.08);
+}
+.notification-link {
+    color: #1d9bf0;
+    text-decoration: none;
+    font-size: 0.9em;
+}
+.notifications-empty {
+    color: #71767b;
+    padding: 16px;
+}

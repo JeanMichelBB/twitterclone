@@ -1,0 +1,17 @@
+.bookmarks-body {
+    display: flex;
+    flex-direction: column;
+}
+.bookmark-item {
+    padding: 12px;
+    border-bottom: 1px solid #2f3336;
+}
+.bookmark-image {
+    max-width: 100%;
+    border-radius: 12px;
+    margin-top: 8px;
+}
+.bookmarks-empty {
+    color: #71767b;
+    padding: 16px;
+}

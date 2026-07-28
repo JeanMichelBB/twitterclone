@@ -2,6 +2,7 @@ from fastapi import APIRouter, HTTPException
 from sqlalchemy.orm import Session
 from .database import SessionLocal
 from .models import User, Follower, Following
+from .notifications import create_notification
 
 router = APIRouter()
 
@@ -40,7 +41,9 @@ def follow_user(user_id: str, follow_id: str):
     
     # Add follower relationship
     db.add(Follower(user_id=follow_id, follower_user_id=user_id))
-    
+
+    create_notification(db, user_id=follow_id, notification_type="Follow", actor_user_id=user_id, tweet_id=None)
+
     db.commit()
     db.close()
     return {"message": "You are now following this user"}

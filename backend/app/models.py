@@ -24,6 +24,8 @@ class User(Base):
     notifications = relationship("Notification", foreign_keys="[Notification.user_id]", backref="user", cascade="all, delete-orphan")
     messages_sent = relationship("Message", foreign_keys='Message.sender_user_id', backref="sender", cascade="all, delete-orphan")
     messages_received = relationship("Message", foreign_keys='Message.recipient_user_id', backref="recipient", cascade="all, delete-orphan")
+    comments = relationship("Comment", backref="user", cascade="all, delete-orphan")
+    comment_likes = relationship("CommentLike", backref="user", cascade="all, delete-orphan")
 
 class Tweet(Base):
     __tablename__ = "tweets"
@@ -87,6 +89,13 @@ class Notification(Base):
     date_created = Column(DateTime)
     read = Column(Boolean, default=False)
 
+class Bookmark(Base):
+    __tablename__ = "bookmarks"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
+    user_id = Column(String(36), ForeignKey('users.id', ondelete="CASCADE"))
+    tweet_id = Column(String(36), ForeignKey('tweets.id', ondelete="CASCADE"))
+    date_bookmarked = Column(DateTime)
+
 class Message(Base):
     __tablename__ = "messages"
     id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
@@ -95,6 +104,19 @@ class Message(Base):
     content = Column(String(280), nullable=False)
     date_sent = Column(DateTime)
     read = Column(Boolean, default=False)
+
+class TweetList(Base):
+    __tablename__ = "tweet_lists"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
+    owner_user_id = Column(String(36), ForeignKey('users.id', ondelete="CASCADE"))
+    name = Column(String(100), nullable=False)
+    date_created = Column(DateTime)
+
+class TweetListMember(Base):
+    __tablename__ = "tweet_list_members"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
+    list_id = Column(String(36), ForeignKey('tweet_lists.id', ondelete="CASCADE"))
+    user_id = Column(String(36), ForeignKey('users.id', ondelete="CASCADE"))
 
 class GifCache(Base):
     __tablename__ = "gif_cache"
@@ -114,4 +136,7 @@ class models:
     CommentLike = CommentLike
     GifCache = GifCache
     Notification = Notification
+    Bookmark = Bookmark
+    TweetList = TweetList
+    TweetListMember = TweetListMember
     Message = Message

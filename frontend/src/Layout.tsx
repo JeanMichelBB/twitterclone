@@ -12,6 +12,10 @@ interface LayoutProps {
   user: User;
 }
 
+// Pages whose right panel should expand to fill available space
+// instead of keeping the fixed 320px sidebar width.
+const EXPANDED_RIGHT_PANEL_PATHS = ['/messages', '/settings'];
+
 const Layout = ({ leftChild, rightChild, username, user }: LayoutProps) => {
   const lastScrollY = useRef(0);
   const scrollPeak = useRef(0);
@@ -72,7 +76,7 @@ const Layout = ({ leftChild, rightChild, username, user }: LayoutProps) => {
           {leftChild}
           <div className={`footer-spacer-fixed${headerHidden ? ' footer-spacer-hidden' : ''}`} />
         </div>
-        <div className="right-panel">{rightChild}</div>
+        <div className={`right-panel${EXPANDED_RIGHT_PANEL_PATHS.includes(location.pathname) ? ' right-panel-expanded' : ''}`}>{rightChild}</div>
       </div>
     </div>
   );

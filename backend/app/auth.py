@@ -1,5 +1,5 @@
 from typing import Optional
-from fastapi import Depends, HTTPException, Header, status
+from fastapi import APIRouter, Depends, HTTPException, Header, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
 from passlib.context import CryptContext
@@ -7,6 +7,8 @@ from datetime import datetime, timedelta
 from .models import User
 from .database import SessionLocal
 from jose import JWTError, jwt
+
+router = APIRouter()
 
 SECRET_KEY = "your-secret-key"
 ALGORITHM = "HS256"
@@ -58,4 +60,22 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
             headers={"WWW-Authenticate": "Bearer"},
         )
     return username
+
+
+@router.get("/login")
+async def login(username: str, password: str):
+    db = SessionLocal()
+    user = authenticate_user(db, username, password)
+    if not user:
+        raise HTTPException(status_code=401, detail="Incorrect username or password")
+    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": user.username}, expires_delta=access_token_expires
+    )
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+@router.get("/protected")
+async def protected_route(current_user: str = Depends(get_current_user)):
+    return {"message": f"Hello, {current_user}. You are logged in!"}
 

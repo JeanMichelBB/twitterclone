@@ -2,6 +2,7 @@ import datetime
 from fastapi import APIRouter, Depends, HTTPException
 from .database import SessionLocal
 from .models import Comment, Like, Retweet, User, Tweet
+from .notifications import create_notification
 from pydantic import BaseModel
 from typing import Optional
 
@@ -38,6 +39,15 @@ def get_tweets():
             if original:
                 result.append(tweet_dict(original, db, retweeted_by_user_id=rt.user_id, date_override=rt.date_retweeted))
         return result
+
+# Trending tweets, ranked by engagement — must stay ahead of /tweets/{user_id}
+# so FastAPI doesn't swallow "trending" as a user_id path param.
+@router.get("/tweets/trending")
+def get_trending_tweets():
+    with SessionLocal() as db:
+        tweets = db.query(Tweet).all()
+        ranked = sorted(tweets, key=lambda t: t.num_likes + t.num_retweets, reverse=True)
+        return [tweet_dict(t, db) for t in ranked[:25]]
 
 # Get a single tweet by ID
 @router.get("/tweet/{tweet_id}")
@@ -99,6 +109,7 @@ def like_tweet(user_id: str, tweet_id: str):
             raise HTTPException(status_code=400, detail="Like already exists")
         tweet.num_likes += 1
         db.add(Like(user_id=user_id, tweet_id=tweet_id, date_liked=datetime.datetime.now()))
+        create_notification(db, user_id=tweet.user_id, notification_type="Like", actor_user_id=user_id, tweet_id=tweet_id)
         db.commit()
         return {"num_likes": tweet.num_likes}
 
@@ -130,6 +141,7 @@ def retweet_tweet(user_id: str, tweet_id: str):
             raise HTTPException(status_code=400, detail="Retweet already exists")
         tweet.num_retweets += 1
         db.add(Retweet(user_id=user_id, original_tweet_id=tweet_id, date_retweeted=datetime.datetime.now()))
+        create_notification(db, user_id=tweet.user_id, notification_type="Retweet", actor_user_id=user_id, tweet_id=tweet_id)
         db.commit()
         return {"num_retweets": tweet.num_retweets}
 
