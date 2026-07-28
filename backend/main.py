@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
-from app.database import engine, Base, SessionLocal, enforce_tweet_limit, enforce_user_limit, enforce_message_limit
+from app.database import engine, Base, SessionLocal, create_or_rebuild_database, enforce_tweet_limit, enforce_user_limit, enforce_message_limit
 from app.auth import SECRET_KEY, ALGORITHM
 from app.auth import router as auth
 from jose import JWTError, jwt
@@ -14,6 +14,7 @@ from app.tweets import router as tweets
 from app.comments import router as comments
 from app.gifs import router as gifs
 from app.notifications import router as notifications
+from app.bookmarks import router as bookmarks
 from app.seed import seed_data
 from app.models import User, Tweet, Message
 from sqlalchemy import event
@@ -60,6 +61,7 @@ def get_db():
     finally:
         db.close()
 
+create_or_rebuild_database()
 seed_data()
 
 app.include_router(auth)
@@ -72,6 +74,7 @@ app.include_router(tweets)
 app.include_router(comments)
 app.include_router(gifs)
 app.include_router(notifications)
+app.include_router(bookmarks)
 
 app.add_middleware(
     CORSMiddleware,

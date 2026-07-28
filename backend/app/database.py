@@ -83,6 +83,10 @@ wait_for_db()
 
 
 def create_or_rebuild_database():
+    """Must be called only after every app.models class has been imported —
+    Base.metadata only knows about tables for classes that already exist in
+    memory, so calling this before models.py is loaded silently creates
+    nothing (and would silently drop nothing on subsequent runs)."""
     if not database_exists(engine.url):
         create_database(engine.url)
         Base.metadata.create_all(bind=engine)
@@ -90,8 +94,6 @@ def create_or_rebuild_database():
         Base.metadata.drop_all(bind=engine)
         Base.metadata.create_all(bind=engine)
 
-
-create_or_rebuild_database()
 
 def get_db_session():
     db = SessionLocal()
