@@ -15,6 +15,7 @@ from app.comments import router as comments
 from app.gifs import router as gifs
 from app.notifications import router as notifications
 from app.bookmarks import router as bookmarks
+from app.lists import router as lists
 from app.seed import seed_data
 from app.models import User, Tweet, Message
 from sqlalchemy import event
@@ -75,6 +76,7 @@ app.include_router(comments)
 app.include_router(gifs)
 app.include_router(notifications)
 app.include_router(bookmarks)
+app.include_router(lists)
 
 app.add_middleware(
     CORSMiddleware,

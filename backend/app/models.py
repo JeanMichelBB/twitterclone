@@ -105,6 +105,19 @@ class Message(Base):
     date_sent = Column(DateTime)
     read = Column(Boolean, default=False)
 
+class TweetList(Base):
+    __tablename__ = "tweet_lists"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
+    owner_user_id = Column(String(36), ForeignKey('users.id', ondelete="CASCADE"))
+    name = Column(String(100), nullable=False)
+    date_created = Column(DateTime)
+
+class TweetListMember(Base):
+    __tablename__ = "tweet_list_members"
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid4()), unique=True)
+    list_id = Column(String(36), ForeignKey('tweet_lists.id', ondelete="CASCADE"))
+    user_id = Column(String(36), ForeignKey('users.id', ondelete="CASCADE"))
+
 class GifCache(Base):
     __tablename__ = "gif_cache"
     query = Column(String(255), primary_key=True)
@@ -124,4 +137,6 @@ class models:
     GifCache = GifCache
     Notification = Notification
     Bookmark = Bookmark
+    TweetList = TweetList
+    TweetListMember = TweetListMember
     Message = Message
