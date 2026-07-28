@@ -99,6 +99,8 @@ def like_tweet(user_id: str, tweet_id: str):
             raise HTTPException(status_code=400, detail="Like already exists")
         tweet.num_likes += 1
         db.add(Like(user_id=user_id, tweet_id=tweet_id, date_liked=datetime.datetime.now()))
+        from .notifications import create_notification
+        create_notification(db, user_id=tweet.user_id, notification_type="Like", actor_user_id=user_id, tweet_id=tweet_id)
         db.commit()
         return {"num_likes": tweet.num_likes}
 
@@ -130,6 +132,8 @@ def retweet_tweet(user_id: str, tweet_id: str):
             raise HTTPException(status_code=400, detail="Retweet already exists")
         tweet.num_retweets += 1
         db.add(Retweet(user_id=user_id, original_tweet_id=tweet_id, date_retweeted=datetime.datetime.now()))
+        from .notifications import create_notification
+        create_notification(db, user_id=tweet.user_id, notification_type="Retweet", actor_user_id=user_id, tweet_id=tweet_id)
         db.commit()
         return {"num_retweets": tweet.num_retweets}
 

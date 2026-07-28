@@ -46,6 +46,8 @@ def create_comment(tweet_id: str, body: CommentCreate):
             num_likes=0,
         )
         db.add(comment)
+        from .notifications import create_notification
+        create_notification(db, user_id=tweet.user_id, notification_type="Mention", actor_user_id=body.user_id, tweet_id=tweet_id)
         db.commit()
         user = db.query(User).filter(User.id == body.user_id).first()
         return {

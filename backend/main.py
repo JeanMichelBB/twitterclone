@@ -13,6 +13,7 @@ from app.followers import router as followers
 from app.tweets import router as tweets
 from app.comments import router as comments
 from app.gifs import router as gifs
+from app.notifications import router as notifications
 from app.seed import seed_data
 from app.models import User, Tweet, Message
 from sqlalchemy import event
@@ -70,6 +71,7 @@ app.include_router(followers)
 app.include_router(tweets)
 app.include_router(comments)
 app.include_router(gifs)
+app.include_router(notifications)
 
 app.add_middleware(
     CORSMiddleware,
