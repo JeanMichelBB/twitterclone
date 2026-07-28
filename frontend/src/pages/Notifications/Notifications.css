@@ -1,8 +1,6 @@
-.notifications-page {
-    padding: 16px;
-}
-.notifications-title {
-    margin-bottom: 12px;
+.notifications-body {
+    display: flex;
+    flex-direction: column;
 }
 .notification-item {
     display: flex;

@@ -1,0 +1,31 @@
+.page-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #333;
+    position: sticky;
+    top: 0;
+    background: #000;
+    z-index: 10;
+}
+
+.page-header h2 {
+    margin: 0;
+    font-size: 1.1em;
+    color: #fff;
+}
+
+.page-header-back {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 1.2em;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 50%;
+}
+
+.page-header-back:hover {
+    background: rgba(255, 255, 255, 0.1);
+}

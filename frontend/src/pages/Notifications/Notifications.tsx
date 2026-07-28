@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { apiUrl, getAuthHeader } from '../../api';
+import '../ComingSoon/ComingSoon.css';
 import './Notifications.css';
 
 type NotificationItem = {
@@ -28,6 +29,7 @@ const verbFor = (type: string): string => {
 };
 
 const Notifications: React.FC = () => {
+    const navigate = useNavigate();
     const [items, setItems] = useState<NotificationItem[]>([]);
     const [loading, setLoading] = useState(true);
 
@@ -35,7 +37,7 @@ const Notifications: React.FC = () => {
         const load = async () => {
             const res = await fetch(`${apiUrl}/notifications`, { headers: { ...getAuthHeader() } });
             const data = await res.json();
-            setItems(data);
+            setItems(Array.isArray(data) ? data : []);
             setLoading(false);
         };
         load();
@@ -49,28 +51,32 @@ const Notifications: React.FC = () => {
         setItems((prev) => prev.map((n) => (n.id === id ? { ...n, read: true } : n)));
     };
 
-    if (loading) return <div className="notifications-page">Loading...</div>;
-
     return (
-        <div className="notifications-page">
-            <h2 className="notifications-title">Notifications</h2>
-            {items.length === 0 && <p className="notifications-empty">No notifications yet.</p>}
-            {items.map((n) => (
-                <div
-                    key={n.id}
-                    className={`notification-item ${n.read ? '' : 'notification-unread'}`}
-                    onClick={() => !n.read && markRead(n.id)}
-                >
-                    <span className="notification-text">
-                        <strong>{n.actor.full_name || n.actor.username}</strong> {verbFor(n.notification_type)}
-                    </span>
-                    {n.tweet_id && (
-                        <Link to={`/status/${n.tweet_id}`} className="notification-link">
-                            View
-                        </Link>
-                    )}
-                </div>
-            ))}
+        <div className="coming-soon-page">
+            <div className="coming-soon-header">
+                <button className="coming-soon-back" onClick={() => navigate(-1)}>&#8592;</button>
+                <h2>Notifications</h2>
+            </div>
+            <div className="notifications-body">
+                {loading && <p className="notifications-empty">Loading...</p>}
+                {!loading && items.length === 0 && <p className="notifications-empty">No notifications yet.</p>}
+                {!loading && items.map((n) => (
+                    <div
+                        key={n.id}
+                        className={`notification-item ${n.read ? '' : 'notification-unread'}`}
+                        onClick={() => !n.read && markRead(n.id)}
+                    >
+                        <span className="notification-text">
+                            <strong>{n.actor.full_name || n.actor.username}</strong> {verbFor(n.notification_type)}
+                        </span>
+                        {n.tweet_id && (
+                            <Link to={`/status/${n.tweet_id}`} className="notification-link">
+                                View
+                            </Link>
+                        )}
+                    </div>
+                ))}
+            </div>
         </div>
     );
 };
