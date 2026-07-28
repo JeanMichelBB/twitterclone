@@ -1,0 +1,23 @@
+.lists-body {
+    padding: 16px;
+}
+.lists-create {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+.list-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #2f3336;
+    cursor: pointer;
+}
+.list-members {
+    margin-top: 16px;
+    padding: 12px;
+    border-top: 1px solid #2f3336;
+}
+.lists-empty {
+    color: #71767b;
+}
