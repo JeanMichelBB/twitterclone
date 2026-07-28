@@ -1,0 +1,16 @@
+.explore-body {
+    display: flex;
+    flex-direction: column;
+}
+.explore-tweet {
+    padding: 12px;
+    border-bottom: 1px solid #2f3336;
+}
+.explore-stats {
+    color: #71767b;
+    font-size: 0.85em;
+}
+.explore-empty {
+    color: #71767b;
+    padding: 16px;
+}

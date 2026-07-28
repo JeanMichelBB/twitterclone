@@ -13,6 +13,7 @@ import Status from './pages/Status/Status';
 import ComingSoon from './pages/ComingSoon/ComingSoon';
 import Notifications from './pages/Notifications/Notifications';
 import Bookmarks from './pages/Bookmarks/Bookmarks';
+import Explore from './pages/Explore/Explore';
 import Footer from './components/Footer/Footer';
 import Search from './components/Search/Search';
 import CookieBanner from './components/CookieBanner/CookieBanner';
@@ -147,6 +148,18 @@ function App() {
                 />
 
                 <Route
+                  path="/explore"
+                  element={
+                    <Layout
+                      username={username}
+                      user={user}
+                      leftChild={<Explore />}
+                      rightChild={<Footer user={user} />}
+                    />
+                  }
+                />
+
+                <Route
                   path="/settings"
                   element={
                     <Layout
@@ -199,7 +212,6 @@ function App() {
                   }
                 />
                 {[
-                    { path: '/explore', name: 'Explore' },
                     { path: '/grok', name: 'Grok' },
                     { path: '/lists', name: 'Lists' },
                     { path: '/communities', name: 'Communities' },
