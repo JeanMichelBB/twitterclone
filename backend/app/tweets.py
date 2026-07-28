@@ -40,6 +40,15 @@ def get_tweets():
                 result.append(tweet_dict(original, db, retweeted_by_user_id=rt.user_id, date_override=rt.date_retweeted))
         return result
 
+# Trending tweets, ranked by engagement — must stay ahead of /tweets/{user_id}
+# so FastAPI doesn't swallow "trending" as a user_id path param.
+@router.get("/tweets/trending")
+def get_trending_tweets():
+    with SessionLocal() as db:
+        tweets = db.query(Tweet).all()
+        ranked = sorted(tweets, key=lambda t: t.num_likes + t.num_retweets, reverse=True)
+        return [tweet_dict(t, db) for t in ranked[:25]]
+
 # Get a single tweet by ID
 @router.get("/tweet/{tweet_id}")
 def get_tweet(tweet_id: str):
