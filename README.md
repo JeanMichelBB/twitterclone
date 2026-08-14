@@ -118,10 +118,8 @@ x/
 │   ├── backend-deployment.yaml
 │   ├── frontend-deployment.yaml
 │   ├── ingress.yaml
-│   ├── mysql.yaml
 │   └── secrets/
-│       ├── x-backend-secret.yml
-│       └── mysql-secret.yml
+│       └── x-backend-secret.yml
 │
 └── .github/
     └── workflows/
@@ -164,12 +162,12 @@ docker run -p 3000:3000 twc-frontend
 
 ### k3s (production)
 
+Database: see [`shared-mysql`](https://github.com/JeanMichelBB/shared-mysql) — this app connects to that instance's `twitter_db` database, it doesn't run its own.
+
 Apply the manifests in order:
 
 ```bash
-kubectl apply -f k3s/secrets/mysql-secret.yml
 kubectl apply -f k3s/secrets/x-backend-secret.yml
-kubectl apply -f k3s/mysql.yaml
 kubectl apply -f k3s/backend-deployment.yaml
 kubectl apply -f k3s/frontend-deployment.yaml
 kubectl apply -f k3s/ingress.yaml
